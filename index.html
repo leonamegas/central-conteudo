@@ -147,6 +147,12 @@
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 
   .hint-banner{font-size:12px;color:#cfd9d5;margin-top:6px;}
+  .sync-line{font-size:11.5px;color:#cfd9d5;cursor:pointer;white-space:nowrap;}
+  .sync-line:hover{color:#fff;}
+
+  .sync-modal .help-text{font-size:12.5px;color:var(--muted);line-height:1.5;margin:0 0 14px;}
+  .sync-status-box{background:#f6f6f3;border-radius:8px;padding:10px 12px;margin-bottom:14px;font-size:13px;font-weight:600;}
+  .sync-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;}
 
   @media (max-width:640px){
     .brand p{display:none;}
@@ -167,6 +173,8 @@
       </div>
     </div>
     <div class="backup-actions">
+      <span class="sync-line" id="syncLine"></span>
+      <button class="btn-ghost" id="btnSync">🔒 Sincronização</button>
       <button class="btn-ghost" id="btnExport">⬇ Exportar backup</button>
       <button class="btn-ghost" id="btnImport">⬆ Importar backup</button>
       <input type="file" id="fileImport" accept="application/json" hidden>
@@ -292,6 +300,192 @@
     }catch(e){
       toast('⚠ Não foi possível salvar (armazenamento cheio ou bloqueado).');
     }
+    scheduleSync();
+  }
+
+  /* ---------------------------------------------------------
+     Sincronização com GitHub (repositório privado)
+     Mesmo esquema usado no painel do escritório: os dados de
+     verdade ficam guardados num repositório PRIVADO do GitHub,
+     lidos/escritos com um token de acesso pessoal que só você
+     tem. Sem o token, ninguém consegue ler nem alterar os dados
+     — mesmo que ache o link público do site.
+  --------------------------------------------------------- */
+  var GH_OWNER = 'leonamegas';
+  var GH_REPO = 'central-conteudo-dados';
+  var GH_PATH = 'dados.json';
+  var GH_TOKEN_KEY = 'centralConteudo_gh_token';
+  var ghToken = localStorage.getItem(GH_TOKEN_KEY) || '';
+  var ghSha = null;
+  var syncTimer = null;
+  var syncState = 'off'; // off | syncing | ok | error
+  var syncMsg = '';
+
+  function b64EncodeUnicode(str){
+    return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(_, p){ return String.fromCharCode('0x'+p); }));
+  }
+  function b64DecodeUnicode(str){
+    return decodeURIComponent(atob(str).split('').map(function(c){ return '%' + ('00'+c.charCodeAt(0).toString(16)).slice(-2); }).join(''));
+  }
+  function ghApiUrl(){ return 'https://api.github.com/repos/'+GH_OWNER+'/'+GH_REPO+'/contents/'+GH_PATH; }
+  function ghHeaders(){ return {'Authorization':'Bearer '+ghToken, 'Accept':'application/vnd.github+json'}; }
+
+  function setSyncState(s, msg){
+    syncState = s;
+    syncMsg = msg || '';
+    renderSyncUI();
+  }
+
+  function ghFetchRemote(){
+    return fetch(ghApiUrl() + '?t=' + Date.now(), {headers: ghHeaders()}).then(function(res){
+      if(res.status===404){ ghSha=null; return {notFound:true}; }
+      if(res.status===401 || res.status===403){ setSyncState('error','Token inválido ou sem permissão.'); return null; }
+      if(!res.ok){ setSyncState('error','Erro ao buscar (HTTP '+res.status+').'); return null; }
+      return res.json().then(function(data){
+        ghSha = data.sha;
+        var json = b64DecodeUnicode((data.content||'').replace(/\n/g,''));
+        return {data: JSON.parse(json)};
+      });
+    }).catch(function(){ setSyncState('error','Sem conexão com o GitHub.'); return null; });
+  }
+
+  function ghPushRemote(){
+    if(!ghToken) return Promise.resolve();
+    setSyncState('syncing');
+    var body = {
+      message: 'Atualização — ' + new Date().toISOString(),
+      content: b64EncodeUnicode(JSON.stringify(state.data, null, 2))
+    };
+    if(ghSha) body.sha = ghSha;
+    return fetch(ghApiUrl(), {
+      method:'PUT',
+      headers: Object.assign({}, ghHeaders(), {'Content-Type':'application/json'}),
+      body: JSON.stringify(body)
+    }).then(function(res){
+      if(res.status===401 || res.status===403){ setSyncState('error','Token inválido ou sem permissão.'); return; }
+      if(res.status===409){
+        return ghFetchRemote().then(function(remote){
+          if(remote && !remote.notFound) return ghPushRemote();
+        });
+      }
+      if(!res.ok){ setSyncState('error','Erro ao salvar (HTTP '+res.status+').'); return; }
+      return res.json().then(function(data){
+        ghSha = data.content.sha;
+        setSyncState('ok');
+      });
+    }).catch(function(){ setSyncState('error','Sem conexão com o GitHub.'); });
+  }
+
+  function scheduleSync(){
+    if(!ghToken) return;
+    clearTimeout(syncTimer);
+    syncTimer = setTimeout(ghPushRemote, 1200);
+  }
+
+  function initSync(){
+    if(!ghToken){ setSyncState('off'); return; }
+    setSyncState('syncing');
+    ghFetchRemote().then(function(remote){
+      if(!remote) return;
+      if(remote.notFound){
+        ghPushRemote(); // primeiro aparelho a conectar: cria o arquivo com os dados atuais
+      } else {
+        var d = defaultData();
+        state.data = Object.assign(d, remote.data);
+        Object.keys(d).forEach(function(k){ if(!state.data[k]) state.data[k]=[]; });
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state.data));
+        renderApp();
+        setSyncState('ok');
+      }
+    });
+  }
+
+  function renderSyncUI(){
+    var line = document.getElementById('syncLine');
+    if(line){
+      var map = {
+        off: '⚪ Sem sincronização',
+        syncing: '🔄 Sincronizando…',
+        ok: '🟢 Sincronizado',
+        error: '🔴 Erro de sincronização'
+      };
+      line.textContent = map[syncState] || '';
+      line.onclick = openSyncModal;
+    }
+    var box = document.getElementById('syncStatusBox');
+    if(box){
+      var map2 = {
+        off: {text:'Ainda não conectado neste navegador.', color:'#555'},
+        syncing: {text:'Sincronizando…', color:'#92400e'},
+        ok: {text:'Conectado e sincronizado.', color:'#166534'},
+        error: {text:'Erro: ' + (syncMsg||'falha desconhecida'), color:'#b91c1c'}
+      };
+      var m = map2[syncState] || map2.off;
+      box.style.color = m.color;
+      box.textContent = m.text;
+    }
+  }
+
+  function openSyncModal(){
+    modalBox.innerHTML = '';
+    modalBox.classList.add('sync-modal');
+    var wrap = el('div', {});
+    wrap.appendChild(text('h2', null, '🔒 Sincronização (GitHub privado)'));
+    wrap.appendChild(el('p', {class:'help-text'}, [document.createTextNode(
+      'Guarda os dados de verdade num repositório PRIVADO do GitHub (' + GH_OWNER + '/' + GH_REPO + '), em vez de só neste navegador. Assim ninguém que só tenha o link do site consegue ver ou mexer nos seus dados — só quem tiver o token de acesso. Também sincroniza entre aparelhos: cole o mesmo token em outro navegador/celular pra ver os mesmos dados.'
+    )]));
+    var statusBox = el('div', {id:'syncStatusBox', class:'sync-status-box'});
+    wrap.appendChild(statusBox);
+
+    var fieldWrap = el('div', {class:'field'});
+    fieldWrap.appendChild(text('label', null, 'Token de acesso do GitHub'));
+    var tokenInput = document.createElement('input');
+    tokenInput.type = 'password';
+    tokenInput.id = 'ghTokenInput';
+    tokenInput.placeholder = 'github_pat_...';
+    tokenInput.value = ghToken;
+    fieldWrap.appendChild(tokenInput);
+    wrap.appendChild(fieldWrap);
+
+    var actions = el('div', {class:'sync-actions'});
+    var connectBtn = el('button', {type:'button', class:'btn-primary'}, [text('span',null,'Salvar e conectar')]);
+    connectBtn.addEventListener('click', function(){
+      var v = tokenInput.value.trim();
+      if(!v){ toast('Cole o token de acesso do GitHub.'); return; }
+      ghToken = v;
+      localStorage.setItem(GH_TOKEN_KEY, ghToken);
+      ghSha = null;
+      initSync();
+    });
+    var testBtn = el('button', {type:'button', class:'btn-secondary'}, [text('span',null,'Testar conexão')]);
+    testBtn.addEventListener('click', function(){
+      if(!ghToken){ toast('Cole e salve um token primeiro.'); return; }
+      initSync();
+    });
+    var disconnectBtn = el('button', {type:'button', class:'btn-secondary', style:'color:var(--danger);'}, [text('span',null,'Desconectar')]);
+    disconnectBtn.addEventListener('click', function(){
+      if(!confirm('Desconectar a sincronização neste navegador? Os dados salvos aqui localmente continuam, mas não vão mais atualizar automaticamente com o GitHub.')) return;
+      ghToken = '';
+      ghSha = null;
+      localStorage.removeItem(GH_TOKEN_KEY);
+      tokenInput.value = '';
+      setSyncState('off');
+    });
+    actions.appendChild(connectBtn);
+    actions.appendChild(testBtn);
+    actions.appendChild(disconnectBtn);
+    wrap.appendChild(actions);
+
+    var closeRow = el('div', {class:'modal-actions'});
+    var closeBtn = el('button', {type:'button', class:'btn-secondary'}, [text('span',null,'Fechar')]);
+    closeBtn.addEventListener('click', closeModal);
+    closeRow.appendChild(document.createElement('div'));
+    closeRow.appendChild(closeBtn);
+    wrap.appendChild(closeRow);
+
+    modalBox.appendChild(wrap);
+    modalOverlay.classList.add('open');
+    renderSyncUI();
   }
 
   /* ---------------------------------------------------------
@@ -462,6 +656,7 @@
   function closeModal(){
     modalOverlay.classList.remove('open');
     modalBox.innerHTML = '';
+    modalBox.classList.remove('sync-modal');
   }
   modalOverlay.addEventListener('click', function(e){ if(e.target===modalOverlay) closeModal(); });
 
@@ -1028,6 +1223,8 @@
     toast('Backup exportado.');
   });
 
+  document.getElementById('btnSync').addEventListener('click', openSyncModal);
+
   document.getElementById('btnImport').addEventListener('click', function(){
     document.getElementById('fileImport').click();
   });
@@ -1058,6 +1255,8 @@
   --------------------------------------------------------- */
   loadState();
   renderApp();
+  renderSyncUI();
+  initSync();
 })();
 </script>
 </body>
