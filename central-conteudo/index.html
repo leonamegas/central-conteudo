@@ -1,0 +1,1064 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Central de Conteúdo — PFE Advogados</title>
+<style>
+  :root{
+    --bg:#f6f6f3;
+    --surface:#ffffff;
+    --border:#e3e1da;
+    --text:#232722;
+    --muted:#6b6f68;
+    --primary:#1e3a34;
+    --primary-light:#2f574e;
+    --accent:#b98b3e;
+    --danger:#b2453a;
+    --radius:10px;
+    --shadow:0 1px 2px rgba(20,20,15,.05), 0 4px 14px rgba(20,20,15,.04);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;
+    padding-bottom:60px;
+  }
+  a{color:var(--primary-light);}
+  h1,h2,h3{margin:0;}
+  button{font-family:inherit;cursor:pointer;}
+
+  /* Topbar */
+  .topbar{background:var(--primary);color:#fff;position:sticky;top:0;z-index:20;box-shadow:var(--shadow);}
+  .topbar-inner{max-width:1180px;margin:0 auto;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+  .brand{display:flex;align-items:center;gap:10px;}
+  .brand-icon{font-size:26px;}
+  .brand h1{font-size:17px;font-weight:600;letter-spacing:.2px;}
+  .brand p{margin:2px 0 0;font-size:12px;color:#cfd9d5;}
+  .backup-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+  .btn-ghost{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.25);border-radius:8px;padding:7px 12px;font-size:12.5px;}
+  .btn-ghost:hover{background:rgba(255,255,255,.2);}
+
+  /* Tabs */
+  .tabs{background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:60px;z-index:19;overflow-x:auto;white-space:nowrap;}
+  .tabs::-webkit-scrollbar{height:0;}
+  .tabs-inner{max-width:1180px;margin:0 auto;display:flex;padding:0 12px;}
+  .tab-btn{border:none;background:transparent;padding:13px 14px;font-size:13.5px;color:var(--muted);border-bottom:3px solid transparent;display:flex;align-items:center;gap:6px;white-space:nowrap;}
+  .tab-btn:hover{color:var(--text);}
+  .tab-btn.active{color:var(--primary);border-bottom-color:var(--accent);font-weight:600;}
+
+  main{max-width:1180px;margin:0 auto;padding:20px 16px 40px;}
+
+  .panel-header{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .panel-title{font-size:19px;font-weight:600;}
+  .panel-sub{color:var(--muted);font-size:13px;margin-top:2px;}
+
+  .btn-primary{background:var(--primary);color:#fff;border:none;border-radius:8px;padding:9px 15px;font-size:13.5px;font-weight:500;}
+  .btn-primary:hover{background:var(--primary-light);}
+  .btn-secondary{background:var(--surface);color:var(--text);border:1px solid var(--border);border-radius:8px;padding:8px 13px;font-size:13px;}
+  .btn-secondary:hover{border-color:#c8c6bd;background:#fbfaf7;}
+  .btn-secondary.active{background:var(--primary);color:#fff;border-color:var(--primary);}
+  .btn-icon{background:none;border:none;color:var(--muted);font-size:14px;padding:4px 6px;border-radius:6px;}
+  .btn-icon:hover{background:#f1efe9;color:var(--text);}
+
+  .toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:14px;}
+  .search-input{border:1px solid var(--border);border-radius:8px;padding:8px 11px;font-size:13.5px;min-width:220px;flex:1;background:var(--surface);}
+  .search-input:focus{outline:2px solid var(--primary-light);outline-offset:-1px;}
+
+  .filter-pills{display:flex;gap:6px;flex-wrap:wrap;}
+
+  /* Cards / list */
+  .card-list{display:flex;flex-direction:column;gap:10px;}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:13px 15px;box-shadow:var(--shadow);}
+  .card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;}
+  .card-title{font-size:14.5px;font-weight:600;}
+  .card-meta{font-size:12.5px;color:var(--muted);margin-top:3px;}
+  .card-body{font-size:13.5px;color:#3c403a;margin-top:8px;white-space:pre-wrap;}
+  .card-actions{display:flex;gap:4px;flex-shrink:0;}
+  .empty-state{color:var(--muted);font-size:13.5px;text-align:center;padding:40px 10px;border:1px dashed var(--border);border-radius:var(--radius);background:var(--surface);}
+
+  .badge{display:inline-block;font-size:11px;font-weight:600;padding:3px 8px;border-radius:99px;white-space:nowrap;}
+  .badge-gray{background:#eceae4;color:#5c5f58;}
+  .badge-blue{background:#e2ecf5;color:#2a5b83;}
+  .badge-purple{background:#ece3f5;color:#5c3d8a;}
+  .badge-orange{background:#faeadb;color:#9a5b1f;}
+  .badge-teal{background:#dcefe9;color:#1f6e58;}
+  .badge-green{background:#dff0dd;color:#2c7a2c;}
+  .badge-red{background:#f6dedb;color:#a13c2f;}
+
+  /* Calendar */
+  .cal-toolbar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px;}
+  .cal-nav{display:flex;align-items:center;gap:6px;}
+  .cal-label{font-size:14.5px;font-weight:600;min-width:150px;text-align:center;}
+  .cal-modes{display:flex;gap:6px;}
+  .cal-scroll{overflow-x:auto;padding-bottom:4px;}
+  .cal-grid-month{display:grid;grid-template-columns:repeat(7,minmax(120px,1fr));gap:6px;min-width:840px;}
+  .cal-weekday{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.03em;padding:2px 4px;}
+  .cal-cell{background:var(--surface);border:1px solid var(--border);border-radius:8px;min-height:96px;padding:6px;display:flex;flex-direction:column;gap:4px;}
+  .cal-cell.other-month{opacity:.4;}
+  .cal-cell.is-today{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset;}
+  .cal-cell-head{display:flex;justify-content:space-between;align-items:center;}
+  .cal-daynum{font-size:12px;font-weight:600;color:var(--muted);}
+  .cal-add{background:none;border:none;color:var(--muted);font-size:14px;line-height:1;padding:0 3px;}
+  .cal-add:hover{color:var(--primary);}
+  .cal-chip{font-size:11px;padding:3px 6px;border-radius:6px;background:#eceae4;color:#3c403a;cursor:pointer;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:left;border:none;width:100%;}
+  .cal-chip:hover{filter:brightness(0.96);}
+  .cal-more{font-size:10.5px;color:var(--muted);padding-left:2px;}
+
+  .cal-grid-week{display:grid;grid-template-columns:repeat(7,minmax(150px,1fr));gap:8px;min-width:1000px;}
+  .cal-week-col{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px;display:flex;flex-direction:column;gap:6px;min-height:180px;}
+  .cal-week-col.is-today{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset;}
+  .cal-week-head{font-size:12px;font-weight:700;color:var(--text);border-bottom:1px solid var(--border);padding-bottom:6px;}
+  .cal-week-head span{display:block;font-weight:400;color:var(--muted);font-size:11px;}
+  .cal-week-item{background:#f6f6f3;border-radius:6px;padding:6px 7px;font-size:12px;cursor:pointer;}
+  .cal-week-item:hover{background:#eeece6;}
+  .cal-week-item .wi-title{font-weight:600;}
+  .cal-week-item .wi-meta{color:var(--muted);font-size:10.5px;margin-top:2px;}
+  .cal-week-add{margin-top:auto;background:none;border:1px dashed var(--border);border-radius:6px;color:var(--muted);font-size:12px;padding:5px;}
+  .cal-week-add:hover{color:var(--primary);border-color:var(--primary-light);}
+
+  .upcoming{margin-top:22px;}
+  .upcoming h3{font-size:13.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.03em;margin-bottom:8px;font-weight:700;}
+  .upcoming-row{display:flex;align-items:center;gap:10px;padding:8px 10px;background:var(--surface);border:1px solid var(--border);border-radius:8px;margin-bottom:6px;cursor:pointer;font-size:13px;}
+  .upcoming-row:hover{border-color:#c8c6bd;}
+  .upcoming-date{font-weight:700;color:var(--primary);min-width:44px;font-size:12.5px;}
+
+  /* Sub tabs (Formatos) */
+  .subtabs{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap;}
+
+  /* Modal */
+  .modal-overlay{position:fixed;inset:0;background:rgba(20,22,18,.45);display:none;align-items:flex-start;justify-content:center;z-index:50;padding:26px 14px;overflow-y:auto;}
+  .modal-overlay.open{display:flex;}
+  .modal{background:var(--surface);border-radius:12px;max-width:520px;width:100%;padding:20px;box-shadow:0 10px 40px rgba(0,0,0,.2);}
+  .modal h2{font-size:16px;margin-bottom:14px;}
+  .field{margin-bottom:12px;}
+  .field label{display:block;font-size:12.5px;font-weight:600;color:var(--muted);margin-bottom:4px;}
+  .field input[type=text],.field input[type=date],.field input[type=url],.field select,.field textarea{
+    width:100%;border:1px solid var(--border);border-radius:8px;padding:9px 10px;font-size:13.5px;font-family:inherit;background:#fdfdfc;
+  }
+  .field textarea{resize:vertical;min-height:80px;}
+  .field input:focus,.field select:focus,.field textarea:focus{outline:2px solid var(--primary-light);outline-offset:-1px;}
+  .modal-actions{display:flex;justify-content:space-between;align-items:center;margin-top:16px;gap:10px;}
+
+  .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--primary);color:#fff;padding:10px 18px;border-radius:8px;font-size:13px;box-shadow:var(--shadow);opacity:0;pointer-events:none;transition:all .25s ease;z-index:60;}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+  .hint-banner{font-size:12px;color:#cfd9d5;margin-top:6px;}
+
+  @media (max-width:640px){
+    .brand p{display:none;}
+    .cal-label{min-width:auto;}
+    .modal{max-width:100%;border-radius:10px 10px 0 0;}
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <span class="brand-icon">🗂️</span>
+      <div>
+        <h1>Central de Conteúdo</h1>
+        <p>PFE Advogados · organização de posts e vídeos</p>
+      </div>
+    </div>
+    <div class="backup-actions">
+      <button class="btn-ghost" id="btnExport">⬇ Exportar backup</button>
+      <button class="btn-ghost" id="btnImport">⬆ Importar backup</button>
+      <input type="file" id="fileImport" accept="application/json" hidden>
+    </div>
+  </div>
+</header>
+
+<nav class="tabs">
+  <div class="tabs-inner" id="tabsNav"></div>
+</nav>
+
+<main id="app"></main>
+
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal" id="modalBox"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---------------------------------------------------------
+     Utilidades de data
+  --------------------------------------------------------- */
+  var MONTHS = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+  var WEEKDAYS = ['Seg','Ter','Qua','Qui','Sex','Sáb','Dom'];
+
+  function pad(n){ return n<10 ? '0'+n : ''+n; }
+  function toISO(d){ return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()); }
+  function fromISO(s){ var p=s.split('-'); return new Date(parseInt(p[0],10), parseInt(p[1],10)-1, parseInt(p[2],10)); }
+  function todayISO(){ return toISO(new Date()); }
+  function addDays(d,n){ var r=new Date(d); r.setDate(r.getDate()+n); return r; }
+  function startOfWeekMonday(d){ var wd=(d.getDay()+6)%7; return addDays(d,-wd); }
+  function startOfMonthGrid(d){ var first=new Date(d.getFullYear(),d.getMonth(),1); return startOfWeekMonday(first); }
+  function fmtShort(d){ return pad(d.getDate())+'/'+pad(d.getMonth()+1); }
+
+  /* ---------------------------------------------------------
+     Estado / persistência
+  --------------------------------------------------------- */
+  var STORAGE_KEY = 'centralConteudoPFE_v1';
+
+  function uid(){ return 'id'+Date.now().toString(36)+Math.random().toString(36).slice(2,8); }
+
+  function defaultData(){
+    return {
+      posts: [],
+      stories: [],
+      teses: [
+        {id:uid(), titulo:'[Exemplo] Nome da tese recorrente', area:'Bancário', tags:'exemplo', texto:'Resumo da tese que você usa com frequência nos vídeos e posts. Edite ou apague este exemplo.'}
+      ],
+      pautas: [
+        {id:uid(), titulo:'[Exemplo] Pauta a gravar', status:'Pendente', tags:'exemplo', roteiro:'Escreva aqui o roteiro completo quando estiver pronto.'}
+      ],
+      formatosLegenda: [
+        {id:uid(), titulo:'[Exemplo] Modelo de legenda padrão', conteudo:'Gancho de abertura\\n\\nDesenvolvimento em 2-3 frases\\n\\nCTA (chamada para ação) + hashtags fixas'}
+      ],
+      formatosConteudo: [
+        {id:uid(), titulo:'[Exemplo] Mito ou verdade', descricao:'Formato recorrente de pauta: afirmação comum sobre um tema jurídico, seguida da explicação correta.'}
+      ],
+      formatosVideo: [
+        {id:uid(), titulo:'[Exemplo] Reels vertical padrão', specs:'9:16, até 60s, legenda na tela, corte a cada 2-3s.'}
+      ],
+      reposts: [
+        {id:uid(), referencia:'[Exemplo] Vídeo sobre negativação indevida', link:'', plataforma:'Instagram', status:'Pendente'}
+      ],
+      ganchos: [
+        {id:uid(), texto:'[Exemplo] "Se o banco te ligou oferecendo isso, desconfie."', tipo:'Falado'}
+      ],
+      cronogramaAulas: [1,2,3,4,5,6,7,8].map(function(n){
+        return {id:uid(), titulo:'Aula '+n, status:'Planejada', conteudo:'Defina aqui o conteúdo e os tópicos desta aula.'};
+      }),
+      tsVendas: [{id:uid(), titulo:'[Exemplo] Script de atendimento inicial', texto:'Anote aqui como conduz atendimentos e vendas.'}],
+      tsReels: [{id:uid(), titulo:'[Exemplo] O que funciona nos Reels', texto:'Anotações sobre o que aprendeu funcionar em Reels.'}],
+      tsDeverCasa: [{id:uid(), titulo:'[Exemplo] Dever de casa da Aula 1', texto:'Tarefa que os alunos do curso devem cumprir.'}],
+      tsParcerias: [{id:uid(), titulo:'[Exemplo] Parceria com fulano', texto:'Detalhes de parcerias e colaborações.'}],
+      tsStories: [{id:uid(), titulo:'[Exemplo] Estratégia de stories', texto:'Anotações sobre estratégia de stories para o curso (diferente do calendário de Stories).'}],
+      tsCasinha: [{id:uid(), titulo:'[Exemplo] Organização da casinha', texto:'Anotações sobre como organizar isso.'}],
+      tsDicas: [{id:uid(), titulo:'[Exemplo] Dica diária', texto:'Ideia de dica rápida para postar no dia a dia.'}],
+      tsJusfy: [{id:uid(), titulo:'[Exemplo] Jusfy / Jubrasil', texto:'Anotações sobre uso do Jusfy e do Jusbrasil.'}],
+      tsOferta: [{id:uid(), titulo:'[Exemplo] Minha oferta', texto:'Descreva aqui sua oferta principal: o que inclui, para quem é, preço, bônus.'}]
+    };
+  }
+
+  var state = {
+    data: null,
+    tab: 'posts',
+    formatosSub: 'formatosLegenda',
+    ganchoFilter: 'Todos',
+    repostFilter: 'Todos',
+    teseSearch: '',
+    pautaSearch: '',
+    tqsSub: 'cronogramaAulas',
+    cal: {
+      posts:   {mode:'month', viewDate: todayISO()},
+      stories: {mode:'month', viewDate: todayISO()}
+    }
+  };
+
+  function loadState(){
+    try{
+      var raw = localStorage.getItem(STORAGE_KEY);
+      if(raw){
+        var parsed = JSON.parse(raw);
+        state.data = Object.assign(defaultData(), parsed);
+        // garante que todas as coleções existam mesmo em backups antigos
+        var d = defaultData();
+        Object.keys(d).forEach(function(k){ if(!state.data[k]) state.data[k]=[]; });
+      } else {
+        state.data = defaultData();
+        saveState();
+      }
+    }catch(e){
+      console.error('Erro ao carregar dados salvos, iniciando do zero.', e);
+      state.data = defaultData();
+    }
+  }
+
+  function saveState(){
+    try{
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state.data));
+    }catch(e){
+      toast('⚠ Não foi possível salvar (armazenamento cheio ou bloqueado).');
+    }
+  }
+
+  /* ---------------------------------------------------------
+     Esquemas das abas
+  --------------------------------------------------------- */
+  var STATUS_COLOR = {
+    'Ideia':'badge-gray','Roteiro pronto':'badge-blue','Gravado':'badge-purple',
+    'Editado':'badge-orange','Agendado':'badge-teal','Publicado':'badge-green',
+    'Pendente':'badge-gray','Repostado':'badge-green'
+  };
+
+  var SCHEMAS = {
+    posts: {
+      label:'Post', plural:'posts',
+      fields:[
+        {key:'date', label:'Data', type:'date', required:true},
+        {key:'plataforma', label:'Plataforma', type:'select', options:['Instagram','TikTok','YouTube','Kwai','Outro']},
+        {key:'tema', label:'Tema / pauta', type:'text', required:true},
+        {key:'status', label:'Status', type:'select', options:['Ideia','Roteiro pronto','Gravado','Editado','Agendado','Publicado']},
+        {key:'tese', label:'Tese vinculada (opcional)', type:'select-teses'},
+        {key:'notes', label:'Notas', type:'textarea'}
+      ]
+    },
+    stories: {
+      label:'Story', plural:'stories',
+      fields:[
+        {key:'date', label:'Data', type:'date', required:true},
+        {key:'tema', label:'Tema', type:'text', required:true},
+        {key:'status', label:'Status', type:'select', options:['Ideia','Gravado','Publicado']},
+        {key:'notes', label:'Notas', type:'textarea'}
+      ]
+    },
+    teses: {
+      label:'Tese', plural:'teses',
+      fields:[
+        {key:'titulo', label:'Título', type:'text', required:true},
+        {key:'area', label:'Área', type:'text'},
+        {key:'tags', label:'Tags (separadas por vírgula)', type:'text'},
+        {key:'texto', label:'Texto / resumo da tese', type:'textarea', big:true}
+      ]
+    },
+    pautas: {
+      label:'Pauta', plural:'pautas',
+      fields:[
+        {key:'titulo', label:'Título / pauta', type:'text', required:true},
+        {key:'status', label:'Status', type:'select', options:['Pendente','Gravado']},
+        {key:'tags', label:'Tags (separadas por vírgula)', type:'text'},
+        {key:'roteiro', label:'Roteiro', type:'textarea', big:true}
+      ]
+    },
+    formatosLegenda: {
+      label:'Modelo de legenda', plural:'modelos',
+      fields:[
+        {key:'titulo', label:'Título', type:'text', required:true},
+        {key:'conteudo', label:'Modelo', type:'textarea', big:true}
+      ]
+    },
+    formatosConteudo: {
+      label:'Tipo de conteúdo', plural:'tipos',
+      fields:[
+        {key:'titulo', label:'Título', type:'text', required:true},
+        {key:'descricao', label:'Descrição', type:'textarea'}
+      ]
+    },
+    formatosVideo: {
+      label:'Formato de vídeo', plural:'formatos',
+      fields:[
+        {key:'titulo', label:'Título', type:'text', required:true},
+        {key:'specs', label:'Especificações', type:'textarea'}
+      ]
+    },
+    reposts: {
+      label:'Repost', plural:'reposts',
+      fields:[
+        {key:'referencia', label:'Referência do vídeo original', type:'text', required:true},
+        {key:'link', label:'Link do vídeo original', type:'url'},
+        {key:'plataforma', label:'Plataforma', type:'select', options:['Instagram','TikTok','YouTube','Kwai','Outro']},
+        {key:'status', label:'Status', type:'select', options:['Pendente','Repostado']}
+      ]
+    },
+    ganchos: {
+      label:'Gancho', plural:'ganchos',
+      fields:[
+        {key:'texto', label:'Gancho', type:'textarea', required:true},
+        {key:'tipo', label:'Tipo', type:'select', options:['Mudo','Falado','Ambos']}
+      ]
+    },
+    cronogramaAulas: {
+      label:'Aula', plural:'aulas',
+      fields:[
+        {key:'titulo', label:'Título da aula', type:'text', required:true},
+        {key:'status', label:'Status', type:'select', options:['Planejada','Roteirizada','Gravada','Publicada']},
+        {key:'conteudo', label:'Conteúdo / tópicos', type:'textarea', big:true}
+      ]
+    }
+  };
+
+  // Sub-abas de "Tudo que sei" que são anotações simples (título + texto)
+  function noteSchema(){
+    return {
+      label:'Anotação', plural:'anotações',
+      fields:[
+        {key:'titulo', label:'Título', type:'text', required:true},
+        {key:'texto', label:'Texto', type:'textarea', big:true}
+      ]
+    };
+  }
+  ['tsVendas','tsReels','tsDeverCasa','tsParcerias','tsStories','tsCasinha','tsDicas','tsJusfy','tsOferta'].forEach(function(k){
+    SCHEMAS[k] = noteSchema();
+  });
+
+  var TABS = [
+    {id:'posts', label:'Posts', icon:'📅'},
+    {id:'stories', label:'Stories', icon:'📱'},
+    {id:'teses', label:'Teses', icon:'⚖️'},
+    {id:'pautas', label:'Pautas & Roteiros', icon:'🎬'},
+    {id:'formatos', label:'Formatos', icon:'🧩'},
+    {id:'reposts', label:'Reposts', icon:'🔁'},
+    {id:'ganchos', label:'Ganchos', icon:'🪝'},
+    {id:'tudoquesei', label:'Tudo que sei', icon:'🧠'}
+  ];
+
+  var TQS_SUBTABS = [
+    {id:'cronogramaAulas', label:'Cronograma das Aulas'},
+    {id:'tsVendas', label:'Atendimentos / Vendas'},
+    {id:'tsReels', label:'Reels'},
+    {id:'tsDeverCasa', label:'Dever de Casa'},
+    {id:'tsParcerias', label:'Parcerias'},
+    {id:'tsStories', label:'Stories'},
+    {id:'tsCasinha', label:'Organizando a Casinha'},
+    {id:'tsDicas', label:'Dicas Diárias'},
+    {id:'tsJusfy', label:'Jusfy e Jubrasil'},
+    {id:'tsOferta', label:'⭐ Minha Oferta'}
+  ];
+
+  /* ---------------------------------------------------------
+     Helpers de DOM
+  --------------------------------------------------------- */
+  function el(tag, attrs, children){
+    var e = document.createElement(tag);
+    attrs = attrs || {};
+    Object.keys(attrs).forEach(function(k){
+      if(k==='class') e.className = attrs[k];
+      else if(k==='html') e.innerHTML = attrs[k];
+      else if(k.indexOf('on')===0 && typeof attrs[k]==='function') e.addEventListener(k.slice(2), attrs[k]);
+      else e.setAttribute(k, attrs[k]);
+    });
+    (children||[]).forEach(function(c){ if(c) e.appendChild(c); });
+    return e;
+  }
+  function text(tag, cls, str){ var e=document.createElement(tag); if(cls) e.className=cls; e.textContent=str; return e; }
+  function esc(s){ return (s||'').toString().replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+
+  function toast(msg){
+    var t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(t._timer);
+    t._timer = setTimeout(function(){ t.classList.remove('show'); }, 2600);
+  }
+
+  /* ---------------------------------------------------------
+     Modal genérico
+  --------------------------------------------------------- */
+  var modalOverlay = document.getElementById('modalOverlay');
+  var modalBox = document.getElementById('modalBox');
+
+  function closeModal(){
+    modalOverlay.classList.remove('open');
+    modalBox.innerHTML = '';
+  }
+  modalOverlay.addEventListener('click', function(e){ if(e.target===modalOverlay) closeModal(); });
+
+  function openModal(opts){
+    // opts: {title, schema, initial, onSave, onDelete}
+    var schema = opts.schema, initial = opts.initial || {};
+    modalBox.innerHTML = '';
+    var form = el('form', {class:'modal-form'});
+    form.appendChild(text('h2', null, opts.title));
+
+    var inputs = {};
+    schema.fields.forEach(function(f){
+      var wrap = el('div', {class:'field'});
+      wrap.appendChild(text('label', null, f.label + (f.required?' *':'')));
+      var input;
+      if(f.type==='textarea'){
+        input = document.createElement('textarea');
+        if(f.big) input.style.minHeight = '160px';
+        input.value = initial[f.key] || '';
+      } else if(f.type==='select'){
+        input = document.createElement('select');
+        f.options.forEach(function(o){
+          var opt = document.createElement('option');
+          opt.value = o; opt.textContent = o;
+          if(initial[f.key]===o) opt.selected = true;
+          input.appendChild(opt);
+        });
+        if(!initial[f.key] && f.options.length) input.value = f.options[0];
+      } else if(f.type==='select-teses'){
+        input = document.createElement('select');
+        var noneOpt = document.createElement('option');
+        noneOpt.value=''; noneOpt.textContent='— nenhuma —';
+        input.appendChild(noneOpt);
+        (state.data.teses||[]).forEach(function(t){
+          var opt = document.createElement('option');
+          opt.value = t.titulo; opt.textContent = t.titulo;
+          if(initial[f.key]===t.titulo) opt.selected = true;
+          input.appendChild(opt);
+        });
+      } else {
+        input = document.createElement('input');
+        input.type = f.type==='url' ? 'url' : (f.type==='date' ? 'date' : 'text');
+        input.value = initial[f.key] || '';
+      }
+      input.name = f.key;
+      if(f.required) input.required = true;
+      wrap.appendChild(input);
+      inputs[f.key] = input;
+      form.appendChild(wrap);
+    });
+
+    var actions = el('div', {class:'modal-actions'});
+    var leftActions = el('div', {style:'display:flex;gap:8px;'});
+    if(opts.onDelete){
+      var delBtn = el('button', {type:'button', class:'btn-secondary', style:'color:var(--danger);border-color:#e8c9c4;'}, [text('span',null,'Excluir')]);
+      delBtn.addEventListener('click', function(){
+        if(confirm('Excluir este item? Essa ação não pode ser desfeita.')){
+          opts.onDelete();
+          closeModal();
+        }
+      });
+      leftActions.appendChild(delBtn);
+    }
+    var rightActions = el('div', {style:'display:flex;gap:8px;'});
+    var cancelBtn = el('button', {type:'button', class:'btn-secondary'}, [text('span',null,'Cancelar')]);
+    cancelBtn.addEventListener('click', closeModal);
+    var saveBtn = el('button', {type:'submit', class:'btn-primary'}, [text('span',null,'Salvar')]);
+    rightActions.appendChild(cancelBtn);
+    rightActions.appendChild(saveBtn);
+    actions.appendChild(leftActions);
+    actions.appendChild(rightActions);
+    form.appendChild(actions);
+
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      var out = {};
+      var ok = true;
+      schema.fields.forEach(function(f){
+        var v = inputs[f.key].value.trim();
+        if(f.required && !v) ok = false;
+        out[f.key] = v;
+      });
+      if(!ok){ toast('Preencha os campos obrigatórios.'); return; }
+      opts.onSave(out);
+      closeModal();
+    });
+
+    modalBox.appendChild(form);
+    modalOverlay.classList.add('open');
+    var firstInput = form.querySelector('input,select,textarea');
+    if(firstInput) setTimeout(function(){ firstInput.focus(); }, 30);
+  }
+
+  /* ---------------------------------------------------------
+     CRUD helpers
+  --------------------------------------------------------- */
+  function addItem(collection, data){
+    data.id = uid();
+    state.data[collection].push(data);
+    saveState();
+  }
+  function updateItem(collection, id, data){
+    var arr = state.data[collection];
+    var idx = arr.findIndex(function(i){ return i.id===id; });
+    if(idx>-1){ data.id = id; arr[idx] = data; saveState(); }
+  }
+  function deleteItem(collection, id){
+    state.data[collection] = state.data[collection].filter(function(i){ return i.id!==id; });
+    saveState();
+  }
+
+  function openAddModal(collection, prefill){
+    var schema = SCHEMAS[collection];
+    openModal({
+      title: 'Novo · ' + schema.label,
+      schema: schema,
+      initial: prefill || {},
+      onSave: function(data){
+        addItem(collection, data);
+        toast(schema.label + ' adicionado.');
+        renderApp();
+      }
+    });
+  }
+  function openEditModal(collection, item){
+    var schema = SCHEMAS[collection];
+    openModal({
+      title: 'Editar · ' + schema.label,
+      schema: schema,
+      initial: item,
+      onSave: function(data){
+        updateItem(collection, item.id, data);
+        toast('Alterações salvas.');
+        renderApp();
+      },
+      onDelete: function(){
+        deleteItem(collection, item.id);
+        toast(schema.label + ' excluído.');
+        renderApp();
+      }
+    });
+  }
+
+  /* ---------------------------------------------------------
+     Render: navegação de abas
+  --------------------------------------------------------- */
+  function renderTabsNav(){
+    var nav = document.getElementById('tabsNav');
+    nav.innerHTML = '';
+    TABS.forEach(function(t){
+      var btn = el('button', {class:'tab-btn'+(state.tab===t.id?' active':'')}, [
+        document.createTextNode(t.icon+' '+t.label)
+      ]);
+      btn.addEventListener('click', function(){ state.tab = t.id; renderApp(); });
+      nav.appendChild(btn);
+    });
+  }
+
+  /* ---------------------------------------------------------
+     Render: aba Calendário (Posts / Stories)
+  --------------------------------------------------------- */
+  function renderCalendarTab(container, collection){
+    var schema = SCHEMAS[collection];
+    var calState = state.cal[collection];
+    var items = state.data[collection];
+
+    container.appendChild(el('div', {class:'panel-header'}, [
+      el('div', {}, [
+        text('div', 'panel-title', schema.label + 's'),
+        text('div', 'panel-sub', collection==='posts' ? 'Calendário de posts do feed' : 'Calendário de stories')
+      ]),
+      (function(){
+        var b = el('button', {class:'btn-primary'}, [text('span',null,'+ Novo '+schema.label)]);
+        b.addEventListener('click', function(){ openAddModal(collection, {date: calState.viewDate}); });
+        return b;
+      })()
+    ]));
+
+    // Toolbar: modo + navegação
+    var toolbar = el('div', {class:'cal-toolbar'});
+    var modes = el('div', {class:'cal-modes'});
+    ['month','week'].forEach(function(m){
+      var b = el('button', {class:'btn-secondary'+(calState.mode===m?' active':'')}, [text('span',null, m==='month'?'Mês':'Semana')]);
+      b.addEventListener('click', function(){ calState.mode=m; renderApp(); });
+      modes.appendChild(b);
+    });
+
+    var nav = el('div', {class:'cal-nav'});
+    var prevBtn = el('button', {class:'btn-secondary'}, [text('span',null,'‹')]);
+    var todayBtn = el('button', {class:'btn-secondary'}, [text('span',null,'Hoje')]);
+    var nextBtn = el('button', {class:'btn-secondary'}, [text('span',null,'›')]);
+    var viewD = fromISO(calState.viewDate);
+    var label = calState.mode==='month'
+      ? MONTHS[viewD.getMonth()] + ' de ' + viewD.getFullYear()
+      : (function(){
+          var start = startOfWeekMonday(viewD), end = addDays(start,6);
+          return 'Semana de ' + fmtShort(start) + ' a ' + fmtShort(end);
+        })();
+
+    prevBtn.addEventListener('click', function(){
+      var d = fromISO(calState.viewDate);
+      if(calState.mode==='month') d.setMonth(d.getMonth()-1); else d = addDays(d,-7);
+      calState.viewDate = toISO(d); renderApp();
+    });
+    nextBtn.addEventListener('click', function(){
+      var d = fromISO(calState.viewDate);
+      if(calState.mode==='month') d.setMonth(d.getMonth()+1); else d = addDays(d,7);
+      calState.viewDate = toISO(d); renderApp();
+    });
+    todayBtn.addEventListener('click', function(){ calState.viewDate = todayISO(); renderApp(); });
+
+    nav.appendChild(prevBtn);
+    nav.appendChild(todayBtn);
+    nav.appendChild(nextBtn);
+    nav.appendChild(text('div','cal-label',label));
+
+    toolbar.appendChild(nav);
+    toolbar.appendChild(modes);
+    container.appendChild(toolbar);
+
+    var scrollWrap = el('div', {class:'cal-scroll'});
+
+    if(calState.mode==='month'){
+      var grid = el('div', {class:'cal-grid-month'});
+      WEEKDAYS.forEach(function(w){ grid.appendChild(text('div','cal-weekday',w)); });
+      var gridStart = startOfMonthGrid(viewD);
+      var todayStr = todayISO();
+      for(var i=0;i<42;i++){
+        var cellDate = addDays(gridStart,i);
+        var cellISO = toISO(cellDate);
+        var inMonth = cellDate.getMonth()===viewD.getMonth();
+        var cell = el('div', {class:'cal-cell'+(inMonth?'':' other-month')+(cellISO===todayStr?' is-today':'')});
+        var head = el('div', {class:'cal-cell-head'}, [text('div','cal-daynum',String(cellDate.getDate()))]);
+        var addBtn = el('button', {class:'cal-add', title:'Adicionar'}, [document.createTextNode('+')]);
+        addBtn.addEventListener('click', function(iso){ return function(){ openAddModal(collection, {date: iso}); }; }(cellISO));
+        head.appendChild(addBtn);
+        cell.appendChild(head);
+
+        var dayItems = items.filter(function(it){ return it.date===cellISO; });
+        dayItems.slice(0,3).forEach(function(it){
+          var chip = el('button', {class:'cal-chip'}, [document.createTextNode(it.tema || it.titulo || it.referencia || it.texto || '(sem título)')]);
+          chip.addEventListener('click', function(item){ return function(){ openEditModal(collection, item); }; }(it));
+          cell.appendChild(chip);
+        });
+        if(dayItems.length>3) cell.appendChild(text('div','cal-more', '+ '+(dayItems.length-3)+' mais'));
+
+        grid.appendChild(cell);
+      }
+      scrollWrap.appendChild(grid);
+    } else {
+      var wgrid = el('div', {class:'cal-grid-week'});
+      var wStart = startOfWeekMonday(viewD);
+      var todayStr2 = todayISO();
+      for(var j=0;j<7;j++){
+        var d = addDays(wStart,j);
+        var dISO = toISO(d);
+        var col = el('div', {class:'cal-week-col'+(dISO===todayStr2?' is-today':'')});
+        col.appendChild(el('div', {class:'cal-week-head'}, [
+          document.createTextNode(WEEKDAYS[j]),
+          text('span',null,fmtShort(d))
+        ]));
+        var dItems = items.filter(function(it){ return it.date===dISO; });
+        dItems.forEach(function(it){
+          var row = el('div', {class:'cal-week-item'});
+          row.appendChild(text('div','wi-title', it.tema || it.titulo || it.referencia || (it.texto||'').slice(0,40) || '(sem título)'));
+          var metaParts = [];
+          if(it.plataforma) metaParts.push(it.plataforma);
+          if(it.status) metaParts.push(it.status);
+          row.appendChild(text('div','wi-meta', metaParts.join(' · ')));
+          row.addEventListener('click', function(item){ return function(){ openEditModal(collection, item); }; }(it));
+          col.appendChild(row);
+        });
+        var wAdd = el('button', {class:'cal-week-add'}, [document.createTextNode('+ novo')]);
+        wAdd.addEventListener('click', function(iso){ return function(){ openAddModal(collection, {date: iso}); }; }(dISO));
+        col.appendChild(wAdd);
+        wgrid.appendChild(col);
+      }
+      scrollWrap.appendChild(wgrid);
+    }
+
+    container.appendChild(scrollWrap);
+
+    // Próximos
+    var upcoming = items.filter(function(it){ return it.date >= todayISO(); })
+      .sort(function(a,b){ return a.date<b.date?-1:1; }).slice(0,5);
+    if(upcoming.length){
+      var up = el('div', {class:'upcoming'});
+      up.appendChild(text('h3',null,'Próximos'));
+      upcoming.forEach(function(it){
+        var row = el('div', {class:'upcoming-row'});
+        row.appendChild(text('div','upcoming-date', fmtShort(fromISO(it.date))));
+        row.appendChild(document.createTextNode(it.tema || it.titulo || '(sem título)'));
+        if(it.status){ var b=text('span','badge '+(STATUS_COLOR[it.status]||'badge-gray'),it.status); b.style.marginLeft='auto'; row.appendChild(b); }
+        row.addEventListener('click', function(item){ return function(){ openEditModal(collection, item); }; }(it));
+        up.appendChild(row);
+      });
+      container.appendChild(up);
+    }
+  }
+
+  /* ---------------------------------------------------------
+     Render: lista genérica (Teses, Pautas, Formatos, Reposts, Ganchos)
+  --------------------------------------------------------- */
+  function renderListTab(container, collection, opts){
+    opts = opts || {};
+    var schema = SCHEMAS[collection];
+    var items = state.data[collection].slice();
+
+    if(!opts.hideHeader){
+      container.appendChild(el('div', {class:'panel-header'}, [
+        el('div', {}, [
+          text('div', 'panel-title', opts.title || (schema.label + 's')),
+          opts.subtitle ? text('div', 'panel-sub', opts.subtitle) : document.createTextNode('')
+        ]),
+        (function(){
+          var b = el('button', {class:'btn-primary'}, [text('span',null,'+ Novo '+schema.label)]);
+          b.addEventListener('click', function(){ openAddModal(collection); });
+          return b;
+        })()
+      ]));
+    } else {
+      var miniHeader = el('div', {style:'display:flex;justify-content:flex-end;margin-bottom:12px;'});
+      var b2 = el('button', {class:'btn-primary'}, [text('span',null,'+ Novo '+schema.label)]);
+      b2.addEventListener('click', function(){ openAddModal(collection); });
+      miniHeader.appendChild(b2);
+      container.appendChild(miniHeader);
+    }
+
+    var toolbar = el('div', {class:'toolbar'});
+    if(opts.search){
+      var input = el('input', {class:'search-input', id:'searchInput', type:'text', placeholder:opts.search.placeholder});
+      input.value = opts.search.get();
+      input.addEventListener('input', function(){
+        var pos = input.selectionStart;
+        opts.search.set(input.value);
+        renderApp();
+        var newInput = document.getElementById('searchInput');
+        if(newInput){
+          newInput.focus();
+          try{ newInput.setSelectionRange(pos,pos); }catch(e){}
+        }
+      });
+      toolbar.appendChild(input);
+    }
+    if(opts.filter){
+      var pills = el('div', {class:'filter-pills'});
+      opts.filter.options.forEach(function(o){
+        var b = el('button', {class:'btn-secondary'+(opts.filter.get()===o?' active':'')}, [text('span',null,o)]);
+        b.addEventListener('click', function(){ opts.filter.set(o); renderApp(); });
+        pills.appendChild(b);
+      });
+      toolbar.appendChild(pills);
+    }
+    if(toolbar.children.length) container.appendChild(toolbar);
+
+    if(opts.search){
+      var q = opts.search.get().toLowerCase().trim();
+      if(q){
+        items = items.filter(function(it){
+          return Object.keys(it).some(function(k){ return (''+it[k]).toLowerCase().indexOf(q)>-1; });
+        });
+      }
+    }
+    if(opts.filter && opts.filter.get() !== opts.filter.options[0]){
+      var fval = opts.filter.get();
+      items = items.filter(function(it){ return it[opts.filter.key]===fval || (fval==='Ambos' && it[opts.filter.key]==='Ambos'); });
+    }
+
+    var list = el('div', {class:'card-list'});
+    if(!items.length){
+      list.appendChild(el('div', {class:'empty-state'}, [document.createTextNode('Nada por aqui ainda. Clique em "+ Novo '+schema.label+'" para começar.')]));
+    } else {
+      items.forEach(function(it){
+        var card = el('div', {class:'card'});
+        var top = el('div', {class:'card-top'});
+        var left = el('div', {});
+        var titleText = it.titulo || it.referencia || (it.texto ? it.texto.slice(0,70) : '(sem título)');
+        left.appendChild(text('div','card-title', titleText));
+        var metaParts = [];
+        if(it.area) metaParts.push(it.area);
+        if(it.plataforma) metaParts.push(it.plataforma);
+        if(it.tags) metaParts.push(it.tags);
+        if(metaParts.length) left.appendChild(text('div','card-meta', metaParts.join(' · ')));
+        top.appendChild(left);
+
+        var right = el('div', {style:'display:flex;align-items:center;gap:8px;'});
+        if(it.status) right.appendChild(text('span','badge '+(STATUS_COLOR[it.status]||'badge-gray'), it.status));
+        if(it.tipo) right.appendChild(text('span','badge badge-blue', it.tipo));
+        var editBtn = el('button', {class:'btn-icon', title:'Editar'}, [document.createTextNode('✎')]);
+        editBtn.addEventListener('click', function(item){ return function(){ openEditModal(collection, item); }; }(it));
+        right.appendChild(editBtn);
+        top.appendChild(right);
+        card.appendChild(top);
+
+        var bodyText = it.texto || it.roteiro || it.conteudo || it.descricao || it.specs || '';
+        if(bodyText && it.titulo){ // evita duplicar quando o título já é o próprio texto (ganchos)
+          card.appendChild(text('div','card-body', bodyText.length>220 ? bodyText.slice(0,220)+'…' : bodyText));
+        } else if(bodyText && !it.titulo){
+          // já mostrado como título (ex: ganchos usam texto como título)
+        }
+
+        if(collection==='reposts'){
+          var extra = el('div', {style:'margin-top:8px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;'});
+          if(it.link) extra.appendChild(el('a', {href:it.link, target:'_blank', rel:'noopener', style:'font-size:12.5px;'}, [document.createTextNode('Abrir vídeo original ↗')]));
+          var toggleBtn = el('button', {class:'btn-secondary', style:'font-size:12px;padding:5px 10px;'}, [
+            document.createTextNode(it.status==='Repostado' ? 'Marcar como pendente' : 'Marcar como repostado')
+          ]);
+          toggleBtn.addEventListener('click', function(item){ return function(){
+            var copy = Object.assign({}, item);
+            copy.status = copy.status==='Repostado' ? 'Pendente' : 'Repostado';
+            updateItem('reposts', item.id, copy);
+            renderApp();
+          }; }(it));
+          extra.appendChild(toggleBtn);
+          card.appendChild(extra);
+        }
+
+        list.appendChild(card);
+      });
+    }
+    container.appendChild(list);
+  }
+
+  // ganchos: texto funciona como título do card
+  function renderGanchosTab(container){
+    container.appendChild(el('div', {class:'panel-header'}, [
+      el('div', {}, [
+        text('div', 'panel-title', 'Ganchos'),
+        text('div', 'panel-sub', 'Ideias de gancho para vídeos mudos e falados')
+      ]),
+      (function(){
+        var b = el('button', {class:'btn-primary'}, [text('span',null,'+ Novo Gancho')]);
+        b.addEventListener('click', function(){ openAddModal('ganchos'); });
+        return b;
+      })()
+    ]));
+
+    var pills = el('div', {class:'filter-pills', style:'margin-bottom:14px;'});
+    ['Todos','Mudo','Falado','Ambos'].forEach(function(o){
+      var b = el('button', {class:'btn-secondary'+(state.ganchoFilter===o?' active':'')}, [text('span',null,o)]);
+      b.addEventListener('click', function(){ state.ganchoFilter=o; renderApp(); });
+      pills.appendChild(b);
+    });
+    container.appendChild(pills);
+
+    var items = state.data.ganchos.slice();
+    if(state.ganchoFilter!=='Todos') items = items.filter(function(it){ return it.tipo===state.ganchoFilter; });
+
+    var list = el('div', {class:'card-list'});
+    if(!items.length){
+      list.appendChild(el('div', {class:'empty-state'}, [document.createTextNode('Nenhum gancho por aqui ainda.')]));
+    } else {
+      items.forEach(function(it){
+        var card = el('div', {class:'card'});
+        var top = el('div', {class:'card-top'});
+        top.appendChild(text('div','card-title', it.texto));
+        var right = el('div', {style:'display:flex;align-items:center;gap:8px;'});
+        right.appendChild(text('span','badge badge-blue', it.tipo));
+        var editBtn = el('button', {class:'btn-icon', title:'Editar'}, [document.createTextNode('✎')]);
+        editBtn.addEventListener('click', function(item){ return function(){ openEditModal('ganchos', item); }; }(it));
+        right.appendChild(editBtn);
+        top.appendChild(right);
+        card.appendChild(top);
+        list.appendChild(card);
+      });
+    }
+    container.appendChild(list);
+  }
+
+  function renderFormatosTab(container){
+    container.appendChild(el('div', {class:'panel-header'}, [
+      el('div', {}, [
+        text('div', 'panel-title', 'Formatos'),
+        text('div', 'panel-sub', 'O que você usa todo dia: legendas, tipos de conteúdo e specs de vídeo')
+      ])
+    ]));
+    var sub = el('div', {class:'subtabs'});
+    [
+      {id:'formatosLegenda', label:'Modelos de legenda'},
+      {id:'formatosConteudo', label:'Tipos de conteúdo'},
+      {id:'formatosVideo', label:'Specs de vídeo'}
+    ].forEach(function(s){
+      var b = el('button', {class:'btn-secondary'+(state.formatosSub===s.id?' active':'')}, [text('span',null,s.label)]);
+      b.addEventListener('click', function(){ state.formatosSub=s.id; renderApp(); });
+      sub.appendChild(b);
+    });
+    container.appendChild(sub);
+
+    var inner = el('div', {});
+    renderListTab(inner, state.formatosSub, {hideHeader:true});
+    container.appendChild(inner);
+  }
+
+  function renderTudoQueSeiTab(container){
+    container.appendChild(el('div', {class:'panel-header'}, [
+      el('div', {}, [
+        text('div', 'panel-title', 'Tudo que sei'),
+        text('div', 'panel-sub', 'Base do curso para advogados: cronograma das aulas e todo o material de apoio')
+      ])
+    ]));
+    var sub = el('div', {class:'subtabs'});
+    TQS_SUBTABS.forEach(function(s){
+      var b = el('button', {class:'btn-secondary'+(state.tqsSub===s.id?' active':'')}, [text('span',null,s.label)]);
+      b.addEventListener('click', function(){ state.tqsSub=s.id; renderApp(); });
+      sub.appendChild(b);
+    });
+    container.appendChild(sub);
+
+    var inner = el('div', {});
+    renderListTab(inner, state.tqsSub, {hideHeader:true});
+    container.appendChild(inner);
+  }
+
+  /* ---------------------------------------------------------
+     Render principal
+  --------------------------------------------------------- */
+  function renderApp(){
+    renderTabsNav();
+    var app = document.getElementById('app');
+    app.innerHTML = '';
+
+    if(state.tab==='posts'){
+      renderCalendarTab(app, 'posts');
+    } else if(state.tab==='stories'){
+      renderCalendarTab(app, 'stories');
+    } else if(state.tab==='teses'){
+      renderListTab(app, 'teses', {
+        subtitle:'Base de teses recorrentes do escritório',
+        search:{ placeholder:'Buscar por título, área ou tag…', get:function(){return state.teseSearch;}, set:function(v){state.teseSearch=v;} }
+      });
+    } else if(state.tab==='pautas'){
+      renderListTab(app, 'pautas', {
+        subtitle:'Pautas a gravar e roteiros completos',
+        search:{ placeholder:'Buscar pauta…', get:function(){return state.pautaSearch;}, set:function(v){state.pautaSearch=v;} }
+      });
+    } else if(state.tab==='formatos'){
+      renderFormatosTab(app);
+    } else if(state.tab==='reposts'){
+      renderListTab(app, 'reposts', {
+        subtitle:'Vídeos antigos para repostar',
+        filter:{ key:'status', options:['Todos','Pendente','Repostado'], get:function(){return state.repostFilter;}, set:function(v){state.repostFilter=v;} }
+      });
+    } else if(state.tab==='ganchos'){
+      renderGanchosTab(app);
+    } else if(state.tab==='tudoquesei'){
+      renderTudoQueSeiTab(app);
+    }
+  }
+
+  /* ---------------------------------------------------------
+     Export / Import
+  --------------------------------------------------------- */
+  document.getElementById('btnExport').addEventListener('click', function(){
+    var blob = new Blob([JSON.stringify(state.data, null, 2)], {type:'application/json'});
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    var d = new Date();
+    a.href = url;
+    a.download = 'central-conteudo-backup-'+toISO(d)+'.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    toast('Backup exportado.');
+  });
+
+  document.getElementById('btnImport').addEventListener('click', function(){
+    document.getElementById('fileImport').click();
+  });
+  document.getElementById('fileImport').addEventListener('change', function(e){
+    var file = e.target.files[0];
+    if(!file) return;
+    var reader = new FileReader();
+    reader.onload = function(){
+      try{
+        var parsed = JSON.parse(reader.result);
+        if(!confirm('Importar este backup vai substituir os dados atuais salvos neste navegador. Continuar?')) return;
+        state.data = Object.assign(defaultData(), parsed);
+        var d = defaultData();
+        Object.keys(d).forEach(function(k){ if(!state.data[k]) state.data[k]=[]; });
+        saveState();
+        renderApp();
+        toast('Backup importado com sucesso.');
+      }catch(err){
+        alert('Não foi possível ler este arquivo. Verifique se é um backup exportado por este site.');
+      }
+    };
+    reader.readAsText(file);
+    e.target.value = '';
+  });
+
+  /* ---------------------------------------------------------
+     Início
+  --------------------------------------------------------- */
+  loadState();
+  renderApp();
+})();
+</script>
+</body>
+</html>
