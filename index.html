@@ -196,6 +196,14 @@
   .sync-status-box{background:#f6f6f3;border-radius:8px;padding:10px 12px;margin-bottom:14px;font-size:13px;font-weight:600;}
   .sync-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;}
 
+  .tabsettings-list{display:flex;flex-direction:column;gap:6px;max-height:44vh;overflow-y:auto;margin:4px 0 16px;}
+  .tabsettings-row{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:8px;background:#f6f6f3;}
+  .tabsettings-row .tsr-icon{font-size:15px;width:20px;text-align:center;flex-shrink:0;}
+  .tabsettings-row .tsr-label{flex:1;font-size:13.5px;font-weight:600;}
+  .tabsettings-row .tsr-actions{display:flex;gap:2px;flex-shrink:0;}
+  .tabsettings-add{display:flex;gap:8px;margin-top:4px;}
+  .tabsettings-add input{flex:1;border:1px solid var(--border);border-radius:8px;padding:9px 10px;font-size:13.5px;font-family:inherit;background:#fdfdfc;}
+
   @media (max-width:880px){
     .sidebar{position:fixed;left:0;top:0;transform:translateX(-100%);transition:transform .2s ease;box-shadow:var(--shadow-md);}
     .sidebar.open{transform:translateX(0);}
@@ -228,6 +236,7 @@
     <nav class="sidebar-nav" id="tabsNav"></nav>
     <div class="sidebar-footer">
       <span class="sync-line" id="syncLine"></span>
+      <button class="btn-ghost" id="btnTabSettings">⚙ Configurar abas</button>
       <button class="btn-ghost" id="btnSync">🔒 Sincronização</button>
       <button class="btn-ghost" id="btnExport">⬇ Exportar backup</button>
       <button class="btn-ghost" id="btnImport">⬆ Importar backup</button>
@@ -311,7 +320,14 @@
       tsCasinha: [{id:uid(), titulo:'[Exemplo] Organização da casinha', texto:'Anotações sobre como organizar isso.'}],
       tsDicas: [{id:uid(), titulo:'[Exemplo] Dica diária', texto:'Ideia de dica rápida para postar no dia a dia.'}],
       tsJusfy: [{id:uid(), titulo:'[Exemplo] Jusfy / Jubrasil', texto:'Anotações sobre uso do Jusfy e do Jusbrasil.'}],
-      tsOferta: [{id:uid(), titulo:'[Exemplo] Minha oferta', texto:'Descreva aqui sua oferta principal: o que inclui, para quem é, preço, bônus.'}]
+      tsOferta: [{id:uid(), titulo:'[Exemplo] Minha oferta', texto:'Descreva aqui sua oferta principal: o que inclui, para quem é, preço, bônus.'}],
+      customTabs: [
+        {id:'ideiasPosts', label:'Ideias de posts', icon:'💡'},
+        {id:'ideiasStories', label:'Ideias de stories', icon:'💡'}
+      ],
+      tabLabelOverrides: {},
+      ideiasPosts: [{id:uid(), titulo:'[Exemplo] Ideia de post', texto:'Anote aqui ideias soltas de posts para desenvolver depois, antes de virarem um post de verdade no calendário.'}],
+      ideiasStories: [{id:uid(), titulo:'[Exemplo] Ideia de story', texto:'Anote aqui ideias soltas de stories para desenvolver depois.'}]
     };
   }
 
@@ -544,6 +560,106 @@
   }
 
   /* ---------------------------------------------------------
+     Configurar abas (criar novas abas de ideias / renomear abas)
+  --------------------------------------------------------- */
+  function openTabSettingsModal(){
+    modalBox.innerHTML = '';
+    modalBox.classList.add('sync-modal');
+    var wrap = el('div', {});
+    wrap.appendChild(text('h2', null, '⚙ Configurar abas'));
+    wrap.appendChild(el('p', {class:'help-text'}, [document.createTextNode(
+      'Renomeie qualquer aba do menu clicando em ✎, ou crie novas abas de ideias (título + descrição) que aparecem no menu lateral e na Visão Geral.'
+    )]));
+
+    var listBox = el('div', {class:'tabsettings-list'});
+    wrap.appendChild(listBox);
+
+    function renderList(){
+      listBox.innerHTML = '';
+      allTabs().forEach(function(t){
+        var isCustom = !!getCustomTab(t.id);
+        var row = el('div', {class:'tabsettings-row'});
+        row.appendChild(el('span', {class:'tsr-icon'}, [document.createTextNode(t.icon)]));
+        row.appendChild(text('span', 'tsr-label', getTabLabel(t)));
+
+        var actions = el('div', {class:'tsr-actions'});
+        var editBtn = el('button', {type:'button', class:'btn-icon', title:'Renomear aba'}, [document.createTextNode('✎')]);
+        editBtn.addEventListener('click', function(){
+          var atual = getTabLabel(t);
+          var novo = prompt('Novo nome para esta aba:', atual);
+          if(novo===null) return;
+          novo = novo.trim();
+          if(!novo){ toast('O nome não pode ficar vazio.'); return; }
+          if(isCustom){
+            getCustomTab(t.id).label = novo;
+          } else {
+            state.data.tabLabelOverrides = state.data.tabLabelOverrides || {};
+            state.data.tabLabelOverrides[t.id] = novo;
+          }
+          saveState();
+          renderList();
+          renderApp();
+          toast('Aba renomeada.');
+        });
+        actions.appendChild(editBtn);
+
+        if(isCustom){
+          var delBtn = el('button', {type:'button', class:'btn-icon', title:'Excluir aba'}, [document.createTextNode('🗑')]);
+          delBtn.addEventListener('click', function(){
+            if(!confirm('Excluir a aba "'+getTabLabel(t)+'"? Todo o conteúdo salvo nela também será apagado.')) return;
+            state.data.customTabs = (state.data.customTabs||[]).filter(function(c){ return c.id!==t.id; });
+            delete state.data[t.id];
+            if(state.data.tabLabelOverrides) delete state.data.tabLabelOverrides[t.id];
+            if(state.tab===t.id) state.tab = 'visaogeral';
+            saveState();
+            renderList();
+            renderApp();
+            toast('Aba excluída.');
+          });
+          actions.appendChild(delBtn);
+        }
+        row.appendChild(actions);
+        listBox.appendChild(row);
+      });
+    }
+    renderList();
+
+    var addRow = el('div', {class:'tabsettings-add'});
+    var addInput = document.createElement('input');
+    addInput.type = 'text';
+    addInput.placeholder = 'Nome da nova aba (ex: Ideias de anúncios)';
+    addRow.appendChild(addInput);
+    var addBtn = el('button', {type:'button', class:'btn-primary'}, [text('span',null,'+ Adicionar')]);
+    function addTab(){
+      var label = addInput.value.trim();
+      if(!label){ toast('Digite um nome para a nova aba.'); return; }
+      var id = 'custom_' + uid();
+      state.data.customTabs = state.data.customTabs || [];
+      state.data.customTabs.push({id:id, label:label, icon:'💡'});
+      state.data[id] = [];
+      saveState();
+      addInput.value = '';
+      renderList();
+      renderApp();
+      toast('Aba "'+label+'" criada.');
+    }
+    addBtn.addEventListener('click', addTab);
+    addInput.addEventListener('keydown', function(e){ if(e.key==='Enter'){ e.preventDefault(); addTab(); } });
+    addRow.appendChild(addBtn);
+    wrap.appendChild(addRow);
+
+    var closeRow = el('div', {class:'modal-actions'});
+    var closeBtn = el('button', {type:'button', class:'btn-secondary'}, [text('span',null,'Fechar')]);
+    closeBtn.addEventListener('click', closeModal);
+    closeRow.appendChild(document.createElement('div'));
+    closeRow.appendChild(closeBtn);
+    wrap.appendChild(closeRow);
+
+    modalBox.appendChild(wrap);
+    modalOverlay.classList.add('open');
+  }
+
+  /* ---------------------------------------------------------
      Esquemas das abas
   --------------------------------------------------------- */
   var STATUS_COLOR = {
@@ -676,6 +792,35 @@
     {id:'tsJusfy', label:'Jusfy e Jubrasil'},
     {id:'tsOferta', label:'⭐ Minha Oferta'}
   ];
+
+  /* ---------------------------------------------------------
+     Abas configuráveis (criadas pelo usuário em "Configurar abas")
+  --------------------------------------------------------- */
+  // Esquema usado pelas abas personalizadas de ideias (título + descrição)
+  function customIdeaSchema(){
+    return {
+      label:'Ideia', plural:'ideias',
+      fields:[
+        {key:'titulo', label:'Título', type:'text', required:true},
+        {key:'texto', label:'Descrição', type:'textarea', big:true}
+      ]
+    };
+  }
+  function getCustomTab(id){
+    return (state.data.customTabs||[]).find(function(t){ return t.id===id; });
+  }
+  // Retorna o esquema certo tanto para as coleções fixas quanto para abas criadas pelo usuário
+  function getSchema(collection){
+    return SCHEMAS[collection] || customIdeaSchema();
+  }
+  // Nome de exibição de uma aba, já considerando renomeações salvas
+  function getTabLabel(t){
+    var ov = (state.data.tabLabelOverrides||{})[t.id];
+    return ov || t.label;
+  }
+  function allTabs(){
+    return TABS.concat(state.data.customTabs||[]);
+  }
 
   /* ---------------------------------------------------------
      Helpers de DOM
@@ -826,7 +971,7 @@
   }
 
   function openAddModal(collection, prefill){
-    var schema = SCHEMAS[collection];
+    var schema = getSchema(collection);
     openModal({
       title: 'Novo · ' + schema.label,
       schema: schema,
@@ -839,7 +984,7 @@
     });
   }
   function openEditModal(collection, item){
-    var schema = SCHEMAS[collection];
+    var schema = getSchema(collection);
     openModal({
       title: 'Editar · ' + schema.label,
       schema: schema,
@@ -863,9 +1008,9 @@
   function renderTabsNav(){
     var nav = document.getElementById('tabsNav');
     nav.innerHTML = '';
-    TABS.forEach(function(t){
+    allTabs().forEach(function(t){
       var btn = el('button', {class:'tab-btn'+(state.tab===t.id?' active':'')}, [
-        document.createTextNode(t.icon+' '+t.label)
+        document.createTextNode(t.icon+' '+getTabLabel(t))
       ]);
       btn.addEventListener('click', function(){ state.tab = t.id; renderApp(); });
       nav.appendChild(btn);
@@ -876,7 +1021,7 @@
      Modal de agenda do dia (mostra tudo que tem naquele dia)
   --------------------------------------------------------- */
   function openDayAgendaModal(collection, dateISO){
-    var schema = SCHEMAS[collection];
+    var schema = getSchema(collection);
     var items = state.data[collection].filter(function(it){ return it.date===dateISO; });
     modalBox.innerHTML = '';
     modalBox.classList.add('agenda-modal');
@@ -1064,7 +1209,7 @@
   --------------------------------------------------------- */
   function renderListTab(container, collection, opts){
     opts = opts || {};
-    var schema = SCHEMAS[collection];
+    var schema = getSchema(collection);
     var items = state.data[collection].slice();
 
     if(!opts.hideHeader){
@@ -1293,16 +1438,21 @@
     var tqsKeys = ['cronogramaAulas','tsVendas','tsReels','tsDeverCasa','tsParcerias','tsStories','tsCasinha','tsDicas','tsJusfy','tsOferta'];
     var tqsTotal = tqsKeys.reduce(function(sum,k){ return sum + (state.data[k]||[]).length; }, 0);
 
+    function L(id, fallback){ var t=TABS.find(function(x){ return x.id===id; }); return t?getTabLabel(t):fallback; }
+
     var cards = [
-      {id:'posts', icon:'📅', label:'Posts', total:(state.data.posts||[]).length, sub:'no calendário'},
-      {id:'stories', icon:'📱', label:'Stories', total:(state.data.stories||[]).length, sub:'no calendário'},
-      {id:'teses', icon:'⚖️', label:'Teses', total:(state.data.teses||[]).length, sub:'cadastradas'},
-      {id:'pautas', icon:'🎬', label:'Pautas & Roteiros', total:(state.data.pautas||[]).length, sub:'na lista'},
-      {id:'formatos', icon:'🧩', label:'Formatos', total:formatosTotal, sub:'modelos salvos'},
-      {id:'reposts', icon:'🔁', label:'Reposts', total:(state.data.reposts||[]).length, sub:repostsPendentes+' pendente'+(repostsPendentes===1?'':'s')},
-      {id:'ganchos', icon:'🪝', label:'Ganchos', total:(state.data.ganchos||[]).length, sub:'salvos'},
-      {id:'tudoquesei', icon:'🧠', label:'Tudo que sei', total:tqsTotal, sub:'anotações'}
+      {id:'posts', icon:'📅', label:L('posts','Posts'), total:(state.data.posts||[]).length, sub:'no calendário'},
+      {id:'stories', icon:'📱', label:L('stories','Stories'), total:(state.data.stories||[]).length, sub:'no calendário'},
+      {id:'teses', icon:'⚖️', label:L('teses','Teses'), total:(state.data.teses||[]).length, sub:'cadastradas'},
+      {id:'pautas', icon:'🎬', label:L('pautas','Pautas & Roteiros'), total:(state.data.pautas||[]).length, sub:'na lista'},
+      {id:'formatos', icon:'🧩', label:L('formatos','Formatos'), total:formatosTotal, sub:'modelos salvos'},
+      {id:'reposts', icon:'🔁', label:L('reposts','Reposts'), total:(state.data.reposts||[]).length, sub:repostsPendentes+' pendente'+(repostsPendentes===1?'':'s')},
+      {id:'ganchos', icon:'🪝', label:L('ganchos','Ganchos'), total:(state.data.ganchos||[]).length, sub:'salvos'},
+      {id:'tudoquesei', icon:'🧠', label:L('tudoquesei','Tudo que sei'), total:tqsTotal, sub:'anotações'}
     ];
+    (state.data.customTabs||[]).forEach(function(ct){
+      cards.push({id:ct.id, icon:ct.icon||'💡', label:getTabLabel(ct), total:(state.data[ct.id]||[]).length, sub:'ideias'});
+    });
     cards.forEach(function(c){
       var card = el('div', {class:'dash-card'});
       card.appendChild(el('h3', {}, [el('span', {class:'dash-icon'}, [document.createTextNode(c.icon)]), document.createTextNode(' '+c.label)]));
@@ -1349,6 +1499,18 @@
       renderGanchosTab(app);
     } else if(state.tab==='tudoquesei'){
       renderTudoQueSeiTab(app);
+    } else {
+      var customTab = getCustomTab(state.tab);
+      if(customTab){
+        if(!state.data[customTab.id]) state.data[customTab.id] = [];
+        renderListTab(app, customTab.id, {
+          subtitle:'Anote ideias soltas aqui. Edite ou apague quando quiser — o nome desta aba pode ser trocado em "Configurar abas".'
+        });
+      } else {
+        // aba desconhecida (ex: foi excluída em outro aparelho) — volta pra Visão Geral
+        state.tab = 'visaogeral';
+        renderVisaoGeralTab(app);
+      }
     }
     closeSidebarMobile();
   }
@@ -1383,6 +1545,7 @@
     toast('Backup exportado.');
   });
 
+  document.getElementById('btnTabSettings').addEventListener('click', openTabSettingsModal);
   document.getElementById('btnSync').addEventListener('click', openSyncModal);
 
   document.getElementById('btnImport').addEventListener('click', function(){
