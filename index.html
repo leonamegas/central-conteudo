@@ -21,7 +21,7 @@
     --sidebar-bg-hover:rgba(255,255,255,.07);
     --sidebar-text:#c7ccd6;
     --sidebar-text-dim:#7d8494;
-    --sidebar-w: 276px;
+    --sidebar-w: 300px;
     --radius:10px;
     --radius-lg:18px;
     --shadow:0 1px 2px rgba(20,20,15,.05), 0 4px 14px rgba(20,20,15,.04);
@@ -43,67 +43,67 @@
   .app-shell{display:flex;min-height:100vh;align-items:stretch;}
 
   .sidebar{width:var(--sidebar-w);flex-shrink:0;background:var(--sidebar-bg);color:var(--sidebar-text);display:flex;flex-direction:column;position:sticky;top:0;height:100vh;z-index:30;}
-  .sidebar-brand{display:flex;flex-direction:column;gap:8px;padding:19px 19px 17px;border-bottom:1px solid rgba(255,255,255,.08);}
-  .brand-row{display:flex;align-items:center;gap:8px;}
-  .brand-logo-chip{background:#fff;border-radius:10px;padding:11px 14.5px;flex:1;min-width:0;display:flex;align-items:center;}
+  .sidebar-brand{display:flex;flex-direction:column;gap:9px;padding: 24.5px 24.5px 22px;border-bottom:1px solid rgba(255,255,255,.08);}
+  .brand-row{display:flex;align-items:center;gap:9px;}
+  .brand-logo-chip{background:#fff;border-radius:10px;padding: 14.5px 19px;flex:1;min-width:0;display:flex;align-items:center;}
   .brand-logo-img{width:100%;height:auto;display:block;}
-  .sidebar-brand .brand-sub{font-size:12.5px;color:var(--sidebar-text-dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-left:2px;}
-  .sidebar-close-btn{display:none;margin-left:auto;background:transparent;border:none;color:var(--sidebar-text-dim);font-size:20.5px;cursor:pointer;padding:4px 6px;line-height:1;}
+  .sidebar-brand .brand-sub{font-size:16px;color:var(--sidebar-text-dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-left:2px;}
+  .sidebar-close-btn{display:none;margin-left:auto;background:transparent;border:none;color:var(--sidebar-text-dim);font-size:26px;cursor:pointer;padding: 5px 8px;line-height:1;}
 
-  .sidebar-nav{flex:1;overflow-y:auto;padding:12px 10px;display:flex;flex-direction:column;gap:2px;}
+  .sidebar-nav{flex:1;overflow-y:auto;padding: 15.5px 13px;display:flex;flex-direction:column;gap:2.5px;}
 
   .sidebar-backdrop{display:none;position:fixed;inset:0;background:rgba(15,13,10,.45);z-index:25;}
   .sidebar-backdrop.show{display:block;}
 
-  .sidebar-footer{padding:14.5px 12px 19px;border-top:1px solid rgba(255,255,255,.08);display:flex;flex-direction:column;gap:6px;}
-  .sidebar-footer .sync-line{color:var(--sidebar-text-dim);font-size:13px;text-align:center;padding-bottom:4px;cursor:pointer;}
+  .sidebar-footer{padding: 19px 15.5px 24.5px;border-top:1px solid rgba(255,255,255,.08);display:flex;flex-direction:column;gap:7px;}
+  .sidebar-footer .sync-line{color:var(--sidebar-text-dim);font-size:16.5px;text-align:center;padding-bottom:4px;cursor:pointer;}
   .sidebar-footer .sync-line:hover{color:#fff;}
-  .sidebar-footer .btn-ghost{width:100%;justify-content:center;background:rgba(255,255,255,.06);color:var(--sidebar-text);border:1px solid rgba(255,255,255,.14);border-radius:8px;padding:9.5px 14.5px;font-size:14.5px;display:flex;align-items:center;gap:6px;}
+  .sidebar-footer .btn-ghost{width:100%;justify-content:center;background:rgba(255,255,255,.06);color:var(--sidebar-text);border:1px solid rgba(255,255,255,.14);border-radius:8px;padding: 12.5px 19px;font-size:18.5px;display:flex;align-items:center;gap:7px;}
   .sidebar-footer .btn-ghost:hover{background:rgba(255,255,255,.12);color:#fff;}
 
   .app-main{flex:1;min-width:0;display:flex;flex-direction:column;}
-  .topbar{display:none;background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:15;align-items:center;padding:12px 14px;}
-  .sidebar-toggle-btn{display:flex;background:transparent;border:1px solid var(--border);border-radius:8px;width:34px;height:34px;align-items:center;justify-content:center;cursor:pointer;font-size:18.5px;}
+  .topbar{display:none;background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:15;align-items:center;padding: 15.5px 18px;}
+  .sidebar-toggle-btn{display:flex;background:transparent;border:1px solid var(--border);border-radius:8px;width:34px;height:34px;align-items:center;justify-content:center;cursor:pointer;font-size:23.5px;}
 
-  main{max-width:1180px;margin:0 auto;padding:22px 20px 50px;width:100%;}
+  main{max-width:1180px;margin:0 auto;padding: 28.5px 26px 65px;width:100%;}
 
   /* ===== Sidebar nav links (repurposed .tab-btn) ===== */
-  .tab-btn{padding:11px 12px;border:1px solid transparent;border-radius:9px;cursor:pointer;color:var(--sidebar-text);font-size:15px;white-space:nowrap;background:transparent;display:flex;align-items:center;gap:9px;font-family:inherit;width:100%;text-align:left;}
+  .tab-btn{padding: 14.5px 15.5px;border:1px solid transparent;border-radius:9px;cursor:pointer;color:var(--sidebar-text);font-size:19px;white-space:nowrap;background:transparent;display:flex;align-items:center;gap:10.5px;font-family:inherit;width:100%;text-align:left;}
   .tab-btn:hover{background:var(--sidebar-bg-hover);color:#fff;}
   .tab-btn.active{background:var(--primary);color:#fff;font-weight:600;}
 
-  .panel-header{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
-  .panel-title{font-size:22px;font-weight:600;}
-  .panel-sub{color:var(--muted);font-size:15px;margin-top:2px;}
-  .panel-sub-wrap{display:flex;align-items:center;gap:5px;}
-  .panel-sub-edit{opacity:.45;font-size:12px;padding:2px 5px;}
+  .panel-header{display:flex;align-items:center;justify-content:space-between;gap:11.5px;flex-wrap:wrap;margin-bottom:14px;}
+  .panel-title{font-size:28px;font-weight:600;}
+  .panel-sub{color:var(--muted);font-size:19px;margin-top:2px;}
+  .panel-sub-wrap{display:flex;align-items:center;gap:6px;}
+  .panel-sub-edit{opacity:.45;font-size:15.5px;padding: 2.5px 6.5px;}
   .panel-sub-edit:hover{opacity:1;}
 
-  .btn-primary{background:var(--primary);color:#fff;border:none;border-radius:8px;padding:11px 18px;font-size:15.5px;font-weight:500;}
+  .btn-primary{background:var(--primary);color:#fff;border:none;border-radius:8px;padding: 14.5px 23.5px;font-size:20px;font-weight:500;}
   .btn-primary:hover{background:var(--primary-light);}
-  .btn-secondary{background:var(--surface);color:var(--text);border:1px solid var(--border);border-radius:8px;padding:9.5px 15.5px;font-size:15px;}
+  .btn-secondary{background:var(--surface);color:var(--text);border:1px solid var(--border);border-radius:8px;padding: 12.5px 20px;font-size:19px;}
   .btn-secondary:hover{border-color:#c8c6bd;background:#fbfaf7;}
   .btn-secondary.active{background:var(--primary);color:#fff;border-color:var(--primary);}
-  .btn-icon{background:none;border:none;color:var(--muted);font-size:16px;padding:5px 7px;border-radius:6px;}
+  .btn-icon{background:none;border:none;color:var(--muted);font-size:20.5px;padding: 6.5px 9px;border-radius:6px;}
   .btn-icon:hover{background:#f1efe9;color:var(--text);}
 
-  .toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:14px;}
-  .search-input{border:1px solid var(--border);border-radius:8px;padding:9.5px 13px;font-size:15.5px;min-width:220px;flex:1;background:var(--surface);}
+  .toolbar{display:flex;gap:9px;flex-wrap:wrap;align-items:center;margin-bottom:14px;}
+  .search-input{border:1px solid var(--border);border-radius:8px;padding: 12.5px 17px;font-size:20px;min-width:220px;flex:1;background:var(--surface);}
   .search-input:focus{outline:2px solid var(--primary-light);outline-offset:-1px;}
 
-  .filter-pills{display:flex;gap:6px;flex-wrap:wrap;}
+  .filter-pills{display:flex;gap:7px;flex-wrap:wrap;}
 
   /* Cards / list */
-  .card-list{display:flex;flex-direction:column;gap:10px;}
-  .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:15.5px 18px;box-shadow:var(--shadow);}
-  .card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;}
-  .card-title{font-size:16.5px;font-weight:600;}
-  .card-meta{font-size:14.5px;color:var(--muted);margin-top:3px;}
-  .card-body{font-size:15.5px;color:#3c403a;margin-top:8px;white-space:pre-wrap;}
-  .card-actions{display:flex;gap:4px;flex-shrink:0;}
-  .empty-state{color:var(--muted);font-size:15.5px;text-align:center;padding:40px 10px;border:1px dashed var(--border);border-radius:var(--radius);background:var(--surface);}
+  .card-list{display:flex;flex-direction:column;gap:11.5px;}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding: 20px 23.5px;box-shadow:var(--shadow);}
+  .card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:11.5px;}
+  .card-title{font-size:21px;font-weight:600;}
+  .card-meta{font-size:18.5px;color:var(--muted);margin-top:3px;}
+  .card-body{font-size:20px;color:#3c403a;margin-top:8px;white-space:pre-wrap;}
+  .card-actions{display:flex;gap:4.5px;flex-shrink:0;}
+  .empty-state{color:var(--muted);font-size:20px;text-align:center;padding: 52px 13px;border:1px dashed var(--border);border-radius:var(--radius);background:var(--surface);}
 
-  .badge{display:inline-block;font-size:12.5px;font-weight:600;padding:3.5px 9.5px;border-radius:99px;white-space:nowrap;}
+  .badge{display:inline-block;font-size:16px;font-weight:600;padding: 4.5px 12.5px;border-radius:99px;white-space:nowrap;}
   .badge-gray{background:#eceae4;color:#5c5f58;}
   .badge-blue{background:#e2ecf5;color:#2a5b83;}
   .badge-purple{background:#ece3f5;color:#5c3d8a;}
@@ -113,114 +113,120 @@
   .badge-red{background:#f6dedb;color:#a13c2f;}
 
   /* ===== Visão Geral: greeting banner + KPI cards ===== */
-  .dash-greeting{background:linear-gradient(135deg, #2563eb 0%, #0f1729 130%);color:#fff;border-radius:var(--radius-lg);padding:31px 33.5px;margin-bottom:20px;position:relative;overflow:hidden;}
+  .dash-greeting{background:linear-gradient(135deg, #2563eb 0%, #0f1729 130%);color:#fff;border-radius:var(--radius-lg);padding: 40.5px 43.5px;margin-bottom:20px;position:relative;overflow:hidden;}
   .dash-greeting::after{content:"";position:absolute;right:-60px;top:-60px;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,.06);}
-  .dash-greeting .dg-date{font-size:14px;opacity:.85;text-transform:capitalize;margin-bottom:8px;position:relative;}
-  .dash-greeting h2{margin:0 0 4px;font-size:26.5px;font-weight:700;position:relative;}
-  .dash-greeting p{margin:0;opacity:.88;font-size:15px;position:relative;}
+  .dash-greeting .dg-date{font-size:18px;opacity:.85;text-transform:capitalize;margin-bottom:8px;position:relative;}
+  .dash-greeting h2{margin:0 0 4px;font-size:34px;font-weight:700;position:relative;}
+  .dash-greeting p{margin:0;opacity:.88;font-size:19px;position:relative;}
 
-  .dash-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;}
-  .dash-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:19px;cursor:pointer;transition:box-shadow .15s, transform .15s;box-shadow:var(--shadow);}
+  .dash-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;}
+  .dash-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding: 24.5px;cursor:pointer;transition:box-shadow .15s, transform .15s;box-shadow:var(--shadow);}
   .dash-card:hover{box-shadow:var(--shadow-md);transform:translateY(-1px);}
-  .dash-card h3{margin:0 0 12px;font-size:15px;font-weight:600;color:var(--muted);display:flex;align-items:center;gap:9px;}
-  .dash-icon{width:30px;height:30px;border-radius:9px;background:var(--primary-soft);color:var(--primary);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
-  .dash-total{font-size:26.5px;font-weight:700;color:var(--text);}
-  .dash-sub{font-size:14px;color:var(--muted);margin-top:4px;}
+  .dash-card h3{margin:0 0 12px;font-size:19px;font-weight:600;color:var(--muted);display:flex;align-items:center;gap:10.5px;}
+  .dash-icon{width:30px;height:30px;border-radius:9px;background:var(--primary-soft);color:var(--primary);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+  .dash-total{font-size:34px;font-weight:700;color:var(--text);}
+  .dash-sub{font-size:18px;color:var(--muted);margin-top:4px;}
 
   /* Calendar */
-  .cal-toolbar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px;}
-  .cal-nav{display:flex;align-items:center;gap:6px;}
-  .cal-label{font-size:16.5px;font-weight:600;min-width:150px;text-align:center;}
-  .cal-modes{display:flex;gap:6px;}
+  .cal-toolbar{display:flex;justify-content:space-between;align-items:center;gap:11.5px;flex-wrap:wrap;margin-bottom:12px;}
+  .cal-nav{display:flex;align-items:center;gap:7px;}
+  .cal-label{font-size:21px;font-weight:600;min-width:150px;text-align:center;}
+  .cal-modes{display:flex;gap:7px;}
   .cal-scroll{overflow-x:auto;padding-bottom:4px;}
-  .cal-grid-month{display:grid;grid-template-columns:repeat(7,minmax(140px,1fr));gap:8px;min-width:980px;}
-  .cal-weekday{font-size:14px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.03em;padding:2px 4px;}
-  .cal-cell{background:var(--surface);border:1px solid var(--border);border-radius:10px;min-height:150px;padding:9.5px;display:flex;flex-direction:column;gap:5px;cursor:pointer;}
+  .cal-grid-month{display:grid;grid-template-columns:repeat(7,minmax(140px,1fr));gap:9px;min-width:980px;}
+  .cal-weekday{font-size:18px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.03em;padding: 2.5px 5px;}
+  .cal-cell{background:var(--surface);border:1px solid var(--border);border-radius:10px;min-height:150px;padding: 12.5px;display:flex;flex-direction:column;gap:6px;cursor:pointer;}
   .cal-cell:hover{background:#f9f8f5;}
   .cal-cell.other-month{opacity:.4;}
   .cal-cell.is-today{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset;}
   .cal-cell-head{display:flex;justify-content:space-between;align-items:center;}
-  .cal-daynum{font-size:15px;font-weight:600;color:var(--muted);}
-  .cal-add{background:none;border:none;color:var(--muted);font-size:16px;line-height:1;padding:0 3px;}
+  .cal-daynum{font-size:19px;font-weight:600;color:var(--muted);}
+  .cal-add{background:none;border:none;color:var(--muted);font-size:20.5px;line-height:1;padding:0 3px;}
   .cal-add:hover{color:var(--primary);}
-  .cal-chip{font-size:13px;padding:5px 8.5px;border-radius:6px;background:#eceae4;color:#3c403a;cursor:pointer;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:left;border:none;width:100%;}
+  .cal-chip{font-size:16.5px;padding: 6.5px 11px;border-radius:6px;background:#eceae4;color:#3c403a;cursor:pointer;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:left;border:none;width:100%;}
   .cal-chip:hover{filter:brightness(0.96);}
-  .cal-more{font-size:12.5px;color:var(--muted);padding-left:2px;font-weight:600;}
+  .cal-more{font-size:16px;color:var(--muted);padding-left:2px;font-weight:600;}
 
-  .cal-grid-week{display:grid;grid-template-columns:repeat(7,minmax(170px,1fr));gap:8px;min-width:1160px;}
-  .cal-week-col{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:9.5px;display:flex;flex-direction:column;gap:6px;min-height:440px;cursor:pointer;}
+  .cal-grid-week{display:grid;grid-template-columns:repeat(7,minmax(170px,1fr));gap:9px;min-width:1160px;}
+  .cal-week-col{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding: 12.5px;display:flex;flex-direction:column;gap:7px;min-height:440px;cursor:pointer;}
   .cal-week-col:hover{background:#f9f8f5;}
   .cal-week-col.is-today{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset;}
-  .cal-week-head{font-size:14px;font-weight:700;color:var(--text);border-bottom:1px solid var(--border);padding-bottom:6px;}
-  .cal-week-head span{display:block;font-weight:400;color:var(--muted);font-size:12.5px;}
-  .cal-week-item{background:#f6f6f3;border-radius:6px;padding:6px 7px;font-size:14px;cursor:pointer;}
+  .cal-week-head{font-size:18px;font-weight:700;color:var(--text);border-bottom:1px solid var(--border);padding-bottom:6px;}
+  .cal-week-head span{display:block;font-weight:400;color:var(--muted);font-size:16px;}
+  .cal-week-item{background:#f6f6f3;border-radius:6px;padding: 8px 9px;font-size:18px;cursor:pointer;}
   .cal-week-item:hover{background:#eeece6;}
   .cal-week-item .wi-title{font-weight:600;}
-  .cal-week-item .wi-meta{color:var(--muted);font-size:12px;margin-top:2px;}
+  .cal-week-item .wi-meta{color:var(--muted);font-size:15.5px;margin-top:2px;}
 
   .agenda-wrap .panel-sub{margin-bottom:10px;}
-  .agenda-list{display:flex;flex-direction:column;gap:6px;max-height:50vh;overflow-y:auto;margin:10px 0 16px;}
-  .agenda-row{display:flex;align-items:center;gap:10px;padding:11px 9.5px;border-radius:8px;background:#f6f6f3;cursor:pointer;}
+  .agenda-list{display:flex;flex-direction:column;gap:7px;max-height:50vh;overflow-y:auto;margin:10px 0 16px;}
+  .agenda-row{display:flex;align-items:center;gap:11.5px;padding: 14.5px 12.5px;border-radius:8px;background:#f6f6f3;cursor:pointer;}
   .agenda-row:hover{background:#eeece6;}
-  .agenda-title{font-size:15px;font-weight:600;flex:1;}
-  .agenda-empty{color:var(--muted);font-size:15px;padding:10px 4px;}
-  .cal-week-add{margin-top:auto;background:none;border:1px dashed var(--border);border-radius:6px;color:var(--muted);font-size:14px;padding:5px;}
+  .agenda-title{font-size:19px;font-weight:600;flex:1;}
+  .agenda-empty{color:var(--muted);font-size:19px;padding: 13px 5px;}
+  .cal-week-add{margin-top:auto;background:none;border:1px dashed var(--border);border-radius:6px;color:var(--muted);font-size:18px;padding: 6.5px;}
   .cal-week-add:hover{color:var(--primary);border-color:var(--primary-light);}
 
   .upcoming{margin-top:22px;}
-  .upcoming h3{font-size:15.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.03em;margin-bottom:8px;font-weight:700;}
-  .upcoming-row{display:flex;align-items:center;gap:10px;padding:9.5px 12px;background:var(--surface);border:1px solid var(--border);border-radius:8px;margin-bottom:6px;cursor:pointer;font-size:15px;}
+  .upcoming h3{font-size:20px;color:var(--muted);text-transform:uppercase;letter-spacing:.03em;margin-bottom:8px;font-weight:700;}
+  .upcoming-row{display:flex;align-items:center;gap:11.5px;padding: 12.5px 15.5px;background:var(--surface);border:1px solid var(--border);border-radius:8px;margin-bottom:6px;cursor:pointer;font-size:19px;}
   .upcoming-row:hover{border-color:#c8c6bd;}
-  .upcoming-date{font-weight:700;color:var(--primary);min-width:44px;font-size:14.5px;}
+  .upcoming-date{font-weight:700;color:var(--primary);min-width:44px;font-size:18.5px;}
 
   /* Sub tabs (Formatos) */
-  .subtabs{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap;}
+  .subtabs{display:flex;gap:7px;margin-bottom:16px;flex-wrap:wrap;}
 
   /* Modal */
-  .modal-overlay{position:fixed;inset:0;background:rgba(20,22,18,.45);display:none;align-items:flex-start;justify-content:center;z-index:50;padding:26px 14px;overflow-y:auto;}
+  .modal-overlay{position:fixed;inset:0;background:rgba(20,22,18,.45);display:none;align-items:flex-start;justify-content:center;z-index:50;padding: 34px 18px;overflow-y:auto;}
   .modal-overlay.open{display:flex;}
-  .modal{background:var(--surface);border-radius:12px;max-width:520px;width:100%;padding:24px;box-shadow:0 10px 40px rgba(0,0,0,.2);}
-  .modal h2{font-size:18.5px;margin-bottom:14px;}
+  .modal{background:var(--surface);border-radius:12px;max-width:520px;width:100%;padding: 31px;box-shadow:0 10px 40px rgba(0,0,0,.2);}
+  .modal h2{font-size:23.5px;margin-bottom:14px;}
   .field{margin-bottom:12px;}
-  .field label{display:block;font-size:14.5px;font-weight:600;color:var(--muted);margin-bottom:4px;}
+  .field label{display:block;font-size:18.5px;font-weight:600;color:var(--muted);margin-bottom:4px;}
   .field input[type=text],.field input[type=date],.field input[type=url],.field select,.field textarea{
-    width:100%;border:1px solid var(--border);border-radius:8px;padding:9px 10px;font-size:15.5px;font-family:inherit;background:#fdfdfc;
+    width:100%;border:1px solid var(--border);border-radius:8px;padding: 11.5px 13px;font-size:20px;font-family:inherit;background:#fdfdfc;
   }
   .field textarea{resize:vertical;min-height:80px;}
   .field input:focus,.field select:focus,.field textarea:focus{outline:2px solid var(--primary-light);outline-offset:-1px;}
-  .modal-actions{display:flex;justify-content:space-between;align-items:center;margin-top:16px;gap:10px;}
+  .modal-actions{display:flex;justify-content:space-between;align-items:center;margin-top:16px;gap:11.5px;}
 
-  .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--primary);color:#fff;padding:10px 18px;border-radius:8px;font-size:15px;box-shadow:var(--shadow);opacity:0;pointer-events:none;transition:all .25s ease;z-index:60;}
+  .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--primary);color:#fff;padding: 13px 23.5px;border-radius:8px;font-size:19px;box-shadow:var(--shadow);opacity:0;pointer-events:none;transition:all .25s ease;z-index:60;}
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 
-  .hint-banner{font-size:14px;color:var(--sidebar-text-dim);margin-top:6px;}
+  .hint-banner{font-size:18px;color:var(--sidebar-text-dim);margin-top:6px;}
 
-  .sync-modal .help-text{font-size:14.5px;color:var(--muted);line-height:1.5;margin:0 0 14px;}
-  .sync-status-box{background:#f6f6f3;border-radius:8px;padding:10px 12px;margin-bottom:14px;font-size:15px;font-weight:600;}
-  .sync-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;}
+  .sync-modal .help-text{font-size:18.5px;color:var(--muted);line-height:1.5;margin:0 0 14px;}
+  .sync-status-box{background:#f6f6f3;border-radius:8px;padding: 13px 15.5px;margin-bottom:14px;font-size:19px;font-weight:600;}
+  .sync-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:10px;}
 
-  .tabsettings-list{display:flex;flex-direction:column;gap:6px;max-height:44vh;overflow-y:auto;margin:4px 0 16px;}
-  .tabsettings-row{display:flex;align-items:center;gap:9px;padding:9.5px 12px;border-radius:8px;background:#f6f6f3;}
-  .tabsettings-row .tsr-icon{font-size:17px;width:20px;text-align:center;flex-shrink:0;}
-  .tabsettings-row .tsr-icon-btn{font-size:17px;width:28px;height:28px;text-align:center;flex-shrink:0;background:none;border:1px solid transparent;border-radius:6px;cursor:pointer;padding:0;}
-  .tabsettings-row .tsr-icon-btn:hover{background:#eeece6;border-color:var(--border);}
-  .tabsettings-row .tsr-label{flex:1;font-size:15.5px;font-weight:600;}
-  .tabsettings-row .tsr-actions{display:flex;gap:2px;flex-shrink:0;}
-  .tabsettings-add{display:flex;gap:8px;margin-top:4px;}
-  .tabsettings-add input{flex:1;border:1px solid var(--border);border-radius:8px;padding:11px 12px;font-size:15.5px;font-family:inherit;background:#fdfdfc;}
+  .tabsettings-list{display:flex;flex-direction:column;gap:7px;max-height:44vh;overflow-y:auto;margin:4px 0 16px;}
+  .tabsettings-row{display:flex;align-items:center;gap:10.5px;padding: 12.5px 15.5px;border-radius:8px;background:#f6f6f3;}
+  .tabsettings-row .tsr-icon{font-size:22px;width:20px;text-align:center;flex-shrink:0;}
+  .tabsettings-row .tsr-icon-btn{font-size:22px;width:40px;height:40px;text-align:center;flex-shrink:0;background:none;border:1px solid var(--border);border-radius:8px;cursor:pointer;padding:0;}
+  .tabsettings-row .tsr-icon-btn:hover{background:#eeece6;}
+  .tabsettings-row .tsr-label{flex:1;font-size:20px;font-weight:600;}
+  .tsr-parent-hint{font-size:14px;font-weight:400;color:var(--text-muted, #8a8577);}
+  .tabsettings-row .tsr-actions{display:flex;gap:2.5px;flex-shrink:0;}
+  .tabsettings-add{display:flex;gap:9px;margin-top:4px;}
+  .tabsettings-add input{flex:1;border:1px solid var(--border);border-radius:8px;padding: 14.5px 15.5px;font-size:20px;font-family:inherit;background:#fdfdfc;}
+  .emoji-pick-btn{border:1px solid var(--border);background:var(--surface);cursor:pointer;border-radius:8px;font-size:20.5px;width:40px;height:40px;flex-shrink:0;line-height:1;}
+  .emoji-pick-btn:hover{background:#eeece6;}
+  .emoji-popup{position:fixed;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow-md);padding:10px;z-index:300;display:grid;grid-template-columns:repeat(8,32px);gap:3px;max-width:280px;max-height:230px;overflow-y:auto;}
+  .emoji-popup button{border:none;background:transparent;cursor:pointer;font-size:22px;padding:4px;border-radius:6px;line-height:1.3;}
+  .emoji-popup button:hover{background:#eeece6;}
 
   @media (max-width:880px){
     .sidebar{position:fixed;left:0;top:0;transform:translateX(-100%);transition:transform .2s ease;box-shadow:var(--shadow-md);}
     .sidebar.open{transform:translateX(0);}
     .sidebar-close-btn{display:block;}
     .topbar{display:flex;}
-    main{padding:16px 14px 40px;}
+    main{padding: 21px 18px 52px;}
   }
 
   @media (max-width:640px){
     .cal-label{min-width:auto;}
     .modal{max-width:100%;border-radius:10px 10px 0 0;}
-    .dash-greeting{padding:24px;}
+    .dash-greeting{padding: 31px;}
   }
 </style>
 </head>
@@ -569,6 +575,57 @@
   }
 
   /* ---------------------------------------------------------
+     Seletor de emoji (mesmo componente do painel do escritório)
+  --------------------------------------------------------- */
+  var EMOJI_CHOICES = [
+    "💡","📌","📝","🗂️","📋","📁","🧠","🎯","⭐","🔥","✅","📊",
+    "📅","📷","🎬","🎙️","📣","💬","🔁","🪝","🧩","⚡","🚀","🏷️",
+    "👥","🤝","💼","🏢","🏦","⚖️","💰","💳","🧾","📈","📞","✉️",
+    "🔍","🔒","🔑","📎","🗓️","🎓","🛡️","🌱","❤️","👍","🎉","📱"
+  ];
+  var _emojiPopupEl = null;
+  function closeEmojiPicker(){
+    if(_emojiPopupEl){ _emojiPopupEl.remove(); _emojiPopupEl = null; }
+    document.removeEventListener('mousedown', _emojiPopupOutsideHandler, true);
+    document.removeEventListener('keydown', _emojiPopupEscHandler, true);
+  }
+  function _emojiPopupOutsideHandler(e){
+    if(_emojiPopupEl && !_emojiPopupEl.contains(e.target)) closeEmojiPicker();
+  }
+  function _emojiPopupEscHandler(e){
+    if(e.key === 'Escape') closeEmojiPicker();
+  }
+  function openEmojiPicker(anchorEl, onPick){
+    closeEmojiPicker();
+    var pop = document.createElement('div');
+    pop.className = 'emoji-popup';
+    EMOJI_CHOICES.forEach(function(em){
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.textContent = em;
+      b.onclick = function(){ closeEmojiPicker(); onPick(em); };
+      pop.appendChild(b);
+    });
+    document.body.appendChild(pop);
+    var rect = anchorEl.getBoundingClientRect();
+    var popW = pop.offsetWidth || 280;
+    var popH = pop.offsetHeight || 230;
+    var top = rect.bottom + 4;
+    var left = rect.left;
+    if(left + popW > window.innerWidth - 8) left = window.innerWidth - popW - 8;
+    if(top + popH > window.innerHeight - 8) top = rect.top - popH - 4;
+    if(top < 8) top = 8;
+    if(left < 8) left = 8;
+    pop.style.top = top + 'px';
+    pop.style.left = left + 'px';
+    _emojiPopupEl = pop;
+    setTimeout(function(){
+      document.addEventListener('mousedown', _emojiPopupOutsideHandler, true);
+      document.addEventListener('keydown', _emojiPopupEscHandler, true);
+    }, 0);
+  }
+
+  /* ---------------------------------------------------------
      Configurar abas (criar novas abas de ideias / renomear abas)
   --------------------------------------------------------- */
   function openTabSettingsModal(){
@@ -590,26 +647,37 @@
         var row = el('div', {class:'tabsettings-row'});
         var iconBtn = el('button', {type:'button', class:'tsr-icon-btn', title:'Trocar emoji'}, [document.createTextNode(getTabIcon(t))]);
         iconBtn.addEventListener('click', function(){
-          var novo = prompt('Novo emoji para esta aba:', getTabIcon(t));
-          if(novo===null) return;
-          novo = novo.trim();
-          if(!novo){ toast('Escolha um emoji.'); return; }
-          novo = Array.from(novo)[0];
-          if(isCustom){
-            getCustomTab(t.id).icon = novo;
-          } else {
-            state.data.tabIconOverrides = state.data.tabIconOverrides || {};
-            state.data.tabIconOverrides[t.id] = novo;
-          }
-          saveState();
-          renderList();
-          renderApp();
-          toast('Emoji atualizado.');
+          openEmojiPicker(iconBtn, function(novo){
+            if(isCustom){
+              getCustomTab(t.id).icon = novo;
+            } else {
+              state.data.tabIconOverrides = state.data.tabIconOverrides || {};
+              state.data.tabIconOverrides[t.id] = novo;
+            }
+            saveState();
+            renderList();
+            renderApp();
+            toast('Emoji atualizado.');
+          });
         });
         row.appendChild(iconBtn);
-        row.appendChild(text('span', 'tsr-label', getTabLabel(t)));
+        var labelWrap = el('span', {class:'tsr-label'});
+        labelWrap.appendChild(document.createTextNode(getTabLabel(t)));
+        var parentId = getTabParent(t);
+        if(parentId){
+          var parentTabRef = findTabById(parentId);
+          labelWrap.appendChild(el('span', {class:'tsr-parent-hint'}, [document.createTextNode(
+            ' — dentro de ' + (parentTabRef ? getTabLabel(parentTabRef) : '?')
+          )]));
+        }
+        row.appendChild(labelWrap);
 
         var actions = el('div', {class:'tsr-actions'});
+        var moveIntoBtn = el('button', {type:'button', class:'btn-icon', title:'Mover para dentro de outra aba (virar subtópico)'}, [document.createTextNode('📂')]);
+        moveIntoBtn.addEventListener('click', function(){
+          openMoveIntoPicker(t.id, function(){ renderList(); renderApp(); });
+        });
+        actions.appendChild(moveIntoBtn);
         var editBtn = el('button', {type:'button', class:'btn-icon', title:'Renomear aba'}, [document.createTextNode('✎')]);
         editBtn.addEventListener('click', function(){
           var atual = getTabLabel(t);
@@ -653,6 +721,12 @@
     renderList();
 
     var addRow = el('div', {class:'tabsettings-add'});
+    var newTabIcon = '💡';
+    var iconPickBtn = el('button', {type:'button', class:'emoji-pick-btn', title:'Escolher emoji'}, [document.createTextNode(newTabIcon)]);
+    iconPickBtn.addEventListener('click', function(){
+      openEmojiPicker(iconPickBtn, function(em){ newTabIcon = em; iconPickBtn.textContent = em; });
+    });
+    addRow.appendChild(iconPickBtn);
     var addInput = document.createElement('input');
     addInput.type = 'text';
     addInput.placeholder = 'Nome da nova aba (ex: Ideias de anúncios)';
@@ -663,10 +737,12 @@
       if(!label){ toast('Digite um nome para a nova aba.'); return; }
       var id = 'custom_' + uid();
       state.data.customTabs = state.data.customTabs || [];
-      state.data.customTabs.push({id:id, label:label, icon:'💡'});
+      state.data.customTabs.push({id:id, label:label, icon:newTabIcon});
       state.data[id] = [];
       saveState();
       addInput.value = '';
+      newTabIcon = '💡';
+      iconPickBtn.textContent = newTabIcon;
       renderList();
       renderApp();
       toast('Aba "'+label+'" criada.');
@@ -683,6 +759,76 @@
     closeRow.appendChild(closeBtn);
     wrap.appendChild(closeRow);
 
+    modalBox.appendChild(wrap);
+    modalOverlay.classList.add('open');
+  }
+
+  // Modal: escolhe dentro de qual outra aba "childId" deve virar subtópico
+  // (ou tira ela de qualquer aba-pai, voltando pro menu principal). Acessível
+  // direto de "Configurar abas", então funciona mesmo que a aba-destino
+  // ainda não tenha nenhum subtópico (resolve o problema de "aba vazia").
+  function openMoveIntoPicker(childId, onDone){
+    var childTab = findTabById(childId);
+    modalBox.innerHTML = '';
+    modalBox.classList.add('sync-modal');
+    var wrap = el('div', {});
+    wrap.appendChild(text('h2', null, '📂 Mover "' + (childTab?getTabLabel(childTab):'') + '"'));
+    wrap.appendChild(el('p', {class:'help-text'}, [document.createTextNode(
+      'Escolha dentro de qual aba esta deve ficar como subtópico. Dá pra tirar de volta a qualquer momento.'
+    )]));
+    var listBox = el('div', {class:'tabsettings-list'});
+    var currentParent = getTabParent(childTab);
+    if(currentParent){
+      var noneRow = el('div', {class:'tabsettings-row'});
+      noneRow.appendChild(el('span', {class:'tsr-icon'}, [document.createTextNode('⬅')]));
+      noneRow.appendChild(text('span', 'tsr-label', 'Nenhuma — manter no menu principal'));
+      var noneBtn = el('button', {type:'button', class:'btn-secondary'}, [text('span',null,'Tirar do grupo')]);
+      noneBtn.addEventListener('click', function(){
+        setTabParent(childId, null);
+        saveState();
+        closeModal();
+        onDone();
+        toast('"'+getTabLabel(childTab)+'" voltou pro menu principal.');
+      });
+      noneRow.appendChild(noneBtn);
+      listBox.appendChild(noneRow);
+    }
+    var candidates = everyTab().filter(function(t){
+      if(t.id===childId) return false;
+      if(t.id==='visaogeral') return false;
+      if(t.id==='formatos' || t.id==='tudoquesei') return false;
+      if(t.id===currentParent) return false;
+      if(wouldCreateCycle(t.id, childId)) return false;
+      return true;
+    });
+    if(!candidates.length){
+      listBox.appendChild(el('div', {class:'empty-state'}, [document.createTextNode('Não há outras abas disponíveis pra usar como destino agora.')]));
+    } else {
+      candidates.forEach(function(t){
+        var row = el('div', {class:'tabsettings-row'});
+        row.appendChild(el('span', {class:'tsr-icon'}, [document.createTextNode(getTabIcon(t))]));
+        row.appendChild(text('span', 'tsr-label', getTabLabel(t)));
+        var moveBtn2 = el('button', {type:'button', class:'btn-secondary'}, [text('span',null,'Mover pra cá')]);
+        moveBtn2.addEventListener('click', function(){
+          setTabParent(childId, t.id);
+          saveState();
+          if(!state.groupSub) state.groupSub = {};
+          state.groupSub[t.id] = childId;
+          closeModal();
+          onDone();
+          toast('"'+getTabLabel(childTab)+'" agora é subtópico de "'+getTabLabel(t)+'".');
+        });
+        row.appendChild(moveBtn2);
+        listBox.appendChild(row);
+      });
+    }
+    wrap.appendChild(listBox);
+    var closeRow = el('div', {class:'modal-actions'});
+    var closeBtn = el('button', {type:'button', class:'btn-secondary'}, [text('span',null,'Fechar')]);
+    closeBtn.addEventListener('click', closeModal);
+    closeRow.appendChild(document.createElement('div'));
+    closeRow.appendChild(closeBtn);
+    wrap.appendChild(closeRow);
     modalBox.appendChild(wrap);
     modalOverlay.classList.add('open');
   }
@@ -940,13 +1086,49 @@
     var ov = (state.data.tabIconOverrides||{})[t.id];
     return ov || t.icon;
   }
-  // Abas de nível superior (menu lateral): exclui subtópicos (que têm "parent")
-  function allTabs(){
-    return TABS.concat((state.data.customTabs||[]).filter(function(t){ return !t.parent; }));
+  // Toda aba conhecida (fixas + criadas pelo usuário), num só array
+  function everyTab(){
+    return TABS.concat(state.data.customTabs||[]);
   }
-  // Subtópicos personalizados dentro de uma aba com sub-abas (ex: Formatos, Tudo que sei)
+  function findTabById(id){
+    return everyTab().filter(function(t){ return t.id===id; })[0] || null;
+  }
+  // De quem esta aba é subtópico agora (null = aba principal, aparece direto no menu)
+  function getTabParent(t){
+    if(!t) return null;
+    if(t.parent) return t.parent;
+    return (state.data.tabParentOverrides||{})[t.id] || null;
+  }
+  // Move (ou tira) uma aba de dentro de outra
+  function setTabParent(tabId, parentId){
+    var ct = getCustomTab(tabId);
+    if(ct){
+      if(parentId) ct.parent = parentId; else delete ct.parent;
+    }
+    state.data.tabParentOverrides = state.data.tabParentOverrides || {};
+    if(parentId) state.data.tabParentOverrides[tabId] = parentId;
+    else delete state.data.tabParentOverrides[tabId];
+  }
+  // Abas de nível superior (menu lateral): exclui as que viraram subtópico de outra
+  function allTabs(){
+    return everyTab().filter(function(t){ return !getTabParent(t); });
+  }
+  // Abas que estão dentro desta aba agora (sejam fixas ou criadas pelo usuário)
+  function childTabsOf(parentId){
+    return everyTab().filter(function(t){ return getTabParent(t)===parentId; });
+  }
+  // Verdadeiro se moveria "tabId" pra dentro de um descendente dele mesmo (looping)
+  function wouldCreateCycle(tabId, newParentId){
+    var cur = newParentId, guard = 0;
+    while(cur && guard++ < 50){
+      if(cur===tabId) return true;
+      cur = getTabParent(findTabById(cur));
+    }
+    return false;
+  }
+  // Mantido por compatibilidade: subtópicos personalizados dentro de uma aba (ex: Formatos)
   function subTabsOf(parentId){
-    return (state.data.customTabs||[]).filter(function(t){ return t.parent===parentId; });
+    return childTabsOf(parentId).filter(function(t){ return !!getCustomTab(t.id); });
   }
   // Nome de exibição de um valor de status, já considerando renomeações salvas
   function statusLabel(v){
@@ -1700,51 +1882,167 @@
   /* ---------------------------------------------------------
      Render principal
   --------------------------------------------------------- */
-  function renderApp(){
-    renderTabsNav();
-    var app = document.getElementById('app');
-    app.innerHTML = '';
-
-    if(state.tab==='visaogeral'){
-      renderVisaoGeralTab(app);
-    } else if(state.tab==='posts'){
-      renderCalendarTab(app, 'posts');
-    } else if(state.tab==='stories'){
-      renderCalendarTab(app, 'stories');
-    } else if(state.tab==='teses'){
-      renderListTab(app, 'teses', {
+  // Renderiza o conteúdo de UMA aba num container — usado tanto pela aba principal
+  // quanto (recursivamente) pelo conteúdo de subtópicos dentro de uma aba-grupo.
+  function renderTabContent(container, tabId){
+    // Formatos e Tudo que sei já têm seu próprio sistema de sub-abas (inclusive
+    // suportando subtópicos personalizados), então não entram no agrupamento genérico.
+    var groupChildren = (tabId==='formatos' || tabId==='tudoquesei') ? [] : childTabsOf(tabId);
+    if(groupChildren.length){
+      renderGroupTab(container, tabId, groupChildren);
+      return;
+    }
+    if(tabId==='visaogeral'){
+      renderVisaoGeralTab(container);
+    } else if(tabId==='posts'){
+      renderCalendarTab(container, 'posts');
+    } else if(tabId==='stories'){
+      renderCalendarTab(container, 'stories');
+    } else if(tabId==='teses'){
+      renderListTab(container, 'teses', {
         subtitle:'Base de teses recorrentes do escritório',
         search:{ placeholder:'Buscar por título, área ou tag…', get:function(){return state.teseSearch;}, set:function(v){state.teseSearch=v;} }
       });
-    } else if(state.tab==='pautas'){
-      renderListTab(app, 'pautas', {
+    } else if(tabId==='pautas'){
+      renderListTab(container, 'pautas', {
         subtitle:'Pautas a gravar e roteiros completos',
         search:{ placeholder:'Buscar pauta…', get:function(){return state.pautaSearch;}, set:function(v){state.pautaSearch=v;} }
       });
-    } else if(state.tab==='formatos'){
-      renderFormatosTab(app);
-    } else if(state.tab==='reposts'){
-      renderListTab(app, 'reposts', {
+    } else if(tabId==='formatos'){
+      renderFormatosTab(container);
+    } else if(tabId==='reposts'){
+      renderListTab(container, 'reposts', {
         subtitle:'Vídeos antigos para repostar',
         filter:{ key:'status', options:['Todos','Pendente','Repostado'], get:function(){return state.repostFilter;}, set:function(v){state.repostFilter=v;} }
       });
-    } else if(state.tab==='ganchos'){
-      renderGanchosTab(app);
-    } else if(state.tab==='tudoquesei'){
-      renderTudoQueSeiTab(app);
+    } else if(tabId==='ganchos'){
+      renderGanchosTab(container);
+    } else if(tabId==='tudoquesei'){
+      renderTudoQueSeiTab(container);
     } else {
-      var customTab = getCustomTab(state.tab);
+      var customTab = getCustomTab(tabId);
       if(customTab){
         if(!state.data[customTab.id]) state.data[customTab.id] = [];
-        renderListTab(app, customTab.id, {
+        renderListTab(container, customTab.id, {
           subtitle:'Anote ideias soltas aqui. Edite ou apague quando quiser — o nome desta aba pode ser trocado em "Configurar abas".'
         });
       } else {
         // aba desconhecida (ex: foi excluída em outro aparelho) — volta pra Visão Geral
         state.tab = 'visaogeral';
-        renderVisaoGeralTab(app);
+        renderVisaoGeralTab(container);
       }
     }
+  }
+
+  // Aba-grupo: organiza outras abas (fixas ou criadas por você) como subtópicos dela.
+  function renderGroupTab(container, parentId, children){
+    var parentTab = findTabById(parentId);
+    container.appendChild(el('div', {class:'panel-header'}, [
+      el('div', {}, [
+        text('div', 'panel-title', parentTab ? getTabLabel(parentTab) : 'Aba'),
+        editableSubtitle(parentId, 'Esta aba organiza os subtópicos abaixo — arraste outras abas pra cá em "+ Mover aba pra cá".')
+      ])
+    ]));
+
+    if(!state.groupSub) state.groupSub = {};
+    if(!state.groupSub[parentId] || !children.some(function(c){ return c.id===state.groupSub[parentId]; })){
+      state.groupSub[parentId] = children[0].id;
+    }
+    var currentId = state.groupSub[parentId];
+
+    var sub = el('div', {class:'subtabs'});
+    children.forEach(function(c){
+      var wrap = el('span', {style:'display:inline-flex;align-items:center;'});
+      var b = el('button', {class:'btn-secondary'+(currentId===c.id?' active':'')}, [text('span',null,getTabIcon(c)+' '+getTabLabel(c))]);
+      b.addEventListener('click', function(){ state.groupSub[parentId]=c.id; renderApp(); });
+      wrap.appendChild(b);
+      if(currentId===c.id){
+        var outBtn = el('button', {type:'button', class:'btn-icon', title:'Tirar desta aba (volta pro menu principal)'}, [document.createTextNode('⬅')]);
+        outBtn.addEventListener('click', function(){
+          setTabParent(c.id, null);
+          saveState();
+          state.tab = c.id;
+          renderApp();
+          toast('"'+getTabLabel(c)+'" voltou pro menu principal.');
+        });
+        wrap.appendChild(outBtn);
+        if(getCustomTab(c.id)){
+          var delBtn = el('button', {type:'button', class:'btn-icon', title:'Excluir esta aba', style:'color:var(--danger);'}, [document.createTextNode('🗑')]);
+          delBtn.addEventListener('click', function(){
+            if(!confirm('Excluir "'+getTabLabel(c)+'"? Todo o conteúdo salvo nela também será apagado.')) return;
+            state.data.customTabs = (state.data.customTabs||[]).filter(function(x){ return x.id!==c.id; });
+            delete state.data[c.id];
+            delete state.groupSub[parentId];
+            saveState();
+            renderApp();
+            toast('Aba excluída.');
+          });
+          wrap.appendChild(delBtn);
+        }
+      }
+      sub.appendChild(wrap);
+    });
+    var moveBtn = el('button', {type:'button', class:'btn-secondary', style:'border-style:dashed;'}, [text('span',null,'+ Mover aba pra cá')]);
+    moveBtn.addEventListener('click', function(){
+      openMoveTabPicker(parentId, function(newChildId){ state.groupSub[parentId] = newChildId; });
+    });
+    sub.appendChild(moveBtn);
+    container.appendChild(sub);
+
+    var inner = el('div', {});
+    renderTabContent(inner, currentId);
+    container.appendChild(inner);
+  }
+
+  // Modal simples: escolhe uma aba do menu principal pra virar subtópico de "parentId"
+  function openMoveTabPicker(parentId, onDone){
+    modalBox.innerHTML = '';
+    modalBox.classList.add('sync-modal');
+    var wrap = el('div', {});
+    wrap.appendChild(text('h2', null, '📂 Mover aba pra cá'));
+    wrap.appendChild(el('p', {class:'help-text'}, [document.createTextNode(
+      'Escolha uma aba do menu principal para transformar em subtópico desta aba. Dá pra tirar de volta a qualquer momento.'
+    )]));
+    var listBox = el('div', {class:'tabsettings-list'});
+    var candidates = allTabs().filter(function(t){
+      return t.id!==parentId && t.id!=='visaogeral' && !wouldCreateCycle(t.id, parentId);
+    });
+    if(!candidates.length){
+      listBox.appendChild(el('div', {class:'empty-state'}, [document.createTextNode('Não há outras abas disponíveis pra mover agora.')]));
+    } else {
+      candidates.forEach(function(t){
+        var row = el('div', {class:'tabsettings-row'});
+        row.appendChild(el('span', {class:'tsr-icon'}, [document.createTextNode(getTabIcon(t))]));
+        row.appendChild(text('span', 'tsr-label', getTabLabel(t)));
+        var moveBtn2 = el('button', {type:'button', class:'btn-secondary'}, [text('span',null,'Mover pra cá')]);
+        moveBtn2.addEventListener('click', function(){
+          setTabParent(t.id, parentId);
+          saveState();
+          closeModal();
+          onDone(t.id);
+          renderApp();
+          toast('"'+getTabLabel(t)+'" agora é subtópico.');
+        });
+        row.appendChild(moveBtn2);
+        listBox.appendChild(row);
+      });
+    }
+    wrap.appendChild(listBox);
+    var closeRow = el('div', {class:'modal-actions'});
+    var closeBtn = el('button', {type:'button', class:'btn-secondary'}, [text('span',null,'Fechar')]);
+    closeBtn.addEventListener('click', closeModal);
+    closeRow.appendChild(document.createElement('div'));
+    closeRow.appendChild(closeBtn);
+    wrap.appendChild(closeRow);
+    modalBox.appendChild(wrap);
+    modalOverlay.classList.add('open');
+  }
+
+  function renderApp(){
+    renderTabsNav();
+    var app = document.getElementById('app');
+    app.innerHTML = '';
+    renderTabContent(app, state.tab);
     closeSidebarMobile();
   }
 
