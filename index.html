@@ -21,7 +21,7 @@
     --sidebar-bg-hover:rgba(255,255,255,.07);
     --sidebar-text:#c7ccd6;
     --sidebar-text-dim:#7d8494;
-    --sidebar-w:244px;
+    --sidebar-w: 276px;
     --radius:10px;
     --radius-lg:18px;
     --shadow:0 1px 2px rgba(20,20,15,.05), 0 4px 14px rgba(20,20,15,.04);
@@ -43,64 +43,67 @@
   .app-shell{display:flex;min-height:100vh;align-items:stretch;}
 
   .sidebar{width:var(--sidebar-w);flex-shrink:0;background:var(--sidebar-bg);color:var(--sidebar-text);display:flex;flex-direction:column;position:sticky;top:0;height:100vh;z-index:30;}
-  .sidebar-brand{display:flex;flex-direction:column;gap:8px;padding:16px 16px 14px;border-bottom:1px solid rgba(255,255,255,.08);}
+  .sidebar-brand{display:flex;flex-direction:column;gap:8px;padding:19px 19px 17px;border-bottom:1px solid rgba(255,255,255,.08);}
   .brand-row{display:flex;align-items:center;gap:8px;}
-  .brand-logo-chip{background:#fff;border-radius:10px;padding:9px 12px;flex:1;min-width:0;display:flex;align-items:center;}
+  .brand-logo-chip{background:#fff;border-radius:10px;padding:11px 14.5px;flex:1;min-width:0;display:flex;align-items:center;}
   .brand-logo-img{width:100%;height:auto;display:block;}
-  .sidebar-brand .brand-sub{font-size:11px;color:var(--sidebar-text-dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-left:2px;}
-  .sidebar-close-btn{display:none;margin-left:auto;background:transparent;border:none;color:var(--sidebar-text-dim);font-size:18px;cursor:pointer;padding:4px 6px;line-height:1;}
+  .sidebar-brand .brand-sub{font-size:12.5px;color:var(--sidebar-text-dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-left:2px;}
+  .sidebar-close-btn{display:none;margin-left:auto;background:transparent;border:none;color:var(--sidebar-text-dim);font-size:20.5px;cursor:pointer;padding:4px 6px;line-height:1;}
 
   .sidebar-nav{flex:1;overflow-y:auto;padding:12px 10px;display:flex;flex-direction:column;gap:2px;}
 
   .sidebar-backdrop{display:none;position:fixed;inset:0;background:rgba(15,13,10,.45);z-index:25;}
   .sidebar-backdrop.show{display:block;}
 
-  .sidebar-footer{padding:12px 10px 16px;border-top:1px solid rgba(255,255,255,.08);display:flex;flex-direction:column;gap:6px;}
-  .sidebar-footer .sync-line{color:var(--sidebar-text-dim);font-size:11.5px;text-align:center;padding-bottom:4px;cursor:pointer;}
+  .sidebar-footer{padding:14.5px 12px 19px;border-top:1px solid rgba(255,255,255,.08);display:flex;flex-direction:column;gap:6px;}
+  .sidebar-footer .sync-line{color:var(--sidebar-text-dim);font-size:13px;text-align:center;padding-bottom:4px;cursor:pointer;}
   .sidebar-footer .sync-line:hover{color:#fff;}
-  .sidebar-footer .btn-ghost{width:100%;justify-content:center;background:rgba(255,255,255,.06);color:var(--sidebar-text);border:1px solid rgba(255,255,255,.14);border-radius:8px;padding:8px 12px;font-size:12.5px;display:flex;align-items:center;gap:6px;}
+  .sidebar-footer .btn-ghost{width:100%;justify-content:center;background:rgba(255,255,255,.06);color:var(--sidebar-text);border:1px solid rgba(255,255,255,.14);border-radius:8px;padding:9.5px 14.5px;font-size:14.5px;display:flex;align-items:center;gap:6px;}
   .sidebar-footer .btn-ghost:hover{background:rgba(255,255,255,.12);color:#fff;}
 
   .app-main{flex:1;min-width:0;display:flex;flex-direction:column;}
   .topbar{display:none;background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:15;align-items:center;padding:12px 14px;}
-  .sidebar-toggle-btn{display:flex;background:transparent;border:1px solid var(--border);border-radius:8px;width:34px;height:34px;align-items:center;justify-content:center;cursor:pointer;font-size:16px;}
+  .sidebar-toggle-btn{display:flex;background:transparent;border:1px solid var(--border);border-radius:8px;width:34px;height:34px;align-items:center;justify-content:center;cursor:pointer;font-size:18.5px;}
 
   main{max-width:1180px;margin:0 auto;padding:22px 20px 50px;width:100%;}
 
   /* ===== Sidebar nav links (repurposed .tab-btn) ===== */
-  .tab-btn{padding:9px 10px;border:1px solid transparent;border-radius:9px;cursor:pointer;color:var(--sidebar-text);font-size:13px;white-space:nowrap;background:transparent;display:flex;align-items:center;gap:9px;font-family:inherit;width:100%;text-align:left;}
+  .tab-btn{padding:11px 12px;border:1px solid transparent;border-radius:9px;cursor:pointer;color:var(--sidebar-text);font-size:15px;white-space:nowrap;background:transparent;display:flex;align-items:center;gap:9px;font-family:inherit;width:100%;text-align:left;}
   .tab-btn:hover{background:var(--sidebar-bg-hover);color:#fff;}
   .tab-btn.active{background:var(--primary);color:#fff;font-weight:600;}
 
   .panel-header{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
-  .panel-title{font-size:19px;font-weight:600;}
-  .panel-sub{color:var(--muted);font-size:13px;margin-top:2px;}
+  .panel-title{font-size:22px;font-weight:600;}
+  .panel-sub{color:var(--muted);font-size:15px;margin-top:2px;}
+  .panel-sub-wrap{display:flex;align-items:center;gap:5px;}
+  .panel-sub-edit{opacity:.45;font-size:12px;padding:2px 5px;}
+  .panel-sub-edit:hover{opacity:1;}
 
-  .btn-primary{background:var(--primary);color:#fff;border:none;border-radius:8px;padding:9px 15px;font-size:13.5px;font-weight:500;}
+  .btn-primary{background:var(--primary);color:#fff;border:none;border-radius:8px;padding:11px 18px;font-size:15.5px;font-weight:500;}
   .btn-primary:hover{background:var(--primary-light);}
-  .btn-secondary{background:var(--surface);color:var(--text);border:1px solid var(--border);border-radius:8px;padding:8px 13px;font-size:13px;}
+  .btn-secondary{background:var(--surface);color:var(--text);border:1px solid var(--border);border-radius:8px;padding:9.5px 15.5px;font-size:15px;}
   .btn-secondary:hover{border-color:#c8c6bd;background:#fbfaf7;}
   .btn-secondary.active{background:var(--primary);color:#fff;border-color:var(--primary);}
-  .btn-icon{background:none;border:none;color:var(--muted);font-size:14px;padding:4px 6px;border-radius:6px;}
+  .btn-icon{background:none;border:none;color:var(--muted);font-size:16px;padding:5px 7px;border-radius:6px;}
   .btn-icon:hover{background:#f1efe9;color:var(--text);}
 
   .toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:14px;}
-  .search-input{border:1px solid var(--border);border-radius:8px;padding:8px 11px;font-size:13.5px;min-width:220px;flex:1;background:var(--surface);}
+  .search-input{border:1px solid var(--border);border-radius:8px;padding:9.5px 13px;font-size:15.5px;min-width:220px;flex:1;background:var(--surface);}
   .search-input:focus{outline:2px solid var(--primary-light);outline-offset:-1px;}
 
   .filter-pills{display:flex;gap:6px;flex-wrap:wrap;}
 
   /* Cards / list */
   .card-list{display:flex;flex-direction:column;gap:10px;}
-  .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:13px 15px;box-shadow:var(--shadow);}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:15.5px 18px;box-shadow:var(--shadow);}
   .card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;}
-  .card-title{font-size:14.5px;font-weight:600;}
-  .card-meta{font-size:12.5px;color:var(--muted);margin-top:3px;}
-  .card-body{font-size:13.5px;color:#3c403a;margin-top:8px;white-space:pre-wrap;}
+  .card-title{font-size:16.5px;font-weight:600;}
+  .card-meta{font-size:14.5px;color:var(--muted);margin-top:3px;}
+  .card-body{font-size:15.5px;color:#3c403a;margin-top:8px;white-space:pre-wrap;}
   .card-actions{display:flex;gap:4px;flex-shrink:0;}
-  .empty-state{color:var(--muted);font-size:13.5px;text-align:center;padding:40px 10px;border:1px dashed var(--border);border-radius:var(--radius);background:var(--surface);}
+  .empty-state{color:var(--muted);font-size:15.5px;text-align:center;padding:40px 10px;border:1px dashed var(--border);border-radius:var(--radius);background:var(--surface);}
 
-  .badge{display:inline-block;font-size:11px;font-weight:600;padding:3px 8px;border-radius:99px;white-space:nowrap;}
+  .badge{display:inline-block;font-size:12.5px;font-weight:600;padding:3.5px 9.5px;border-radius:99px;white-space:nowrap;}
   .badge-gray{background:#eceae4;color:#5c5f58;}
   .badge-blue{background:#e2ecf5;color:#2a5b83;}
   .badge-purple{background:#ece3f5;color:#5c3d8a;}
@@ -110,65 +113,65 @@
   .badge-red{background:#f6dedb;color:#a13c2f;}
 
   /* ===== Visão Geral: greeting banner + KPI cards ===== */
-  .dash-greeting{background:linear-gradient(135deg, #2563eb 0%, #0f1729 130%);color:#fff;border-radius:var(--radius-lg);padding:26px 28px;margin-bottom:20px;position:relative;overflow:hidden;}
+  .dash-greeting{background:linear-gradient(135deg, #2563eb 0%, #0f1729 130%);color:#fff;border-radius:var(--radius-lg);padding:31px 33.5px;margin-bottom:20px;position:relative;overflow:hidden;}
   .dash-greeting::after{content:"";position:absolute;right:-60px;top:-60px;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,.06);}
-  .dash-greeting .dg-date{font-size:12px;opacity:.85;text-transform:capitalize;margin-bottom:8px;position:relative;}
-  .dash-greeting h2{margin:0 0 4px;font-size:23px;font-weight:700;position:relative;}
-  .dash-greeting p{margin:0;opacity:.88;font-size:13px;position:relative;}
+  .dash-greeting .dg-date{font-size:14px;opacity:.85;text-transform:capitalize;margin-bottom:8px;position:relative;}
+  .dash-greeting h2{margin:0 0 4px;font-size:26.5px;font-weight:700;position:relative;}
+  .dash-greeting p{margin:0;opacity:.88;font-size:15px;position:relative;}
 
   .dash-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;}
-  .dash-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;cursor:pointer;transition:box-shadow .15s, transform .15s;box-shadow:var(--shadow);}
+  .dash-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:19px;cursor:pointer;transition:box-shadow .15s, transform .15s;box-shadow:var(--shadow);}
   .dash-card:hover{box-shadow:var(--shadow-md);transform:translateY(-1px);}
-  .dash-card h3{margin:0 0 12px;font-size:13px;font-weight:600;color:var(--muted);display:flex;align-items:center;gap:9px;}
-  .dash-icon{width:30px;height:30px;border-radius:9px;background:var(--primary-soft);color:var(--primary);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
-  .dash-total{font-size:23px;font-weight:700;color:var(--text);}
-  .dash-sub{font-size:12px;color:var(--muted);margin-top:4px;}
+  .dash-card h3{margin:0 0 12px;font-size:15px;font-weight:600;color:var(--muted);display:flex;align-items:center;gap:9px;}
+  .dash-icon{width:30px;height:30px;border-radius:9px;background:var(--primary-soft);color:var(--primary);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
+  .dash-total{font-size:26.5px;font-weight:700;color:var(--text);}
+  .dash-sub{font-size:14px;color:var(--muted);margin-top:4px;}
 
   /* Calendar */
   .cal-toolbar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px;}
   .cal-nav{display:flex;align-items:center;gap:6px;}
-  .cal-label{font-size:14.5px;font-weight:600;min-width:150px;text-align:center;}
+  .cal-label{font-size:16.5px;font-weight:600;min-width:150px;text-align:center;}
   .cal-modes{display:flex;gap:6px;}
   .cal-scroll{overflow-x:auto;padding-bottom:4px;}
   .cal-grid-month{display:grid;grid-template-columns:repeat(7,minmax(140px,1fr));gap:8px;min-width:980px;}
-  .cal-weekday{font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.03em;padding:2px 4px;}
-  .cal-cell{background:var(--surface);border:1px solid var(--border);border-radius:10px;min-height:150px;padding:8px;display:flex;flex-direction:column;gap:5px;cursor:pointer;}
+  .cal-weekday{font-size:14px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.03em;padding:2px 4px;}
+  .cal-cell{background:var(--surface);border:1px solid var(--border);border-radius:10px;min-height:150px;padding:9.5px;display:flex;flex-direction:column;gap:5px;cursor:pointer;}
   .cal-cell:hover{background:#f9f8f5;}
   .cal-cell.other-month{opacity:.4;}
   .cal-cell.is-today{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset;}
   .cal-cell-head{display:flex;justify-content:space-between;align-items:center;}
-  .cal-daynum{font-size:13px;font-weight:600;color:var(--muted);}
-  .cal-add{background:none;border:none;color:var(--muted);font-size:14px;line-height:1;padding:0 3px;}
+  .cal-daynum{font-size:15px;font-weight:600;color:var(--muted);}
+  .cal-add{background:none;border:none;color:var(--muted);font-size:16px;line-height:1;padding:0 3px;}
   .cal-add:hover{color:var(--primary);}
-  .cal-chip{font-size:11.5px;padding:4px 7px;border-radius:6px;background:#eceae4;color:#3c403a;cursor:pointer;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:left;border:none;width:100%;}
+  .cal-chip{font-size:13px;padding:5px 8.5px;border-radius:6px;background:#eceae4;color:#3c403a;cursor:pointer;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:left;border:none;width:100%;}
   .cal-chip:hover{filter:brightness(0.96);}
-  .cal-more{font-size:11px;color:var(--muted);padding-left:2px;font-weight:600;}
+  .cal-more{font-size:12.5px;color:var(--muted);padding-left:2px;font-weight:600;}
 
   .cal-grid-week{display:grid;grid-template-columns:repeat(7,minmax(170px,1fr));gap:8px;min-width:1160px;}
-  .cal-week-col{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:8px;display:flex;flex-direction:column;gap:6px;min-height:440px;cursor:pointer;}
+  .cal-week-col{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:9.5px;display:flex;flex-direction:column;gap:6px;min-height:440px;cursor:pointer;}
   .cal-week-col:hover{background:#f9f8f5;}
   .cal-week-col.is-today{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset;}
-  .cal-week-head{font-size:12px;font-weight:700;color:var(--text);border-bottom:1px solid var(--border);padding-bottom:6px;}
-  .cal-week-head span{display:block;font-weight:400;color:var(--muted);font-size:11px;}
-  .cal-week-item{background:#f6f6f3;border-radius:6px;padding:6px 7px;font-size:12px;cursor:pointer;}
+  .cal-week-head{font-size:14px;font-weight:700;color:var(--text);border-bottom:1px solid var(--border);padding-bottom:6px;}
+  .cal-week-head span{display:block;font-weight:400;color:var(--muted);font-size:12.5px;}
+  .cal-week-item{background:#f6f6f3;border-radius:6px;padding:6px 7px;font-size:14px;cursor:pointer;}
   .cal-week-item:hover{background:#eeece6;}
   .cal-week-item .wi-title{font-weight:600;}
-  .cal-week-item .wi-meta{color:var(--muted);font-size:10.5px;margin-top:2px;}
+  .cal-week-item .wi-meta{color:var(--muted);font-size:12px;margin-top:2px;}
 
   .agenda-wrap .panel-sub{margin-bottom:10px;}
   .agenda-list{display:flex;flex-direction:column;gap:6px;max-height:50vh;overflow-y:auto;margin:10px 0 16px;}
-  .agenda-row{display:flex;align-items:center;gap:10px;padding:9px 8px;border-radius:8px;background:#f6f6f3;cursor:pointer;}
+  .agenda-row{display:flex;align-items:center;gap:10px;padding:11px 9.5px;border-radius:8px;background:#f6f6f3;cursor:pointer;}
   .agenda-row:hover{background:#eeece6;}
-  .agenda-title{font-size:13px;font-weight:600;flex:1;}
-  .agenda-empty{color:var(--muted);font-size:13px;padding:10px 4px;}
-  .cal-week-add{margin-top:auto;background:none;border:1px dashed var(--border);border-radius:6px;color:var(--muted);font-size:12px;padding:5px;}
+  .agenda-title{font-size:15px;font-weight:600;flex:1;}
+  .agenda-empty{color:var(--muted);font-size:15px;padding:10px 4px;}
+  .cal-week-add{margin-top:auto;background:none;border:1px dashed var(--border);border-radius:6px;color:var(--muted);font-size:14px;padding:5px;}
   .cal-week-add:hover{color:var(--primary);border-color:var(--primary-light);}
 
   .upcoming{margin-top:22px;}
-  .upcoming h3{font-size:13.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.03em;margin-bottom:8px;font-weight:700;}
-  .upcoming-row{display:flex;align-items:center;gap:10px;padding:8px 10px;background:var(--surface);border:1px solid var(--border);border-radius:8px;margin-bottom:6px;cursor:pointer;font-size:13px;}
+  .upcoming h3{font-size:15.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.03em;margin-bottom:8px;font-weight:700;}
+  .upcoming-row{display:flex;align-items:center;gap:10px;padding:9.5px 12px;background:var(--surface);border:1px solid var(--border);border-radius:8px;margin-bottom:6px;cursor:pointer;font-size:15px;}
   .upcoming-row:hover{border-color:#c8c6bd;}
-  .upcoming-date{font-weight:700;color:var(--primary);min-width:44px;font-size:12.5px;}
+  .upcoming-date{font-weight:700;color:var(--primary);min-width:44px;font-size:14.5px;}
 
   /* Sub tabs (Formatos) */
   .subtabs{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap;}
@@ -176,33 +179,35 @@
   /* Modal */
   .modal-overlay{position:fixed;inset:0;background:rgba(20,22,18,.45);display:none;align-items:flex-start;justify-content:center;z-index:50;padding:26px 14px;overflow-y:auto;}
   .modal-overlay.open{display:flex;}
-  .modal{background:var(--surface);border-radius:12px;max-width:520px;width:100%;padding:20px;box-shadow:0 10px 40px rgba(0,0,0,.2);}
-  .modal h2{font-size:16px;margin-bottom:14px;}
+  .modal{background:var(--surface);border-radius:12px;max-width:520px;width:100%;padding:24px;box-shadow:0 10px 40px rgba(0,0,0,.2);}
+  .modal h2{font-size:18.5px;margin-bottom:14px;}
   .field{margin-bottom:12px;}
-  .field label{display:block;font-size:12.5px;font-weight:600;color:var(--muted);margin-bottom:4px;}
+  .field label{display:block;font-size:14.5px;font-weight:600;color:var(--muted);margin-bottom:4px;}
   .field input[type=text],.field input[type=date],.field input[type=url],.field select,.field textarea{
-    width:100%;border:1px solid var(--border);border-radius:8px;padding:9px 10px;font-size:13.5px;font-family:inherit;background:#fdfdfc;
+    width:100%;border:1px solid var(--border);border-radius:8px;padding:9px 10px;font-size:15.5px;font-family:inherit;background:#fdfdfc;
   }
   .field textarea{resize:vertical;min-height:80px;}
   .field input:focus,.field select:focus,.field textarea:focus{outline:2px solid var(--primary-light);outline-offset:-1px;}
   .modal-actions{display:flex;justify-content:space-between;align-items:center;margin-top:16px;gap:10px;}
 
-  .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--primary);color:#fff;padding:10px 18px;border-radius:8px;font-size:13px;box-shadow:var(--shadow);opacity:0;pointer-events:none;transition:all .25s ease;z-index:60;}
+  .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--primary);color:#fff;padding:10px 18px;border-radius:8px;font-size:15px;box-shadow:var(--shadow);opacity:0;pointer-events:none;transition:all .25s ease;z-index:60;}
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 
-  .hint-banner{font-size:12px;color:var(--sidebar-text-dim);margin-top:6px;}
+  .hint-banner{font-size:14px;color:var(--sidebar-text-dim);margin-top:6px;}
 
-  .sync-modal .help-text{font-size:12.5px;color:var(--muted);line-height:1.5;margin:0 0 14px;}
-  .sync-status-box{background:#f6f6f3;border-radius:8px;padding:10px 12px;margin-bottom:14px;font-size:13px;font-weight:600;}
+  .sync-modal .help-text{font-size:14.5px;color:var(--muted);line-height:1.5;margin:0 0 14px;}
+  .sync-status-box{background:#f6f6f3;border-radius:8px;padding:10px 12px;margin-bottom:14px;font-size:15px;font-weight:600;}
   .sync-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;}
 
   .tabsettings-list{display:flex;flex-direction:column;gap:6px;max-height:44vh;overflow-y:auto;margin:4px 0 16px;}
-  .tabsettings-row{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:8px;background:#f6f6f3;}
-  .tabsettings-row .tsr-icon{font-size:15px;width:20px;text-align:center;flex-shrink:0;}
-  .tabsettings-row .tsr-label{flex:1;font-size:13.5px;font-weight:600;}
+  .tabsettings-row{display:flex;align-items:center;gap:9px;padding:9.5px 12px;border-radius:8px;background:#f6f6f3;}
+  .tabsettings-row .tsr-icon{font-size:17px;width:20px;text-align:center;flex-shrink:0;}
+  .tabsettings-row .tsr-icon-btn{font-size:17px;width:28px;height:28px;text-align:center;flex-shrink:0;background:none;border:1px solid transparent;border-radius:6px;cursor:pointer;padding:0;}
+  .tabsettings-row .tsr-icon-btn:hover{background:#eeece6;border-color:var(--border);}
+  .tabsettings-row .tsr-label{flex:1;font-size:15.5px;font-weight:600;}
   .tabsettings-row .tsr-actions{display:flex;gap:2px;flex-shrink:0;}
   .tabsettings-add{display:flex;gap:8px;margin-top:4px;}
-  .tabsettings-add input{flex:1;border:1px solid var(--border);border-radius:8px;padding:9px 10px;font-size:13.5px;font-family:inherit;background:#fdfdfc;}
+  .tabsettings-add input{flex:1;border:1px solid var(--border);border-radius:8px;padding:11px 12px;font-size:15.5px;font-family:inherit;background:#fdfdfc;}
 
   @media (max-width:880px){
     .sidebar{position:fixed;left:0;top:0;transform:translateX(-100%);transition:transform .2s ease;box-shadow:var(--shadow-md);}
@@ -215,7 +220,7 @@
   @media (max-width:640px){
     .cal-label{min-width:auto;}
     .modal{max-width:100%;border-radius:10px 10px 0 0;}
-    .dash-greeting{padding:20px;}
+    .dash-greeting{padding:24px;}
   }
 </style>
 </head>
@@ -326,6 +331,10 @@
         {id:'ideiasStories', label:'Ideias de stories', icon:'💡'}
       ],
       tabLabelOverrides: {},
+      tabIconOverrides: {},
+      statusLabels: {},
+      customStatusOptions: {},
+      tabSubtitleOverrides: {},
       ideiasPosts: [{id:uid(), titulo:'[Exemplo] Ideia de post', texto:'Anote aqui ideias soltas de posts para desenvolver depois, antes de virarem um post de verdade no calendário.'}],
       ideiasStories: [{id:uid(), titulo:'[Exemplo] Ideia de story', texto:'Anote aqui ideias soltas de stories para desenvolver depois.'}]
     };
@@ -568,7 +577,7 @@
     var wrap = el('div', {});
     wrap.appendChild(text('h2', null, '⚙ Configurar abas'));
     wrap.appendChild(el('p', {class:'help-text'}, [document.createTextNode(
-      'Renomeie qualquer aba do menu clicando em ✎, ou crie novas abas de ideias (título + descrição) que aparecem no menu lateral e na Visão Geral.'
+      'Clique no emoji pra trocar o ícone, em ✎ pra renomear, ou crie novas abas de ideias (título + descrição) que aparecem no menu lateral e na Visão Geral.'
     )]));
 
     var listBox = el('div', {class:'tabsettings-list'});
@@ -579,7 +588,25 @@
       allTabs().forEach(function(t){
         var isCustom = !!getCustomTab(t.id);
         var row = el('div', {class:'tabsettings-row'});
-        row.appendChild(el('span', {class:'tsr-icon'}, [document.createTextNode(t.icon)]));
+        var iconBtn = el('button', {type:'button', class:'tsr-icon-btn', title:'Trocar emoji'}, [document.createTextNode(getTabIcon(t))]);
+        iconBtn.addEventListener('click', function(){
+          var novo = prompt('Novo emoji para esta aba:', getTabIcon(t));
+          if(novo===null) return;
+          novo = novo.trim();
+          if(!novo){ toast('Escolha um emoji.'); return; }
+          novo = Array.from(novo)[0];
+          if(isCustom){
+            getCustomTab(t.id).icon = novo;
+          } else {
+            state.data.tabIconOverrides = state.data.tabIconOverrides || {};
+            state.data.tabIconOverrides[t.id] = novo;
+          }
+          saveState();
+          renderList();
+          renderApp();
+          toast('Emoji atualizado.');
+        });
+        row.appendChild(iconBtn);
         row.appendChild(text('span', 'tsr-label', getTabLabel(t)));
 
         var actions = el('div', {class:'tsr-actions'});
@@ -610,6 +637,7 @@
             state.data.customTabs = (state.data.customTabs||[]).filter(function(c){ return c.id!==t.id; });
             delete state.data[t.id];
             if(state.data.tabLabelOverrides) delete state.data.tabLabelOverrides[t.id];
+            if(state.data.tabIconOverrides) delete state.data.tabIconOverrides[t.id];
             if(state.tab===t.id) state.tab = 'visaogeral';
             saveState();
             renderList();
@@ -645,6 +673,95 @@
     }
     addBtn.addEventListener('click', addTab);
     addInput.addEventListener('keydown', function(e){ if(e.key==='Enter'){ e.preventDefault(); addTab(); } });
+    addRow.appendChild(addBtn);
+    wrap.appendChild(addRow);
+
+    var closeRow = el('div', {class:'modal-actions'});
+    var closeBtn = el('button', {type:'button', class:'btn-secondary'}, [text('span',null,'Fechar')]);
+    closeBtn.addEventListener('click', closeModal);
+    closeRow.appendChild(document.createElement('div'));
+    closeRow.appendChild(closeBtn);
+    wrap.appendChild(closeRow);
+
+    modalBox.appendChild(wrap);
+    modalOverlay.classList.add('open');
+  }
+
+  /* ---------------------------------------------------------
+     Gerenciar status de uma aba (renomear / criar / remover)
+  --------------------------------------------------------- */
+  function openStatusManagerModal(collection){
+    var schema = getSchema(collection);
+    modalBox.innerHTML = '';
+    modalBox.classList.add('sync-modal');
+    var wrap = el('div', {});
+    wrap.appendChild(text('h2', null, '🏷 Status — ' + (schema.plural || (schema.label+'s'))));
+    wrap.appendChild(el('p', {class:'help-text'}, [document.createTextNode(
+      'Renomeie um status clicando em ✎, ou crie novos status só para esta aba. Itens que já usam um status continuam com ele mesmo se você mudar o nome ou remover.'
+    )]));
+
+    var listBox = el('div', {class:'tabsettings-list'});
+    wrap.appendChild(listBox);
+
+    function renderList(){
+      listBox.innerHTML = '';
+      var customList = (state.data.customStatusOptions||{})[collection] || [];
+      collectionStatusOptions(collection).forEach(function(v){
+        var isCustom = customList.indexOf(v) > -1;
+        var row = el('div', {class:'tabsettings-row'});
+        row.appendChild(text('span', 'tsr-label badge '+(STATUS_COLOR[v]||'badge-gray'), statusLabel(v)));
+        var actions = el('div', {class:'tsr-actions'});
+        var editBtn = el('button', {type:'button', class:'btn-icon', title:'Renomear status'}, [document.createTextNode('✎')]);
+        editBtn.addEventListener('click', function(){
+          var novo = prompt('Novo nome para este status:', statusLabel(v));
+          if(novo===null) return;
+          novo = novo.trim();
+          if(!novo){ toast('O nome não pode ficar vazio.'); return; }
+          state.data.statusLabels = state.data.statusLabels || {};
+          state.data.statusLabels[v] = novo;
+          saveState();
+          renderList();
+          renderApp();
+          toast('Status renomeado.');
+        });
+        actions.appendChild(editBtn);
+        if(isCustom){
+          var delBtn = el('button', {type:'button', class:'btn-icon', title:'Remover status'}, [document.createTextNode('🗑')]);
+          delBtn.addEventListener('click', function(){
+            if(!confirm('Remover o status "'+statusLabel(v)+'" da lista desta aba?')) return;
+            state.data.customStatusOptions[collection] = (state.data.customStatusOptions[collection]||[]).filter(function(x){ return x!==v; });
+            saveState();
+            renderList();
+            toast('Status removido.');
+          });
+          actions.appendChild(delBtn);
+        }
+        row.appendChild(actions);
+        listBox.appendChild(row);
+      });
+    }
+    renderList();
+
+    var addRow = el('div', {class:'tabsettings-add'});
+    var addInput = document.createElement('input');
+    addInput.type = 'text';
+    addInput.placeholder = 'Nome do novo status (ex: Aguardando cliente)';
+    addRow.appendChild(addInput);
+    var addBtn = el('button', {type:'button', class:'btn-primary'}, [text('span',null,'+ Adicionar')]);
+    function addStatusOpt(){
+      var v = addInput.value.trim();
+      if(!v){ toast('Digite um nome para o novo status.'); return; }
+      if(collectionStatusOptions(collection).indexOf(v) > -1){ toast('Esse status já existe.'); return; }
+      state.data.customStatusOptions = state.data.customStatusOptions || {};
+      state.data.customStatusOptions[collection] = state.data.customStatusOptions[collection] || [];
+      state.data.customStatusOptions[collection].push(v);
+      saveState();
+      addInput.value = '';
+      renderList();
+      toast('Status "'+v+'" criado.');
+    }
+    addBtn.addEventListener('click', addStatusOpt);
+    addInput.addEventListener('keydown', function(e){ if(e.key==='Enter'){ e.preventDefault(); addStatusOpt(); } });
     addRow.appendChild(addBtn);
     wrap.appendChild(addRow);
 
@@ -818,8 +935,65 @@
     var ov = (state.data.tabLabelOverrides||{})[t.id];
     return ov || t.label;
   }
+  // Emoji de exibição de uma aba, já considerando trocas salvas
+  function getTabIcon(t){
+    var ov = (state.data.tabIconOverrides||{})[t.id];
+    return ov || t.icon;
+  }
+  // Abas de nível superior (menu lateral): exclui subtópicos (que têm "parent")
   function allTabs(){
-    return TABS.concat(state.data.customTabs||[]);
+    return TABS.concat((state.data.customTabs||[]).filter(function(t){ return !t.parent; }));
+  }
+  // Subtópicos personalizados dentro de uma aba com sub-abas (ex: Formatos, Tudo que sei)
+  function subTabsOf(parentId){
+    return (state.data.customTabs||[]).filter(function(t){ return t.parent===parentId; });
+  }
+  // Nome de exibição de um valor de status, já considerando renomeações salvas
+  function statusLabel(v){
+    if(!v) return v;
+    var ov = (state.data.statusLabels||{})[v];
+    return ov || v;
+  }
+  function schemaStatusField(schema){
+    return (schema.fields||[]).filter(function(f){ return f.key==='status'; })[0];
+  }
+  function hasStatusField(collection){
+    return !!schemaStatusField(getSchema(collection));
+  }
+  // Valores de status disponíveis numa coleção: os fixos do esquema + os que o usuário criou
+  function collectionStatusOptions(collection){
+    var schema = getSchema(collection);
+    var f = schemaStatusField(schema);
+    var base = f ? f.options.slice() : [];
+    var custom = ((state.data.customStatusOptions||{})[collection]) || [];
+    custom.forEach(function(c){ if(base.indexOf(c)===-1) base.push(c); });
+    return base;
+  }
+  // Botão "🏷 Status" para o cabeçalho de uma aba, só quando ela tem campo de status
+  function statusManagerBtn(collection){
+    if(!hasStatusField(collection)) return null;
+    var b = el('button', {type:'button', class:'btn-secondary', title:'Gerenciar status desta aba'}, [text('span',null,'🏷 Status')]);
+    b.addEventListener('click', function(){ openStatusManagerModal(collection); });
+    return b;
+  }
+  // Descrição editável de uma aba (o "panel-sub"), com lapisinho pra editar direto ali
+  function editableSubtitle(key, fallbackText){
+    var ov = (state.data.tabSubtitleOverrides||{})[key];
+    var current = (ov!==undefined && ov!==null) ? ov : (fallbackText||'');
+    var wrap = el('div', {class:'panel-sub-wrap'});
+    wrap.appendChild(text('span','panel-sub', current));
+    var editBtn = el('button', {type:'button', class:'btn-icon panel-sub-edit', title:'Editar descrição desta aba'}, [document.createTextNode('✎')]);
+    editBtn.addEventListener('click', function(e){
+      if(e && e.stopPropagation) e.stopPropagation();
+      var novo = prompt('Descrição desta aba:', current);
+      if(novo===null) return;
+      state.data.tabSubtitleOverrides = state.data.tabSubtitleOverrides || {};
+      state.data.tabSubtitleOverrides[key] = novo;
+      saveState();
+      renderApp();
+    });
+    wrap.appendChild(editBtn);
+    return wrap;
   }
 
   /* ---------------------------------------------------------
@@ -880,13 +1054,14 @@
         input.value = initial[f.key] || '';
       } else if(f.type==='select'){
         input = document.createElement('select');
-        f.options.forEach(function(o){
+        var selOptions = (f.key==='status' && opts.collection) ? collectionStatusOptions(opts.collection) : f.options;
+        selOptions.forEach(function(o){
           var opt = document.createElement('option');
-          opt.value = o; opt.textContent = o;
+          opt.value = o; opt.textContent = (f.key==='status') ? statusLabel(o) : o;
           if(initial[f.key]===o) opt.selected = true;
           input.appendChild(opt);
         });
-        if(!initial[f.key] && f.options.length) input.value = f.options[0];
+        if(!initial[f.key] && selOptions.length) input.value = selOptions[0];
       } else if(f.type==='select-teses'){
         input = document.createElement('select');
         var noneOpt = document.createElement('option');
@@ -975,6 +1150,7 @@
     openModal({
       title: 'Novo · ' + schema.label,
       schema: schema,
+      collection: collection,
       initial: prefill || {},
       onSave: function(data){
         addItem(collection, data);
@@ -988,6 +1164,7 @@
     openModal({
       title: 'Editar · ' + schema.label,
       schema: schema,
+      collection: collection,
       initial: item,
       onSave: function(data){
         updateItem(collection, item.id, data);
@@ -1039,7 +1216,7 @@
         var row = el('div', {class:'agenda-row'});
         row.appendChild(text('div', 'agenda-title', it.tema || it.titulo || it.referencia || (it.texto||'').slice(0,60) || '(sem título)'));
         if(it.status){
-          row.appendChild(text('span', 'badge ' + (STATUS_COLOR[it.status]||'badge-gray'), it.status));
+          row.appendChild(text('span', 'badge ' + (STATUS_COLOR[it.status]||'badge-gray'), statusLabel(it.status)));
         }
         row.addEventListener('click', function(item){ return function(){ closeModal(); openEditModal(collection, item); }; }(it));
         list.appendChild(row);
@@ -1068,16 +1245,18 @@
     var calState = state.cal[collection];
     var items = state.data[collection];
 
+    var calHeaderActions = el('div', {style:'display:flex;gap:8px;flex-wrap:wrap;'});
+    var calStatusBtn = statusManagerBtn(collection);
+    if(calStatusBtn) calHeaderActions.appendChild(calStatusBtn);
+    var calAddBtn = el('button', {class:'btn-primary'}, [text('span',null,'+ Novo '+schema.label)]);
+    calAddBtn.addEventListener('click', function(){ openAddModal(collection, {date: calState.viewDate}); });
+    calHeaderActions.appendChild(calAddBtn);
     container.appendChild(el('div', {class:'panel-header'}, [
       el('div', {}, [
         text('div', 'panel-title', schema.label + 's'),
-        text('div', 'panel-sub', collection==='posts' ? 'Calendário de posts do feed' : 'Calendário de stories')
+        editableSubtitle(collection, collection==='posts' ? 'Calendário de posts do feed' : 'Calendário de stories')
       ]),
-      (function(){
-        var b = el('button', {class:'btn-primary'}, [text('span',null,'+ Novo '+schema.label)]);
-        b.addEventListener('click', function(){ openAddModal(collection, {date: calState.viewDate}); });
-        return b;
-      })()
+      calHeaderActions
     ]));
 
     // Toolbar: modo + navegação
@@ -1171,7 +1350,7 @@
           row.appendChild(text('div','wi-title', it.tema || it.titulo || it.referencia || (it.texto||'').slice(0,40) || '(sem título)'));
           var metaParts = [];
           if(it.plataforma) metaParts.push(it.plataforma);
-          if(it.status) metaParts.push(it.status);
+          if(it.status) metaParts.push(statusLabel(it.status));
           row.appendChild(text('div','wi-meta', metaParts.join(' · ')));
           row.addEventListener('click', function(item){ return function(e){ e.stopPropagation(); openEditModal(collection, item); }; }(it));
           col.appendChild(row);
@@ -1196,7 +1375,7 @@
         var row = el('div', {class:'upcoming-row'});
         row.appendChild(text('div','upcoming-date', fmtShort(fromISO(it.date))));
         row.appendChild(document.createTextNode(it.tema || it.titulo || '(sem título)'));
-        if(it.status){ var b=text('span','badge '+(STATUS_COLOR[it.status]||'badge-gray'),it.status); b.style.marginLeft='auto'; row.appendChild(b); }
+        if(it.status){ var b=text('span','badge '+(STATUS_COLOR[it.status]||'badge-gray'),statusLabel(it.status)); b.style.marginLeft='auto'; row.appendChild(b); }
         row.addEventListener('click', function(item){ return function(){ openEditModal(collection, item); }; }(it));
         up.appendChild(row);
       });
@@ -1213,19 +1392,23 @@
     var items = state.data[collection].slice();
 
     if(!opts.hideHeader){
+      var headerActions = el('div', {style:'display:flex;gap:8px;flex-wrap:wrap;'});
+      var statusBtn1 = statusManagerBtn(collection);
+      if(statusBtn1) headerActions.appendChild(statusBtn1);
+      var addBtn1 = el('button', {class:'btn-primary'}, [text('span',null,'+ Novo '+schema.label)]);
+      addBtn1.addEventListener('click', function(){ openAddModal(collection); });
+      headerActions.appendChild(addBtn1);
       container.appendChild(el('div', {class:'panel-header'}, [
         el('div', {}, [
           text('div', 'panel-title', opts.title || (schema.label + 's')),
-          opts.subtitle ? text('div', 'panel-sub', opts.subtitle) : document.createTextNode('')
+          opts.subtitle ? editableSubtitle(collection, opts.subtitle) : document.createTextNode('')
         ]),
-        (function(){
-          var b = el('button', {class:'btn-primary'}, [text('span',null,'+ Novo '+schema.label)]);
-          b.addEventListener('click', function(){ openAddModal(collection); });
-          return b;
-        })()
+        headerActions
       ]));
     } else {
-      var miniHeader = el('div', {style:'display:flex;justify-content:flex-end;margin-bottom:12px;'});
+      var miniHeader = el('div', {style:'display:flex;justify-content:flex-end;gap:8px;margin-bottom:12px;flex-wrap:wrap;'});
+      var statusBtn2 = statusManagerBtn(collection);
+      if(statusBtn2) miniHeader.appendChild(statusBtn2);
       var b2 = el('button', {class:'btn-primary'}, [text('span',null,'+ Novo '+schema.label)]);
       b2.addEventListener('click', function(){ openAddModal(collection); });
       miniHeader.appendChild(b2);
@@ -1251,7 +1434,8 @@
     if(opts.filter){
       var pills = el('div', {class:'filter-pills'});
       opts.filter.options.forEach(function(o){
-        var b = el('button', {class:'btn-secondary'+(opts.filter.get()===o?' active':'')}, [text('span',null,o)]);
+        var lbl = opts.filter.key==='status' ? statusLabel(o) : o;
+        var b = el('button', {class:'btn-secondary'+(opts.filter.get()===o?' active':'')}, [text('span',null,lbl)]);
         b.addEventListener('click', function(){ opts.filter.set(o); renderApp(); });
         pills.appendChild(b);
       });
@@ -1290,7 +1474,7 @@
         top.appendChild(left);
 
         var right = el('div', {style:'display:flex;align-items:center;gap:8px;'});
-        if(it.status) right.appendChild(text('span','badge '+(STATUS_COLOR[it.status]||'badge-gray'), it.status));
+        if(it.status) right.appendChild(text('span','badge '+(STATUS_COLOR[it.status]||'badge-gray'), statusLabel(it.status)));
         if(it.tipo) right.appendChild(text('span','badge badge-blue', it.tipo));
         var editBtn = el('button', {class:'btn-icon', title:'Editar'}, [document.createTextNode('✎')]);
         editBtn.addEventListener('click', function(item){ return function(){ openEditModal(collection, item); }; }(it));
@@ -1332,7 +1516,7 @@
     container.appendChild(el('div', {class:'panel-header'}, [
       el('div', {}, [
         text('div', 'panel-title', 'Ganchos'),
-        text('div', 'panel-sub', 'Ideias de gancho para vídeos mudos e falados')
+        editableSubtitle('ganchos', 'Ideias de gancho para vídeos mudos e falados')
       ]),
       (function(){
         var b = el('button', {class:'btn-primary'}, [text('span',null,'+ Novo Gancho')]);
@@ -1373,24 +1557,77 @@
     container.appendChild(list);
   }
 
+  // Barra de subtópicos com opção de acrescentar/renomear/remover subtópicos personalizados.
+  // fixedSubs: [{id,label}] fixos (não editáveis). parentId: usado para agrupar os subtópicos criados pelo usuário.
+  function renderSubtopicsBar(container, parentId, fixedSubs, currentId, onSelect){
+    var sub = el('div', {class:'subtabs'});
+    fixedSubs.forEach(function(s){
+      var b = el('button', {class:'btn-secondary'+(currentId===s.id?' active':'')}, [text('span',null,s.label)]);
+      b.addEventListener('click', function(){ onSelect(s.id); });
+      sub.appendChild(b);
+    });
+    subTabsOf(parentId).forEach(function(s){
+      var wrap = el('span', {style:'display:inline-flex;align-items:center;'});
+      var b = el('button', {class:'btn-secondary'+(currentId===s.id?' active':'')}, [text('span',null,(s.icon?s.icon+' ':'')+s.label)]);
+      b.addEventListener('click', function(){ onSelect(s.id); });
+      wrap.appendChild(b);
+      if(currentId===s.id){
+        var editBtn = el('button', {type:'button', class:'btn-icon', title:'Renomear subtópico', style:'margin-left:2px;'}, [document.createTextNode('✎')]);
+        editBtn.addEventListener('click', function(){
+          var novo = prompt('Novo nome para este subtópico:', s.label);
+          if(novo===null) return;
+          novo = novo.trim();
+          if(!novo){ toast('O nome não pode ficar vazio.'); return; }
+          s.label = novo;
+          saveState();
+          renderApp();
+        });
+        wrap.appendChild(editBtn);
+        var delBtn = el('button', {type:'button', class:'btn-icon', title:'Remover subtópico', style:'color:var(--danger);'}, [document.createTextNode('🗑')]);
+        delBtn.addEventListener('click', function(){
+          if(!confirm('Remover o subtópico "'+s.label+'"? Todo o conteúdo salvo nele também será apagado.')) return;
+          state.data.customTabs = (state.data.customTabs||[]).filter(function(c){ return c.id!==s.id; });
+          delete state.data[s.id];
+          onSelect(fixedSubs.length ? fixedSubs[0].id : parentId);
+          saveState();
+          renderApp();
+          toast('Subtópico removido.');
+        });
+        wrap.appendChild(delBtn);
+      }
+      sub.appendChild(wrap);
+    });
+    var addBtn = el('button', {type:'button', class:'btn-secondary', title:'Novo subtópico', style:'border-style:dashed;'}, [text('span',null,'+ Novo subtópico')]);
+    addBtn.addEventListener('click', function(){
+      var nome = prompt('Nome do novo subtópico (ex: CTAs):');
+      if(nome===null) return;
+      nome = nome.trim();
+      if(!nome){ toast('Digite um nome.'); return; }
+      var id = 'custom_' + uid();
+      state.data.customTabs = state.data.customTabs || [];
+      state.data.customTabs.push({id:id, label:nome, icon:'📌', parent:parentId});
+      state.data[id] = [];
+      saveState();
+      onSelect(id);
+      renderApp();
+      toast('Subtópico "'+nome+'" criado.');
+    });
+    sub.appendChild(addBtn);
+    container.appendChild(sub);
+  }
+
   function renderFormatosTab(container){
     container.appendChild(el('div', {class:'panel-header'}, [
       el('div', {}, [
         text('div', 'panel-title', 'Formatos'),
-        text('div', 'panel-sub', 'O que você usa todo dia: legendas, tipos de conteúdo e specs de vídeo')
+        editableSubtitle('formatos', 'O que você usa todo dia: legendas, tipos de conteúdo e specs de vídeo')
       ])
     ]));
-    var sub = el('div', {class:'subtabs'});
-    [
+    renderSubtopicsBar(container, 'formatos', [
       {id:'formatosLegenda', label:'Modelos de legenda'},
       {id:'formatosConteudo', label:'Tipos de conteúdo'},
       {id:'formatosVideo', label:'Specs de vídeo'}
-    ].forEach(function(s){
-      var b = el('button', {class:'btn-secondary'+(state.formatosSub===s.id?' active':'')}, [text('span',null,s.label)]);
-      b.addEventListener('click', function(){ state.formatosSub=s.id; renderApp(); });
-      sub.appendChild(b);
-    });
-    container.appendChild(sub);
+    ], state.formatosSub, function(id){ state.formatosSub=id; renderApp(); });
 
     var inner = el('div', {});
     renderListTab(inner, state.formatosSub, {hideHeader:true});
@@ -1401,16 +1638,10 @@
     container.appendChild(el('div', {class:'panel-header'}, [
       el('div', {}, [
         text('div', 'panel-title', 'Tudo que sei'),
-        text('div', 'panel-sub', 'Base do curso para advogados: cronograma das aulas e todo o material de apoio')
+        editableSubtitle('tudoquesei', 'Base do curso para advogados: cronograma das aulas e todo o material de apoio')
       ])
     ]));
-    var sub = el('div', {class:'subtabs'});
-    TQS_SUBTABS.forEach(function(s){
-      var b = el('button', {class:'btn-secondary'+(state.tqsSub===s.id?' active':'')}, [text('span',null,s.label)]);
-      b.addEventListener('click', function(){ state.tqsSub=s.id; renderApp(); });
-      sub.appendChild(b);
-    });
-    container.appendChild(sub);
+    renderSubtopicsBar(container, 'tudoquesei', TQS_SUBTABS, state.tqsSub, function(id){ state.tqsSub=id; renderApp(); });
 
     var inner = el('div', {});
     renderListTab(inner, state.tqsSub, {hideHeader:true});
@@ -1433,10 +1664,12 @@
     container.appendChild(greeting);
 
     var grid = el('div', {class:'dash-grid'});
-    var formatosTotal = (state.data.formatosLegenda||[]).length + (state.data.formatosConteudo||[]).length + (state.data.formatosVideo||[]).length;
+    var formatosTotal = (state.data.formatosLegenda||[]).length + (state.data.formatosConteudo||[]).length + (state.data.formatosVideo||[]).length
+      + subTabsOf('formatos').reduce(function(sum,s){ return sum + (state.data[s.id]||[]).length; }, 0);
     var repostsPendentes = (state.data.reposts||[]).filter(function(r){ return r.status==='Pendente'; }).length;
     var tqsKeys = ['cronogramaAulas','tsVendas','tsReels','tsDeverCasa','tsParcerias','tsStories','tsCasinha','tsDicas','tsJusfy','tsOferta'];
-    var tqsTotal = tqsKeys.reduce(function(sum,k){ return sum + (state.data[k]||[]).length; }, 0);
+    var tqsTotal = tqsKeys.reduce(function(sum,k){ return sum + (state.data[k]||[]).length; }, 0)
+      + subTabsOf('tudoquesei').reduce(function(sum,s){ return sum + (state.data[s.id]||[]).length; }, 0);
 
     function L(id, fallback){ var t=TABS.find(function(x){ return x.id===id; }); return t?getTabLabel(t):fallback; }
 
