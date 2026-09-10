@@ -72,6 +72,13 @@
   .tab-btn:hover{background:var(--sidebar-bg-hover);color:#fff;}
   .tab-btn.active{background:var(--primary);color:#fff;font-weight:600;}
 
+  /* Arrastar pra reordenar abas — usado tanto no menu lateral (.tab-btn) quanto nos
+     botões de subtópico dentro de um grupo (.subtabs .btn-secondary) */
+  .dnd-tab[draggable="true"]{cursor:grab;}
+  .dnd-tab.dragging{opacity:.4;}
+  .tab-btn.drop-target{box-shadow:inset 3px 0 0 0 var(--primary);}
+  .subtabs .btn-secondary.drop-target{box-shadow:inset 0 0 0 2px var(--primary);}
+
   .panel-header{display:flex;align-items:center;justify-content:space-between;gap:11.5px;flex-wrap:wrap;margin-bottom:14px;}
   .panel-title{font-size:28px;font-weight:600;}
   .panel-sub{color:var(--muted);font-size:19px;margin-top:2px;}
@@ -1165,13 +1172,43 @@
     if(parentId) state.data.tabParentOverrides[tabId] = parentId;
     else delete state.data.tabParentOverrides[tabId];
   }
+  // Ordem manual (arrastar pra reordenar) de uma aba, salva por id. Abas sem valor salvo
+  // caem no final (mas mantêm a ordem relativa entre si, pela ordenação estável abaixo).
+  function tabOrderOf(t){
+    var ov = (state.data.tabOrderOverrides||{})[t.id];
+    return ov!==undefined ? ov : 9999;
+  }
+  // Ordena uma lista de abas-irmãs (mesmo pai) pela ordem manual salva, preservando a
+  // ordem original entre as que não têm ordem salva ainda.
+  function sortTabsByOrder(tabs){
+    return tabs.map(function(t,i){ return {t:t,i:i}; }).sort(function(a,b){
+      var oa = tabOrderOf(a.t), ob = tabOrderOf(b.t);
+      if(oa!==ob) return oa-ob;
+      return a.i-b.i;
+    }).map(function(x){ return x.t; });
+  }
   // Abas de nível superior (menu lateral): exclui as que viraram subtópico de outra
   function allTabs(){
-    return everyTab().filter(function(t){ return !getTabParent(t); });
+    return sortTabsByOrder(everyTab().filter(function(t){ return !getTabParent(t); }));
   }
   // Abas que estão dentro desta aba agora (sejam fixas ou criadas pelo usuário)
   function childTabsOf(parentId){
-    return everyTab().filter(function(t){ return getTabParent(t)===parentId; });
+    return sortTabsByOrder(everyTab().filter(function(t){ return getTabParent(t)===parentId; }));
+  }
+  // Reordena arrastando: move "draggedId" pra posição de "targetId" entre as abas-irmãs
+  // (mesmo pai) e salva uma ordem manual sequencial pra esse grupo de irmãos.
+  function reorderTab(draggedId, targetId, parentId){
+    if(draggedId===targetId) return;
+    var siblings = parentId===null ? allTabs() : childTabsOf(parentId);
+    var draggedIdx = siblings.findIndex(function(t){ return t.id===draggedId; });
+    var targetIdx = siblings.findIndex(function(t){ return t.id===targetId; });
+    if(draggedIdx<0 || targetIdx<0) return;
+    var moved = siblings.splice(draggedIdx,1)[0];
+    var newTargetIdx = siblings.findIndex(function(t){ return t.id===targetId; });
+    siblings.splice(newTargetIdx,0,moved);
+    state.data.tabOrderOverrides = state.data.tabOrderOverrides || {};
+    siblings.forEach(function(t,i){ state.data.tabOrderOverrides[t.id]=i; });
+    saveState();
   }
   // Verdadeiro se moveria "tabId" pra dentro de um descendente dele mesmo (looping)
   function wouldCreateCycle(tabId, newParentId){
@@ -1191,7 +1228,7 @@
   function flattenTabsForSettings(){
     var result = [];
     function walk(parentId, depth){
-      everyTab().filter(function(t){ return (getTabParent(t)||null)===parentId; }).forEach(function(t){
+      sortTabsByOrder(everyTab().filter(function(t){ return (getTabParent(t)||null)===parentId; })).forEach(function(t){
         result.push({tab:t, depth:depth});
         walk(t.id, depth+1);
       });
@@ -1332,6 +1369,46 @@
   --------------------------------------------------------- */
   var modalOverlay = document.getElementById('modalOverlay');
   var modalBox = document.getElementById('modalBox');
+
+  /* ---------------------------------------------------------
+     Arrastar pra reordenar abas (tanto no menu lateral quanto dentro de um grupo).
+     dragSrcTabId guarda a aba sendo arrastada; só permite soltar sobre uma aba-irmã
+     (mesmo pai) — arrastar entre níveis diferentes não faz nada.
+  --------------------------------------------------------- */
+  var dragSrcTabId = null;
+  function attachTabDnD(el2, tab, parentId){
+    el2.setAttribute('draggable','true');
+    el2.classList.add('dnd-tab');
+    el2.addEventListener('dragstart', function(e){
+      dragSrcTabId = tab.id;
+      el2.classList.add('dragging');
+      e.dataTransfer.effectAllowed = 'move';
+      try{ e.dataTransfer.setData('text/plain', 'tab:'+tab.id); }catch(_){}
+    });
+    el2.addEventListener('dragend', function(){
+      el2.classList.remove('dragging');
+      document.querySelectorAll('.dnd-tab.drop-target').forEach(function(x){ x.classList.remove('drop-target'); });
+      dragSrcTabId = null;
+    });
+    el2.addEventListener('dragover', function(e){
+      if(!dragSrcTabId || dragSrcTabId===tab.id) return;
+      var src = findTabById(dragSrcTabId);
+      if(!src || (getTabParent(src)||null)!==(parentId||null)) return;
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+      el2.classList.add('drop-target');
+    });
+    el2.addEventListener('dragleave', function(){ el2.classList.remove('drop-target'); });
+    el2.addEventListener('drop', function(e){
+      e.preventDefault();
+      el2.classList.remove('drop-target');
+      if(!dragSrcTabId || dragSrcTabId===tab.id) return;
+      var src = findTabById(dragSrcTabId);
+      if(!src || (getTabParent(src)||null)!==(parentId||null)) return;
+      reorderTab(dragSrcTabId, tab.id, parentId||null);
+      renderApp();
+    });
+  }
 
   function closeModal(){
     modalOverlay.classList.remove('open');
@@ -1494,7 +1571,11 @@
       var btn = el('button', {class:'tab-btn'+(state.tab===t.id?' active':'')}, [
         document.createTextNode(t.icon+' '+getTabLabel(t))
       ]);
-      btn.addEventListener('click', function(){ state.tab = t.id; renderApp(); });
+      btn.addEventListener('click', function(){
+        if(btn.classList.contains('dragging')) return;
+        state.tab = t.id; renderApp();
+      });
+      attachTabDnD(btn, t, null);
       nav.appendChild(btn);
     });
   }
@@ -2077,7 +2158,11 @@
     children.forEach(function(c){
       var wrap = el('span', {style:'display:inline-flex;align-items:center;'});
       var b = el('button', {class:'btn-secondary'+(currentId===c.id?' active':'')}, [text('span',null,getTabIcon(c)+' '+getTabLabel(c))]);
-      b.addEventListener('click', function(){ state.groupSub[parentId]=c.id; renderApp(); });
+      b.addEventListener('click', function(){
+        if(b.classList.contains('dragging')) return;
+        state.groupSub[parentId]=c.id; renderApp();
+      });
+      attachTabDnD(b, c, parentId);
       wrap.appendChild(b);
       if(currentId===c.id){
         var outBtn = el('button', {type:'button', class:'btn-icon', title:'Tirar desta aba (volta pro menu principal)'}, [document.createTextNode('⬅')]);
