@@ -78,6 +78,9 @@
   .panel-sub-wrap{display:flex;align-items:center;gap:6px;}
   .panel-sub-edit{opacity:.45;font-size:15.5px;padding: 2.5px 6.5px;}
   .panel-sub-edit:hover{opacity:1;}
+  .panel-sub{cursor:text;}
+  .panel-sub:hover{text-decoration:underline dotted;}
+  .panel-sub-input{font-size:19px;color:var(--text);padding:3px 8px;border:1px solid var(--primary);border-radius:6px;min-width:240px;width:60%;max-width:560px;font-family:inherit;background:var(--surface);}
 
   .btn-primary{background:var(--primary);color:#fff;border:none;border-radius:8px;padding: 14.5px 23.5px;font-size:20px;font-weight:500;}
   .btn-primary:hover{background:var(--primary-light);}
@@ -642,9 +645,10 @@
 
     function renderList(){
       listBox.innerHTML = '';
-      allTabs().forEach(function(t){
+      flattenTabsForSettings().forEach(function(entry){
+        var t = entry.tab;
         var isCustom = !!getCustomTab(t.id);
-        var row = el('div', {class:'tabsettings-row'});
+        var row = el('div', {class:'tabsettings-row', style: entry.depth ? ('padding-left:'+(entry.depth*26)+'px;') : ''});
         var iconBtn = el('button', {type:'button', class:'tsr-icon-btn', title:'Trocar emoji'}, [document.createTextNode(getTabIcon(t))]);
         iconBtn.addEventListener('click', function(){
           openEmojiPicker(iconBtn, function(novo){
@@ -662,17 +666,16 @@
         });
         row.appendChild(iconBtn);
         var labelWrap = el('span', {class:'tsr-label'});
+        if(entry.depth) labelWrap.appendChild(document.createTextNode('↳ '));
         labelWrap.appendChild(document.createTextNode(getTabLabel(t)));
-        var parentId = getTabParent(t);
-        if(parentId){
-          var parentTabRef = findTabById(parentId);
-          labelWrap.appendChild(el('span', {class:'tsr-parent-hint'}, [document.createTextNode(
-            ' — dentro de ' + (parentTabRef ? getTabLabel(parentTabRef) : '?')
-          )]));
-        }
         row.appendChild(labelWrap);
 
         var actions = el('div', {class:'tsr-actions'});
+        var newSubBtn = el('button', {type:'button', class:'btn-icon', title:'Criar aba nova já dentro desta'}, [document.createTextNode('➕')]);
+        newSubBtn.addEventListener('click', function(){
+          openCreateSubtabModal(t.id, function(){ renderList(); });
+        });
+        actions.appendChild(newSubBtn);
         var moveIntoBtn = el('button', {type:'button', class:'btn-icon', title:'Mover para dentro de outra aba (virar subtópico)'}, [document.createTextNode('📂')]);
         moveIntoBtn.addEventListener('click', function(){
           openMoveIntoPicker(t.id, function(){ renderList(); renderApp(); });
@@ -701,13 +704,7 @@
         if(isCustom){
           var delBtn = el('button', {type:'button', class:'btn-icon', title:'Excluir aba'}, [document.createTextNode('🗑')]);
           delBtn.addEventListener('click', function(){
-            if(!confirm('Excluir a aba "'+getTabLabel(t)+'"? Todo o conteúdo salvo nela também será apagado.')) return;
-            state.data.customTabs = (state.data.customTabs||[]).filter(function(c){ return c.id!==t.id; });
-            delete state.data[t.id];
-            if(state.data.tabLabelOverrides) delete state.data.tabLabelOverrides[t.id];
-            if(state.data.tabIconOverrides) delete state.data.tabIconOverrides[t.id];
-            if(state.tab===t.id) state.tab = 'visaogeral';
-            saveState();
+            if(!deleteCustomTab(t.id)) return;
             renderList();
             renderApp();
             toast('Aba excluída.');
@@ -831,6 +828,65 @@
     wrap.appendChild(closeRow);
     modalBox.appendChild(wrap);
     modalOverlay.classList.add('open');
+  }
+
+  // Cria uma aba nova já nascendo como subtópico de "parentId" — sem precisar criar
+  // em separado e depois mover. Funciona mesmo se "parentId" ainda não tiver nenhum
+  // subtópico (resolve o mesmo problema de "aba vazia" que o botão 📂 resolve).
+  function createChildTab(parentId, label, icon){
+    var id = 'custom_' + uid();
+    state.data.customTabs = state.data.customTabs || [];
+    state.data.customTabs.push({id:id, label:label, icon:icon||'💡', parent:parentId});
+    state.data[id] = [];
+    if(!state.groupSub) state.groupSub = {};
+    state.groupSub[parentId] = id;
+    saveState();
+    return id;
+  }
+  function openCreateSubtabModal(parentId, onDone){
+    var parentTab = findTabById(parentId);
+    modalBox.innerHTML = '';
+    modalBox.classList.add('sync-modal');
+    var wrap = el('div', {});
+    wrap.appendChild(text('h2', null, '➕ Nova aba dentro de "' + (parentTab?getTabLabel(parentTab):'') + '"'));
+    wrap.appendChild(el('p', {class:'help-text'}, [document.createTextNode(
+      'Cria uma aba nova já como subtópico desta — sem precisar criar em separado e mover depois.'
+    )]));
+    var row = el('div', {class:'tabsettings-add'});
+    var icon = '💡';
+    var iconBtn = el('button', {type:'button', class:'emoji-pick-btn', title:'Escolher emoji'}, [document.createTextNode(icon)]);
+    iconBtn.addEventListener('click', function(){
+      openEmojiPicker(iconBtn, function(em){ icon = em; iconBtn.textContent = em; });
+    });
+    row.appendChild(iconBtn);
+    var input = document.createElement('input');
+    input.type = 'text';
+    input.placeholder = 'Nome da nova aba (ex: Leads Frios)';
+    row.appendChild(input);
+    var createBtn = el('button', {type:'button', class:'btn-primary'}, [text('span',null,'+ Criar')]);
+    function doCreate(){
+      var label = input.value.trim();
+      if(!label){ toast('Digite um nome para a nova aba.'); return; }
+      var newId = createChildTab(parentId, label, icon);
+      closeModal();
+      state.tab = parentId;
+      if(onDone) onDone(newId);
+      renderApp();
+      toast('"'+label+'" criada dentro de "'+(parentTab?getTabLabel(parentTab):'')+'".');
+    }
+    createBtn.addEventListener('click', doCreate);
+    input.addEventListener('keydown', function(e){ if(e.key==='Enter'){ e.preventDefault(); doCreate(); } });
+    row.appendChild(createBtn);
+    wrap.appendChild(row);
+    var closeRow = el('div', {class:'modal-actions'});
+    var closeBtn = el('button', {type:'button', class:'btn-secondary'}, [text('span',null,'Fechar')]);
+    closeBtn.addEventListener('click', closeModal);
+    closeRow.appendChild(document.createElement('div'));
+    closeRow.appendChild(closeBtn);
+    wrap.appendChild(closeRow);
+    modalBox.appendChild(wrap);
+    modalOverlay.classList.add('open');
+    setTimeout(function(){ input.focus(); }, 30);
   }
 
   /* ---------------------------------------------------------
@@ -1130,6 +1186,39 @@
   function subTabsOf(parentId){
     return childTabsOf(parentId).filter(function(t){ return !!getCustomTab(t.id); });
   }
+  // Lista todas as abas (fixas + criadas), em ordem de árvore — cada subtópico logo
+  // depois da aba-pai, com "depth" pra indentar visualmente em "Configurar abas".
+  function flattenTabsForSettings(){
+    var result = [];
+    function walk(parentId, depth){
+      everyTab().filter(function(t){ return (getTabParent(t)||null)===parentId; }).forEach(function(t){
+        result.push({tab:t, depth:depth});
+        walk(t.id, depth+1);
+      });
+    }
+    walk(null, 0);
+    return result;
+  }
+  // Exclui uma aba criada pelo usuário: promove os subtópicos dela de volta pro menu
+  // principal (não apaga o conteúdo deles) e limpa todas as referências (overrides,
+  // groupSub). Evita "aba órfã" — uma sub-aba presa dentro de um pai que não existe mais.
+  function deleteCustomTab(id, opts){
+    opts = opts || {};
+    var t = getCustomTab(id);
+    if(!t) return false;
+    if(!opts.skipConfirm && !confirm('Excluir "'+getTabLabel(t)+'"? Todo o conteúdo salvo nela também será apagado.')) return false;
+    childTabsOf(id).forEach(function(child){ setTabParent(child.id, null); });
+    state.data.customTabs = (state.data.customTabs||[]).filter(function(c){ return c.id!==id; });
+    delete state.data[id];
+    if(state.data.tabLabelOverrides) delete state.data.tabLabelOverrides[id];
+    if(state.data.tabIconOverrides) delete state.data.tabIconOverrides[id];
+    if(state.data.tabSubtitleOverrides) delete state.data.tabSubtitleOverrides[id];
+    if(state.data.tabParentOverrides) delete state.data.tabParentOverrides[id];
+    if(state.groupSub) delete state.groupSub[id];
+    if(state.tab===id) state.tab = 'visaogeral';
+    saveState();
+    return true;
+  }
   // Nome de exibição de um valor de status, já considerando renomeações salvas
   function statusLabel(v){
     if(!v) return v;
@@ -1158,22 +1247,56 @@
     b.addEventListener('click', function(){ openStatusManagerModal(collection); });
     return b;
   }
-  // Descrição editável de uma aba (o "panel-sub"), com lapisinho pra editar direto ali
+  // Descrição editável de uma aba (o "panel-sub") — clique no texto ou no lapisinho
+  // pra editar direto ali (sem popup), Enter ou clicar fora salva, Esc cancela.
   function editableSubtitle(key, fallbackText){
     var ov = (state.data.tabSubtitleOverrides||{})[key];
     var current = (ov!==undefined && ov!==null) ? ov : (fallbackText||'');
     var wrap = el('div', {class:'panel-sub-wrap'});
-    wrap.appendChild(text('span','panel-sub', current));
+    var span = text('span','panel-sub', current);
+    span.title = 'Clique pra editar esta descrição';
     var editBtn = el('button', {type:'button', class:'btn-icon panel-sub-edit', title:'Editar descrição desta aba'}, [document.createTextNode('✎')]);
+
+    function startEdit(){
+      var input = document.createElement('input');
+      input.type = 'text';
+      input.className = 'panel-sub-input';
+      input.value = current;
+      wrap.innerHTML = '';
+      wrap.appendChild(input);
+      input.focus();
+      input.setSelectionRange(input.value.length, input.value.length);
+      var done = false;
+      function save(){
+        if(done) return;
+        done = true;
+        var novo = input.value.trim();
+        state.data.tabSubtitleOverrides = state.data.tabSubtitleOverrides || {};
+        if(novo){ state.data.tabSubtitleOverrides[key] = novo; }
+        else { delete state.data.tabSubtitleOverrides[key]; }
+        saveState();
+        renderApp();
+      }
+      function cancel(){
+        if(done) return;
+        done = true;
+        renderApp();
+      }
+      input.addEventListener('keydown', function(e){
+        if(e.key==='Enter'){ e.preventDefault(); save(); }
+        else if(e.key==='Escape'){ e.preventDefault(); cancel(); }
+      });
+      input.addEventListener('blur', save);
+    }
+    span.addEventListener('click', function(e){
+      if(e && e.stopPropagation) e.stopPropagation();
+      startEdit();
+    });
     editBtn.addEventListener('click', function(e){
       if(e && e.stopPropagation) e.stopPropagation();
-      var novo = prompt('Descrição desta aba:', current);
-      if(novo===null) return;
-      state.data.tabSubtitleOverrides = state.data.tabSubtitleOverrides || {};
-      state.data.tabSubtitleOverrides[key] = novo;
-      saveState();
-      renderApp();
+      startEdit();
     });
+    wrap.appendChild(span);
     wrap.appendChild(editBtn);
     return wrap;
   }
@@ -1924,7 +2047,7 @@
       if(customTab){
         if(!state.data[customTab.id]) state.data[customTab.id] = [];
         renderListTab(container, customTab.id, {
-          subtitle:'Anote ideias soltas aqui. Edite ou apague quando quiser — o nome desta aba pode ser trocado em "Configurar abas".'
+          subtitle:'Anote itens da aba "'+getTabLabel(customTab)+'" aqui. Clique no ✎ pra mudar esta descrição a qualquer momento.'
         });
       } else {
         // aba desconhecida (ex: foi excluída em outro aparelho) — volta pra Visão Geral
@@ -1940,7 +2063,7 @@
     container.appendChild(el('div', {class:'panel-header'}, [
       el('div', {}, [
         text('div', 'panel-title', parentTab ? getTabLabel(parentTab) : 'Aba'),
-        editableSubtitle(parentId, 'Esta aba organiza os subtópicos abaixo — arraste outras abas pra cá em "+ Mover aba pra cá".')
+        editableSubtitle(parentId, 'Esta aba organiza os subtópicos abaixo — crie um novo em "+ Nova aba aqui" ou mova um já existente em "+ Mover aba pra cá".')
       ])
     ]));
 
@@ -1969,11 +2092,8 @@
         if(getCustomTab(c.id)){
           var delBtn = el('button', {type:'button', class:'btn-icon', title:'Excluir esta aba', style:'color:var(--danger);'}, [document.createTextNode('🗑')]);
           delBtn.addEventListener('click', function(){
-            if(!confirm('Excluir "'+getTabLabel(c)+'"? Todo o conteúdo salvo nela também será apagado.')) return;
-            state.data.customTabs = (state.data.customTabs||[]).filter(function(x){ return x.id!==c.id; });
-            delete state.data[c.id];
+            if(!deleteCustomTab(c.id)) return;
             delete state.groupSub[parentId];
-            saveState();
             renderApp();
             toast('Aba excluída.');
           });
@@ -1982,6 +2102,11 @@
       }
       sub.appendChild(wrap);
     });
+    var newBtn = el('button', {type:'button', class:'btn-secondary', style:'border-style:dashed;'}, [text('span',null,'+ Nova aba aqui')]);
+    newBtn.addEventListener('click', function(){
+      openCreateSubtabModal(parentId);
+    });
+    sub.appendChild(newBtn);
     var moveBtn = el('button', {type:'button', class:'btn-secondary', style:'border-style:dashed;'}, [text('span',null,'+ Mover aba pra cá')]);
     moveBtn.addEventListener('click', function(){
       openMoveTabPicker(parentId, function(newChildId){ state.groupSub[parentId] = newChildId; });
