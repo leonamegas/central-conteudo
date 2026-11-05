@@ -473,6 +473,56 @@
   .mm-hint{font-size:13.5px;color:var(--muted);margin-top:8px;line-height:1.5;}
   .mm-empty{text-align:center;padding:56px 20px;background:var(--surface);border:1px dashed var(--border);border-radius:var(--radius);color:var(--muted);font-size:16px;}
   .mm-empty-ico{font-size:40px;margin-bottom:6px;}
+
+  /* ===== Links, lixeira e busca ===== */
+  .lk-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;}
+  .lk-chip{display:inline-flex;align-items:center;gap:5px;max-width:100%;padding:3px 10px;border:1px solid var(--border);border-radius:999px;background:var(--primary-soft);color:var(--primary);font-size:14px;text-decoration:none;line-height:1.35;}
+  .lk-chip:hover{border-color:var(--primary);text-decoration:none;}
+  .lk-chip .lk-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:260px;}
+  .lk-chip .lk-out{opacity:.55;font-size:12px;}
+  .lk-editor .lk-help{font-size:13px;color:var(--muted);margin:-2px 0 8px;}
+  .lk-edit-row{display:flex;gap:6px;margin-bottom:6px;align-items:center;}
+  .lk-edit-row input{min-width:0;}
+  .lk-in-name{flex:0 0 34%;}
+  .lk-in-url{flex:1 1 auto;}
+  .lk-del{flex:0 0 auto;border:1px solid var(--border);background:var(--surface);color:var(--muted);border-radius:8px;width:34px;height:34px;cursor:pointer;}
+  .lk-del:hover{color:var(--danger,#b2453a);border-color:var(--danger,#b2453a);}
+  .lk-add{font-size:14px;padding:6px 12px;}
+  .lib-group{font-size:13px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);margin:20px 0 8px;}
+  .lib-card{display:flex;align-items:flex-start;gap:12px;flex-wrap:wrap;}
+  .lib-open{flex:1 1 280px;display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--text);min-width:0;}
+  .lib-open:hover .lib-title{color:var(--primary);}
+  .lib-ico{font-size:26px;line-height:1;}
+  .lib-txt{display:flex;flex-direction:column;min-width:0;}
+  .lib-title{font-weight:600;overflow:hidden;text-overflow:ellipsis;}
+  .lib-kind{font-size:13px;color:var(--muted);}
+  .lib-notes{flex:1 0 100%;font-size:14.5px;color:var(--muted);white-space:pre-wrap;}
+  .tr-wrap h2{margin:0 0 2px;}
+  .tr-list{margin:14px 0 6px;max-height:55vh;overflow:auto;display:flex;flex-direction:column;gap:8px;}
+  .tr-row{display:flex;align-items:center;gap:8px;border:1px solid var(--border);border-radius:10px;padding:9px 12px;}
+  .tr-info{flex:1;min-width:0;}
+  .tr-title{font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .tr-meta{font-size:13px;color:var(--muted);}
+  .tr-btn{padding:6px 12px !important;font-size:14px !important;}
+  .toast.act{pointer-events:auto;}
+  .toast-undo{margin-left:10px;background:rgba(255,255,255,.2);color:#fff;border:1px solid rgba(255,255,255,.5);border-radius:6px;padding:3px 10px;cursor:pointer;font:inherit;font-weight:600;}
+  .toast-undo:hover{background:rgba(255,255,255,.32);}
+  .sb-search-wrap{padding:10px 12.5px 2px;}
+  .sb-search{width:100%;display:flex;align-items:center;gap:8px;text-align:left;background:var(--bg);border:1px solid var(--border);border-radius:9px;color:var(--muted);padding:8px 12px;cursor:pointer;font:inherit;font-size:16px;}
+  .sb-search:hover{border-color:var(--primary);color:var(--text);}
+  .sb-search .kbd{margin-left:auto;font-size:12px;border:1px solid var(--border);border-radius:5px;padding:1px 6px;background:var(--surface);color:var(--muted);}
+  .sr-overlay{position:fixed;inset:0;background:rgba(16,24,40,.45);z-index:80;display:flex;justify-content:center;align-items:flex-start;padding:9vh 16px 16px;}
+  .sr-box{zoom:var(--content-zoom,1);width:100%;max-width:640px;background:var(--surface);border-radius:14px;box-shadow:0 16px 50px rgba(0,0,0,.28);overflow:hidden;display:flex;flex-direction:column;max-height:70vh;}
+  .sr-input{border:none;border-bottom:1px solid var(--border);padding:16px 18px;font:inherit;font-size:18px;outline:none;background:transparent;color:var(--text);}
+  .sr-list{overflow:auto;flex:1;}
+  .sr-row{padding:10px 18px;cursor:pointer;border-bottom:1px solid var(--border-soft,#eee);}
+  .sr-row.on{background:var(--primary-soft);}
+  .sr-title{font-weight:600;font-size:16px;color:var(--text);}
+  .sr-snip{font-size:13.5px;color:var(--muted);margin-top:2px;}
+  .sr-where{font-size:12px;color:var(--primary);margin-top:3px;font-weight:600;}
+  .sr-empty{padding:22px 18px;color:var(--muted);font-size:14.5px;}
+  .sr-foot{padding:8px 18px;border-top:1px solid var(--border);font-size:12.5px;color:var(--muted);}
+  .sr-box mark{background:#fde68a;color:inherit;border-radius:3px;padding:0 1px;}
 </style>
 </head>
 <body>
@@ -489,10 +539,12 @@
       </div>
       <div class="brand-sub">Central de Conteúdo</div>
     </div>
+    <div class="sb-search-wrap"><button type="button" class="sb-search" id="btnSearch">🔎 <span>Buscar em tudo</span> <span class="kbd">Ctrl K</span></button></div>
     <nav class="sidebar-nav" id="tabsNav"></nav>
     <div class="sidebar-footer">
       <span class="sync-line" id="syncLine"></span>
       <button class="btn-ghost" id="btnTabSettings">⚙ Configurar abas</button>
+      <button class="btn-ghost" id="btnTrash">🗑 Lixeira</button>
       <button class="btn-ghost" id="btnSync">🔒 Sincronização</button>
       <button class="btn-ghost" id="btnExport">⬇ Exportar backup</button>
       <button class="btn-ghost" id="btnImport">⬆ Importar backup</button>
@@ -681,6 +733,7 @@ window.MindMapApp = (function(){
       rowB.appendChild(btn('+ Filho', 'Novo ramo dentro do selecionado (Tab)', function(){ addChild(); }));
       rowB.appendChild(btn('+ Irmão', 'Novo ramo ao lado do selecionado (Enter)', function(){ addSibling(); }));
       rowB.appendChild(btn('🗑 Ramo', 'Excluir o ramo selecionado (Delete)', function(){ delSel(); }));
+      rowB.appendChild(btn('🔗 Link', 'Anexar um link (Docs, Drive, Word…) ao ramo selecionado', setLink));
       rowB.appendChild(h('span', 'mm-sep'));
       var colors = h('span', 'mm-colors'); colors.title = 'Cor do ramo selecionado';
       PALETTE.forEach(function(c){
@@ -735,6 +788,12 @@ window.MindMapApp = (function(){
         var tcol = d.depth <= 1 ? '#ffffff' : '#1b2433';
         var t = el('text', { x: d.x + d.w / 2, y: top, 'text-anchor': 'middle', fill: tcol, 'font-size': d.size, 'font-weight': d.weight, 'font-family': FONT, 'pointer-events': 'none' }, g);
         d.lines.forEach(function(line, i){ var ts = el('tspan', { x: d.x + d.w / 2, dy: i === 0 ? (d.hh - d.lines.length * d.lh) / 2 + d.lh * 0.78 : d.lh }, t); ts.textContent = line || ' '; });
+        if(n.link){
+          var lg = el('g', { 'class': 'mm-link', 'data-act': 'link', 'data-id': id }, g); lg.style.cursor = 'pointer';
+          var lt = el('title', null, lg); lt.textContent = n.link;
+          el('circle', { cx: d.x + d.w - 4, cy: top - 2, r: 10, fill: '#fff', stroke: col, 'stroke-width': 2 }, lg);
+          var lx = el('text', { x: d.x + d.w - 4, y: top + 2, 'text-anchor': 'middle', 'font-size': 11, 'font-family': FONT, 'pointer-events': 'none' }, lg); lx.textContent = '🔗';
+        }
         // botão de recolher/expandir
         if(n.children.length){
           var tx = d.dir < 0 ? d.x - 11 : d.x + d.w + 11; if(d.depth === 0) tx = d.x + d.w + 11;
@@ -880,8 +939,25 @@ window.MindMapApp = (function(){
     }
     function deleteMap(){
       var m = curMap(); if(!m) return;
-      if(!confirm('Excluir o mapa "' + m.titulo + '" inteiro? Essa ação não pode ser desfeita.')) return;
-      var list = maps(), i = list.indexOf(m); list.splice(i, 1); opts.save(); activeId = null; selId = null; undo = []; redo = []; fitPending = true; render();
+      if(!confirm(opts.onTrash ? 'Excluir o mapa "' + m.titulo + '" inteiro? Ele vai para a Lixeira e pode ser restaurado.' : 'Excluir o mapa "' + m.titulo + '" inteiro? Essa ação não pode ser desfeita.')) return;
+      var list = maps(), i = list.indexOf(m); list.splice(i, 1); if(opts.onTrash) opts.onTrash(m); opts.save(); activeId = null; selId = null; undo = []; redo = []; fitPending = true; render();
+    }
+    function normLink(u){ u = (u || '').trim(); if(!u) return ''; if(!/^[a-z][a-z0-9+.-]*:/i.test(u)) u = 'https://' + u; return u; }
+    function setLink(){
+      var m = curMap(); if(!m) return; var info = sel(); if(!info) return;
+      var cur = info.node.link || '';
+      var v = prompt('Cole o link deste ramo (Google Docs, pasta do Drive, Word, site…).\nDeixe vazio para remover o link:', cur); if(v === null) return;
+      v = normLink(v); pushUndo(m); if(v) info.node.link = v; else delete info.node.link; commit(m); draw();
+    }
+    function openAt(mapId, nodeId){
+      var m = maps().filter(function(x){ return x.id === mapId; })[0]; if(!m) return;
+      activeId = m.id; undo = []; redo = []; selId = m.root.id; fitPending = true;
+      if(nodeId){
+        var idx = index(m), info = idx[nodeId];
+        if(info){ var p = info.parent; while(p){ p.collapsed = false; var pi = idx[p.id]; p = pi ? pi.parent : null; } selId = nodeId; }
+      }
+      render();
+      if(nodeId){ setTimeout(function(){ if(layoutCache && layoutCache.L[selId]) reveal(selId); }, 120); }
     }
     function moveNode(m, id, targetId, zone, px){
       var idx = index(m), a = idx[id], t = idx[targetId]; if(!a || !t || a.depth === 0) return false;
@@ -916,6 +992,7 @@ window.MindMapApp = (function(){
         var tgt = ev.target.closest ? ev.target.closest('[data-act],.mm-node') : null;
         var act = tgt && tgt.getAttribute('data-act'), nodeG = ev.target.closest ? ev.target.closest('.mm-node') : null;
         if(act === 'tog'){ ev.preventDefault(); toggle(tgt.getAttribute('data-id')); return; }
+        if(act === 'link'){ ev.preventDefault(); var li = index(curMap())[tgt.getAttribute('data-id')]; if(li && li.node.link) window.open(li.node.link, '_blank', 'noopener'); return; }
         if(act === 'add'){ ev.preventDefault(); selId = tgt.getAttribute('data-id'); addChild(); return; }
         if(nodeG){
           var id = nodeG.getAttribute('data-id');
@@ -1010,7 +1087,7 @@ window.MindMapApp = (function(){
       draw();
       if(fitPending){ requestAnimationFrame(function(){ if(ui.wrap.clientWidth){ fit(); fitPending = false; } }); }
     }
-    return { render: render, fit: fit };
+    return { render: render, fit: fit, open: openAt };
   }
   return { create: create };
 })();
@@ -1087,6 +1164,8 @@ window.MindMapApp = (function(){
       statusLabels: {},
       customStatusOptions: {},
       tabSubtitleOverrides: {},
+      biblioteca: [],
+      trash: [],
       ideiasPosts: [{id:uid(), titulo:'[Exemplo] Ideia de post', texto:'Anote aqui ideias soltas de posts para desenvolver depois, antes de virarem um post de verdade no calendário.'}],
       ideiasStories: [{id:uid(), titulo:'[Exemplo] Ideia de story', texto:'Anote aqui ideias soltas de stories para desenvolver depois.'}]
     };
@@ -1833,6 +1912,15 @@ window.MindMapApp = (function(){
         {key:'tipo', label:'Tipo', type:'select', options:['Mudo','Falado','Ambos']}
       ]
     },
+    biblioteca: {
+      label:'Link', plural:'links',
+      fields:[
+        {key:'titulo', label:'Nome', type:'text', required:true},
+        {key:'url', label:'Link (Docs, pasta do Drive, Word, site…)', type:'url', required:true},
+        {key:'categoria', label:'Pasta / categoria (ex.: Modelos de petição)', type:'text'},
+        {key:'notes', label:'Observações', type:'textarea'}
+      ]
+    },
     cronogramaAulas: {
       label:'Aula', plural:'aulas',
       fields:[
@@ -1867,7 +1955,8 @@ window.MindMapApp = (function(){
     {id:'reposts', label:'Reposts', icon:'🔁'},
     {id:'ganchos', label:'Ganchos', icon:'🪝'},
     {id:'tudoquesei', label:'Tudo que sei', icon:'🧠'},
-    {id:'mapa', label:'Mapa mental', icon:'🗺️'}
+    {id:'mapa', label:'Mapa mental', icon:'🗺️'},
+    {id:'biblioteca', label:'Biblioteca de links', icon:'🔗'}
   ];
 
   var TQS_SUBTABS = [
@@ -2007,7 +2096,8 @@ window.MindMapApp = (function(){
     opts = opts || {};
     var t = getCustomTab(id);
     if(!t) return false;
-    if(!opts.skipConfirm && !confirm('Excluir "'+getTabLabel(t)+'"? Todo o conteúdo salvo nela também será apagado.')) return false;
+    if(!opts.skipConfirm && !confirm('Excluir "'+getTabLabel(t)+'"? O conteúdo dela vai para a Lixeira e pode ser restaurado por 30 dias.')) return false;
+    trashPush({kind:'aba', tab:t, items:(state.data[id]||[]), label:getTabLabel(t), overrides:{label:(state.data.tabLabelOverrides||{})[id], icon:(state.data.tabIconOverrides||{})[id], subtitle:(state.data.tabSubtitleOverrides||{})[id]}});
     childTabsOf(id).forEach(function(child){ setTabParent(child.id, null); });
     state.data.customTabs = (state.data.customTabs||[]).filter(function(c){ return c.id!==id; });
     delete state.data[id];
@@ -2279,7 +2369,7 @@ window.MindMapApp = (function(){
         });
       } else {
         input = document.createElement('input');
-        input.type = f.type==='url' ? 'url' : (f.type==='date' ? 'date' : 'text');
+        input.type = f.type==='date' ? 'date' : 'text'; if(f.type==='url') input.placeholder = 'https://…';
         input.value = initial[f.key] || '';
       }
       input.name = f.key;
@@ -2289,12 +2379,14 @@ window.MindMapApp = (function(){
       form.appendChild(wrap);
     });
 
+    var lkEd = null;
+    if(opts.collection && opts.collection!=='biblioteca'){ lkEd = lkEditor(initial.links); form.appendChild(lkEd.node); }
     var actions = el('div', {class:'modal-actions'});
     var leftActions = el('div', {style:'display:flex;gap:8px;'});
     if(opts.onDelete){
       var delBtn = el('button', {type:'button', class:'btn-secondary', style:'color:var(--danger);border-color:#e8c9c4;'}, [text('span',null,'Excluir')]);
       delBtn.addEventListener('click', function(){
-        if(confirm('Excluir este item? Essa ação não pode ser desfeita.')){
+        if(confirm('Excluir este item? Ele vai para a Lixeira e pode ser restaurado por 30 dias.')){
           opts.onDelete();
           closeModal();
         }
@@ -2317,10 +2409,12 @@ window.MindMapApp = (function(){
       var ok = true;
       schema.fields.forEach(function(f){
         var v = inputs[f.key].value.trim();
+        if(f.type==='url') v = lkNorm(v);
         if(f.required && !v) ok = false;
         out[f.key] = v;
       });
       if(!ok){ toast('Preencha os campos obrigatórios.'); return; }
+      if(lkEd){ var lks = lkEd.get(); if(lks.length) out.links = lks; }
       opts.onSave(out);
       closeModal();
     });
@@ -2345,8 +2439,11 @@ window.MindMapApp = (function(){
     if(idx>-1){ data.id = id; arr[idx] = data; saveState(); }
   }
   function deleteItem(collection, id){
+    var it = state.data[collection].filter(function(i){ return i.id===id; })[0];
+    var tid = it ? trashItem(collection, it) : null;
     state.data[collection] = state.data[collection].filter(function(i){ return i.id!==id; });
-    saveState();
+    saveState(); updateTrashBtn();
+    return tid;
   }
 
   function openAddModal(collection, prefill){
@@ -2376,8 +2473,9 @@ window.MindMapApp = (function(){
         renderApp();
       },
       onDelete: function(){
-        deleteItem(collection, item.id);
-        toast(schema.label + ' excluído.');
+        var tid = deleteItem(collection, item.id);
+        if(tid) toastUndo(schema.label + ' excluído.', function(){ if(trashRestore(tid)){ updateTrashBtn(); renderApp(); } });
+        else toast(schema.label + ' excluído.');
         renderApp();
       }
     });
@@ -2428,6 +2526,7 @@ window.MindMapApp = (function(){
           row.appendChild(statusBadgeEl(it.status));
           row.style.borderLeft = '6px solid ' + statusHex(it.status);
         }
+        var lkc3 = lkChips(it); if(lkc3){ lkc3.style.flexBasis='100%'; row.appendChild(lkc3); }
         row.addEventListener('click', function(item){ return function(){ closeModal(); openEditModal(collection, item); }; }(it));
         list.appendChild(row);
       });
@@ -2534,7 +2633,7 @@ window.MindMapApp = (function(){
 
         var dayItems = items.filter(function(it){ return it.date===cellISO; });
         dayItems.slice(0,4).forEach(function(it){
-          var chip = el('button', {class:'cal-chip'}, [document.createTextNode(it.tema || it.titulo || it.referencia || it.texto || '(sem título)')]);
+          var chip = el('button', {class:'cal-chip'}, [document.createTextNode((lkList(it).length?'🔗 ':'') + (it.tema || it.titulo || it.referencia || it.texto || '(sem título)'))]);
           paintChip(chip, it.status);
           chip.title = (it.tema || it.titulo || it.referencia || it.texto || '') + (it.status ? ' — ' + statusLabel(it.status) : '');
           chip.addEventListener('click', function(item){ return function(e){ e.stopPropagation(); openEditModal(collection, item); }; }(it));
@@ -2562,7 +2661,7 @@ window.MindMapApp = (function(){
         dItems.forEach(function(it){
           var row = el('div', {class:'cal-week-item'+(it.status?' colored':'')});
           if(it.status){ row.style.background = statusHex(it.status); row.style.color = readableOn(statusHex(it.status)); }
-          row.appendChild(text('div','wi-title', it.tema || it.titulo || it.referencia || (it.texto||'').slice(0,40) || '(sem título)'));
+          row.appendChild(text('div','wi-title', (lkList(it).length?'🔗 ':'') + (it.tema || it.titulo || it.referencia || (it.texto||'').slice(0,40) || '(sem título)')));
           var metaParts = [];
           if(it.plataforma) metaParts.push(it.plataforma);
           if(it.status) metaParts.push(statusLabel(it.status));
@@ -2703,6 +2802,7 @@ window.MindMapApp = (function(){
         } else if(bodyText && !it.titulo){
           // já mostrado como título (ex: ganchos usam texto como título)
         }
+        var lkc = lkChips(it); if(lkc) card.appendChild(lkc);
 
         if(collection==='reposts'){
           var extra = el('div', {style:'margin-top:8px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;'});
@@ -2766,6 +2866,7 @@ window.MindMapApp = (function(){
         right.appendChild(editBtn);
         top.appendChild(right);
         card.appendChild(top);
+        var lkc2 = lkChips(it); if(lkc2) card.appendChild(lkc2);
         list.appendChild(card);
       });
     }
@@ -2897,7 +2998,8 @@ window.MindMapApp = (function(){
       {id:'reposts', icon:'🔁', label:L('reposts','Reposts'), total:(state.data.reposts||[]).length, sub:repostsPendentes+' pendente'+(repostsPendentes===1?'':'s')},
       {id:'ganchos', icon:'🪝', label:L('ganchos','Ganchos'), total:(state.data.ganchos||[]).length, sub:'salvos'},
       {id:'tudoquesei', icon:'🧠', label:L('tudoquesei','Tudo que sei'), total:tqsTotal, sub:'anotações'},
-      {id:'mapa', icon:'🗺️', label:L('mapa','Mapa mental'), total:(state.data.mapas||[]).length, sub:'mapas'}
+      {id:'mapa', icon:'🗺️', label:L('mapa','Mapa mental'), total:(state.data.mapas||[]).length, sub:'mapas'},
+      {id:'biblioteca', icon:'🔗', label:L('biblioteca','Biblioteca de links'), total:(state.data.biblioteca||[]).length, sub:'links salvos'}
     ];
     (state.data.customTabs||[]).forEach(function(ct){
       cards.push({id:ct.id, icon:ct.icon||'💡', label:getTabLabel(ct), total:(state.data[ct.id]||[]).length, sub:'ideias'});
@@ -2924,6 +3026,7 @@ window.MindMapApp = (function(){
     root: mmRoot,
     getMaps: function(){ if(!Array.isArray(state.data.mapas)) state.data.mapas = []; return state.data.mapas; },
     save: function(){ saveState(); },
+    onTrash: function(m){ trashPush({kind:'mapa', map:m, label:m.titulo||'Mapa'}); updateTrashBtn(); },
     btnClasses: { normal:'btn-secondary mm-btn', primary:'btn-primary mm-btn', danger:'btn-secondary mm-btn mm-danger' }
   });
   function renderMapaTab(container){
@@ -2974,6 +3077,8 @@ window.MindMapApp = (function(){
       renderTudoQueSeiTab(container);
     } else if(tabId==='mapa'){
       renderMapaTab(container);
+    } else if(tabId==='biblioteca'){
+      renderBibliotecaTab(container);
     } else {
       var customTab = getCustomTab(tabId);
       if(customTab){
@@ -3101,6 +3206,7 @@ window.MindMapApp = (function(){
 
   function renderApp(){
     renderTabsNav();
+    trashPurge(); updateTrashBtn();
     var app = document.getElementById('app');
     app.innerHTML = '';
     renderTabContent(app, state.tab);
@@ -3168,6 +3274,397 @@ window.MindMapApp = (function(){
   document.getElementById('sidebarToggleBtn').addEventListener('click', openSidebarMobile);
   document.getElementById('sidebarCloseBtn').addEventListener('click', closeSidebarMobile);
   document.getElementById('sidebarBackdrop').addEventListener('click', closeSidebarMobile);
+
+  /* =========================================================
+     Links nos itens · Biblioteca de links · Lixeira · Busca (Ctrl+K)
+  ========================================================= */
+  function lkNorm(u){ u = String(u||'').trim(); if(!u) return ''; if(!/^[a-z][a-z0-9+.-]*:/i.test(u)) u = 'https://'+u; return u; }
+  function lkKind(url){
+    var l = String(url||'').toLowerCase(), host = '';
+    try{ host = new URL(url).hostname.replace(/^www\./,''); }catch(e){}
+    if(/docs\.google\.com\/document/.test(l)) return {ico:'📄', label:'Google Docs'};
+    if(/docs\.google\.com\/spreadsheets/.test(l)) return {ico:'📊', label:'Google Planilhas'};
+    if(/docs\.google\.com\/presentation/.test(l)) return {ico:'📽️', label:'Google Slides'};
+    if(/docs\.google\.com\/forms|forms\.gle/.test(l)) return {ico:'📝', label:'Google Forms'};
+    if(/drive\.google\.com\/.*folders/.test(l)) return {ico:'📁', label:'Pasta do Drive'};
+    if(/drive\.google\.com|docs\.google\.com/.test(l)) return {ico:'📎', label:'Arquivo no Drive'};
+    if(/1drv\.ms|onedrive\.live\.com|sharepoint\.com/.test(l)) return {ico:'☁️', label:/:w:|\.docx?(\?|#|$)/.test(l) ? 'Word (OneDrive)' : 'OneDrive'};
+    if(/dropbox\.com/.test(l)) return {ico:'📦', label:'Dropbox'};
+    if(/notion\.(so|site)/.test(l)) return {ico:'🗒️', label:'Notion'};
+    if(/youtube\.com|youtu\.be/.test(l)) return {ico:'▶️', label:'YouTube'};
+    if(/instagram\.com/.test(l)) return {ico:'📷', label:'Instagram'};
+    if(/tiktok\.com/.test(l)) return {ico:'🎵', label:'TikTok'};
+    if(/canva\.com/.test(l)) return {ico:'🎨', label:'Canva'};
+    if(/\.pdf(\?|#|$)/.test(l)) return {ico:'📕', label:'PDF'};
+    if(/\.docx?(\?|#|$)/.test(l)) return {ico:'📝', label:'Word'};
+    if(/\.xlsx?(\?|#|$)/.test(l)) return {ico:'📊', label:'Excel'};
+    if(/\.pptx?(\?|#|$)/.test(l)) return {ico:'📽️', label:'PowerPoint'};
+    return {ico:'🔗', label: host || 'Link'};
+  }
+  function lkList(item){
+    return (item && Array.isArray(item.links) ? item.links : []).filter(function(l){ return l && l.url; });
+  }
+  function lkChip(l){
+    var k = lkKind(l.url);
+    var a = el('a', {class:'lk-chip', href:l.url, target:'_blank', rel:'noopener noreferrer', title:l.url}, [
+      el('span', {class:'lk-ico'}, [document.createTextNode(k.ico)]),
+      el('span', {class:'lk-name'}, [document.createTextNode(l.nome || k.label)]),
+      el('span', {class:'lk-out'}, [document.createTextNode('↗')])
+    ]);
+    a.addEventListener('click', function(e){ e.stopPropagation(); });
+    return a;
+  }
+  function lkChips(item){
+    var ls = lkList(item); if(!ls.length) return null;
+    var row = el('div', {class:'lk-row'});
+    ls.forEach(function(l){ row.appendChild(lkChip(l)); });
+    return row;
+  }
+  function lkEditor(initial){
+    var wrap = el('div', {class:'field lk-editor'});
+    wrap.appendChild(text('label', null, '🔗 Links e documentos'));
+    wrap.appendChild(text('div', 'lk-help', 'Cole o link do Google Docs, pasta do Drive, Word no OneDrive, PDF, vídeo… (o arquivo precisa estar na nuvem).'));
+    var rows = el('div', {class:'lk-rows'});
+    wrap.appendChild(rows);
+    function addRow(l){
+      l = l || {};
+      var r = el('div', {class:'lk-edit-row'});
+      var n = document.createElement('input'); n.type='text'; n.placeholder='Nome'; n.className='lk-in-name'; n.value = l.nome || '';
+      var u = document.createElement('input'); u.type='text'; u.placeholder='Cole o link aqui'; u.className='lk-in-url'; u.value = l.url || '';
+      var x = el('button', {type:'button', class:'lk-del', title:'Remover link'}, [document.createTextNode('✕')]);
+      x.addEventListener('click', function(){ rows.removeChild(r); });
+      r.appendChild(n); r.appendChild(u); r.appendChild(x);
+      rows.appendChild(r);
+      return u;
+    }
+    lkList({links:initial}).forEach(addRow);
+    var add = el('button', {type:'button', class:'btn-secondary lk-add'}, [document.createTextNode('+ Adicionar link')]);
+    add.addEventListener('click', function(){ addRow().focus(); });
+    wrap.appendChild(add);
+    return { node: wrap, get: function(){
+      var out = [];
+      [].slice.call(rows.children).forEach(function(r){
+        var url = lkNorm(r.querySelector('.lk-in-url').value);
+        if(url) out.push({nome: r.querySelector('.lk-in-name').value.trim(), url: url});
+      });
+      return out;
+    } };
+  }
+
+  /* ---------- Lixeira ---------- */
+  var TRASH_DAYS = 30;
+  function trashList(){ if(!Array.isArray(state.data.trash)) state.data.trash = []; return state.data.trash; }
+  function trashPurge(){
+    var lim = Date.now() - TRASH_DAYS*86400000, t = trashList();
+    var keep = t.filter(function(e){ return (e.deletedAt||0) >= lim; });
+    if(keep.length !== t.length) state.data.trash = keep;
+  }
+  function trashPush(entry){
+    entry.id = uid(); entry.deletedAt = Date.now();
+    var t = trashList(); t.unshift(entry); if(t.length > 300) t.length = 300;
+    return entry.id;
+  }
+  function itemTitle(it){
+    return it.tema || it.titulo || it.referencia || (it.texto ? String(it.texto).slice(0,70) : '') || '(sem título)';
+  }
+  var COLL_NAMES = {
+    posts:'Posts', stories:'Stories', teses:'Teses', pautas:'Pautas & Roteiros',
+    formatosLegenda:'Formatos · Modelos de legenda', formatosConteudo:'Formatos · Tipos de conteúdo', formatosVideo:'Formatos · Vídeo',
+    reposts:'Reposts', ganchos:'Ganchos', biblioteca:'Biblioteca de links'
+  };
+  function collName(k){
+    var ct = getCustomTab(k); if(ct) return getTabLabel(ct);
+    if(COLL_NAMES[k]) return COLL_NAMES[k];
+    var s = TQS_SUBTABS.filter(function(x){ return x.id===k; })[0];
+    if(s) return 'Tudo que sei · ' + s.label.replace(/^⭐\s*/,'');
+    return k;
+  }
+  function trashItem(collection, item){
+    return trashPush({kind:'item', collection:collection, item:item, label:itemTitle(item), where:collName(collection)});
+  }
+  function trashRestore(id){
+    var t = trashList(), i = t.map(function(e){ return e.id; }).indexOf(id); if(i<0) return false;
+    var e = t[i];
+    if(e.kind==='item'){
+      if(!Array.isArray(state.data[e.collection])){ toast('A aba de origem não existe mais.'); return false; }
+      if(!state.data[e.collection].some(function(x){ return x.id===e.item.id; })) state.data[e.collection].push(e.item);
+    } else if(e.kind==='mapa'){
+      if(!Array.isArray(state.data.mapas)) state.data.mapas = [];
+      if(!state.data.mapas.some(function(x){ return x.id===e.map.id; })) state.data.mapas.push(e.map);
+    } else if(e.kind==='aba'){
+      if(!getCustomTab(e.tab.id)){
+        state.data.customTabs = (state.data.customTabs||[]).concat([e.tab]);
+        state.data[e.tab.id] = e.items || [];
+        var o = e.overrides || {};
+        if(o.label){ state.data.tabLabelOverrides = state.data.tabLabelOverrides||{}; state.data.tabLabelOverrides[e.tab.id] = o.label; }
+        if(o.icon){ state.data.tabIconOverrides = state.data.tabIconOverrides||{}; state.data.tabIconOverrides[e.tab.id] = o.icon; }
+        if(o.subtitle){ state.data.tabSubtitleOverrides = state.data.tabSubtitleOverrides||{}; state.data.tabSubtitleOverrides[e.tab.id] = o.subtitle; }
+      }
+    }
+    t.splice(i,1); saveState(); return true;
+  }
+  function agoText(ts){
+    var m = Math.round((Date.now()-ts)/60000);
+    if(m < 1) return 'agora há pouco';
+    if(m < 60) return 'há '+m+' min';
+    var h = Math.round(m/60); if(h < 24) return 'há '+h+' h';
+    var d = Math.round(h/24); return 'há '+d+(d===1?' dia':' dias');
+  }
+  function updateTrashBtn(){
+    var b = document.getElementById('btnTrash'); if(!b) return;
+    var n = trashList().length;
+    b.textContent = '🗑 Lixeira' + (n ? ' ('+n+')' : '');
+  }
+  function openTrashModal(){
+    trashPurge();
+    modalBox.innerHTML = ''; modalBox.classList.add('agenda-modal');
+    var wrap = el('div', {class:'tr-wrap'});
+    wrap.appendChild(text('h2', null, '🗑 Lixeira'));
+    wrap.appendChild(text('div', 'panel-sub', 'O que você exclui fica aqui por '+TRASH_DAYS+' dias e pode ser restaurado.'));
+    var list = el('div', {class:'tr-list'});
+    function paint(){
+      list.innerHTML = '';
+      var t = trashList();
+      if(!t.length){ list.appendChild(text('div', 'agenda-empty', 'A lixeira está vazia.')); return; }
+      t.forEach(function(e){
+        var row = el('div', {class:'tr-row'});
+        var info = el('div', {class:'tr-info'});
+        var ico = e.kind==='mapa' ? '🗺️' : e.kind==='aba' ? '📑' : '📄';
+        info.appendChild(text('div', 'tr-title', ico+' '+(e.label||'(sem título)')));
+        var where = e.kind==='mapa' ? 'Mapa mental' : e.kind==='aba' ? 'Aba inteira ('+((e.items||[]).length)+' itens)' : (e.where||'');
+        info.appendChild(text('div', 'tr-meta', where+' · excluído '+agoText(e.deletedAt)));
+        var rest = el('button', {type:'button', class:'btn-primary tr-btn'}, [document.createTextNode('Restaurar')]);
+        rest.addEventListener('click', function(){ if(trashRestore(e.id)){ toast('Restaurado.'); paint(); updateTrashBtn(); renderApp(); } });
+        var del = el('button', {type:'button', class:'btn-secondary tr-btn', title:'Apagar de vez'}, [document.createTextNode('Apagar')]);
+        del.addEventListener('click', function(){
+          if(!confirm('Apagar "'+(e.label||'este item')+'" de vez? Não dá para desfazer.')) return;
+          state.data.trash = trashList().filter(function(x){ return x.id!==e.id; }); saveState(); paint(); updateTrashBtn();
+        });
+        row.appendChild(info); row.appendChild(rest); row.appendChild(del);
+        list.appendChild(row);
+      });
+    }
+    paint();
+    wrap.appendChild(list);
+    var actions = el('div', {class:'modal-actions'});
+    var empty = el('button', {type:'button', class:'btn-secondary', style:'color:var(--danger);border-color:#e8c9c4;'}, [document.createTextNode('Esvaziar lixeira')]);
+    empty.addEventListener('click', function(){
+      if(!trashList().length) return;
+      if(!confirm('Apagar tudo que está na lixeira de vez? Não dá para desfazer.')) return;
+      state.data.trash = []; saveState(); paint(); updateTrashBtn();
+    });
+    var close = el('button', {type:'button', class:'btn-secondary'}, [document.createTextNode('Fechar')]);
+    close.addEventListener('click', closeModal);
+    actions.appendChild(empty); actions.appendChild(close);
+    wrap.appendChild(actions);
+    modalBox.appendChild(wrap); modalOverlay.classList.add('open');
+  }
+  function toastUndo(msg, fn){
+    var t = document.getElementById('toast');
+    t.textContent = msg + ' ';
+    var b = el('button', {type:'button', class:'toast-undo'}, [document.createTextNode('Desfazer')]);
+    b.addEventListener('click', function(){ t.classList.remove('show','act'); fn(); });
+    t.appendChild(b);
+    t.classList.add('show','act');
+    clearTimeout(t._timer);
+    t._timer = setTimeout(function(){ t.classList.remove('show','act'); }, 7000);
+  }
+  document.getElementById('btnTrash').addEventListener('click', openTrashModal);
+
+  /* ---------- Biblioteca de links ---------- */
+  function renderBibliotecaTab(container){
+    if(!Array.isArray(state.data.biblioteca)) state.data.biblioteca = [];
+    var addBtn = el('button', {class:'btn-primary'}, [text('span', null, '+ Novo link')]);
+    addBtn.addEventListener('click', function(){ openAddModal('biblioteca'); });
+    container.appendChild(el('div', {class:'panel-header'}, [
+      el('div', {}, [
+        text('div', 'panel-title', 'Biblioteca de links'),
+        editableSubtitle('biblioteca', 'Pastas e documentos que você usa sempre: Drive, Docs, Word, modelos, materiais do curso')
+      ]),
+      addBtn
+    ]));
+    var toolbar = el('div', {class:'toolbar'});
+    var input = el('input', {class:'search-input', id:'searchInput', type:'text', placeholder:'Buscar na biblioteca…'});
+    input.value = state.bibSearch || '';
+    input.addEventListener('input', function(){
+      var pos = input.selectionStart; state.bibSearch = input.value; renderApp();
+      var ni = document.getElementById('searchInput'); if(ni){ ni.focus(); try{ ni.setSelectionRange(pos,pos); }catch(e){} }
+    });
+    toolbar.appendChild(input); container.appendChild(toolbar);
+    var q = fold(state.bibSearch||'').trim();
+    var items = state.data.biblioteca.filter(function(it){
+      return !q || fold([it.titulo, it.url, it.categoria, it.notes].join(' ')).indexOf(q) > -1;
+    });
+    if(!items.length){
+      container.appendChild(el('div', {class:'empty-state'}, [document.createTextNode(state.data.biblioteca.length ? 'Nada encontrado.' : 'Nenhum link ainda. Clique em "+ Novo link" e cole o endereço de uma pasta, Docs ou arquivo.')]));
+      return;
+    }
+    var groups = {}, order = [];
+    items.forEach(function(it){
+      var g = (it.categoria||'').trim() || 'Sem categoria';
+      if(!groups[g]){ groups[g] = []; order.push(g); }
+      groups[g].push(it);
+    });
+    order.sort(function(a,b){ if(a==='Sem categoria') return 1; if(b==='Sem categoria') return -1; return a.localeCompare(b,'pt-BR'); });
+    order.forEach(function(g){
+      container.appendChild(text('div', 'lib-group', g + ' · ' + groups[g].length));
+      var list = el('div', {class:'card-list'});
+      groups[g].forEach(function(it){
+        var k = lkKind(it.url);
+        var card = el('div', {class:'card lib-card'});
+        var open = el('a', {class:'lib-open', href:it.url, target:'_blank', rel:'noopener noreferrer'}, [
+          el('span', {class:'lib-ico'}, [document.createTextNode(k.ico)]),
+          el('span', {class:'lib-txt'}, [
+            text('span', 'lib-title', it.titulo || it.url),
+            text('span', 'lib-kind', k.label + ' ↗')
+          ])
+        ]);
+        var edit = el('button', {class:'btn-icon', title:'Editar'}, [document.createTextNode('✎')]);
+        edit.addEventListener('click', function(item){ return function(){ openEditModal('biblioteca', item); }; }(it));
+        card.appendChild(open); card.appendChild(edit);
+        if(it.notes){ var nt = text('div', 'lib-notes', it.notes); card.appendChild(nt); }
+        list.appendChild(card);
+      });
+      container.appendChild(list);
+    });
+  }
+
+  /* ---------- Busca global (Ctrl+K) ---------- */
+  function fold(s){
+    s = String(s==null?'':s); var out = '';
+    for(var i=0;i<s.length;i++){ var c = s.charAt(i), f = c.normalize ? c.normalize('NFD').charAt(0) : c; out += f.toLowerCase().length===1 ? f.toLowerCase() : c; }
+    return out;
+  }
+  function searchEntries(){
+    var out = [], d = state.data;
+    Object.keys(d).forEach(function(k){
+      if(k==='trash' || k==='customTabs' || !Array.isArray(d[k])) return;
+      if(k==='mapas'){
+        d.mapas.forEach(function(m){
+          out.push({kind:'mapa', mapId:m.id, title:m.titulo||'Mapa', where:'Mapa mental', fields:[m.titulo||''], link:''});
+          (function walk(n, depth){
+            if(depth>0){
+              out.push({kind:'mapa', mapId:m.id, nodeId:n.id, title:n.text||'', where:'Mapa mental · '+(m.titulo||''), fields:[n.text||'', n.link||''], link:n.link||''});
+            }
+            (n.children||[]).forEach(function(c){ walk(c, depth+1); });
+          })(m.root, 0);
+        });
+        return;
+      }
+      var where = collName(k);
+      d[k].forEach(function(it){
+        var fields = [];
+        Object.keys(it).forEach(function(f){
+          if(f==='id' || f==='links') return;
+          if(typeof it[f]==='string' && it[f]) fields.push(it[f]);
+        });
+        lkList(it).forEach(function(l){ fields.push((l.nome||'')+' '+l.url); });
+        out.push({kind:'item', coll:k, item:it, title:itemTitle(it), where:where, fields:fields, link:'', date:it.date||''});
+      });
+    });
+    return out;
+  }
+  function searchRun(q){
+    var toks = fold(q).split(/\s+/).filter(Boolean);
+    if(!toks.length) return [];
+    var res = [];
+    searchEntries().forEach(function(e){
+      var hayAll = e.fields.map(fold).join(' \u0001 '), ft = fold(e.title);
+      if(!toks.every(function(t){ return hayAll.indexOf(t) > -1; })) return;
+      var score = 0;
+      toks.forEach(function(t){ var p = ft.indexOf(t); if(p > -1) score += (p===0 ? 3 : 2); });
+      e.score = score; res.push(e);
+    });
+    res.sort(function(a,b){ return b.score - a.score; });
+    return res;
+  }
+  function snippetEl(e, toks){
+    var best = '', pos = -1;
+    for(var i=0;i<e.fields.length;i++){
+      var f = e.fields[i]; if(f===e.title) continue;
+      var p = fold(f).indexOf(toks[0]);
+      if(p > -1){ best = f; pos = p; break; }
+    }
+    if(!best) return null;
+    var start = Math.max(0, pos-30), s = (start>0?'…':'') + best.slice(start, start+110).replace(/\s+/g,' ') + (best.length>start+110?'…':'');
+    return hl(s, toks);
+  }
+  function hl(s, toks){
+    var span = document.createElement('span'), fs = fold(s), i = 0, marks = [];
+    toks.forEach(function(t){ var p = fs.indexOf(t); while(p > -1){ marks.push([p, p+t.length]); p = fs.indexOf(t, p+t.length); } });
+    marks.sort(function(a,b){ return a[0]-b[0]; });
+    var merged = [];
+    marks.forEach(function(m){ var l = merged[merged.length-1]; if(l && m[0] <= l[1]) l[1] = Math.max(l[1], m[1]); else merged.push(m.slice()); });
+    merged.forEach(function(m){
+      if(m[0] > i) span.appendChild(document.createTextNode(s.slice(i, m[0])));
+      var mk = document.createElement('mark'); mk.textContent = s.slice(m[0], m[1]); span.appendChild(mk); i = m[1];
+    });
+    if(i < s.length) span.appendChild(document.createTextNode(s.slice(i)));
+    return span;
+  }
+  function goToEntry(e){
+    if(e.kind==='mapa'){
+      state.tab = 'mapa'; renderApp(); mmApp.open(e.mapId, e.nodeId); return;
+    }
+    var k = e.coll;
+    if(k==='biblioteca') state.tab = 'biblioteca';
+    else if(k==='posts' || k==='stories'){ state.tab = k; if(e.date && state.cal[k]) state.cal[k].viewDate = e.date; }
+    else if(k==='teses' || k==='pautas' || k==='reposts' || k==='ganchos') state.tab = k;
+    else if(/^formatos/.test(k)){ state.tab = 'formatos'; state.formatosSub = k; }
+    else if(k==='cronogramaAulas' || /^ts[A-Z]/.test(k)){ state.tab = 'tudoquesei'; state.tqsSub = k; }
+    else if(getCustomTab(k)) state.tab = k;
+    renderApp();
+    openEditModal(k, e.item);
+  }
+  var srOv = null;
+  function closeSearch(){ if(srOv){ srOv.remove(); srOv = null; } }
+  function openSearch(){
+    if(srOv){ srOv.querySelector('input').focus(); return; }
+    closeModal();
+    var ov = el('div', {class:'sr-overlay'});
+    var box = el('div', {class:'sr-box'});
+    var inp = document.createElement('input'); inp.type = 'text'; inp.className = 'sr-input'; inp.placeholder = 'Buscar em tudo: posts, teses, pautas, links, mapas…';
+    var list = el('div', {class:'sr-list'});
+    var foot = text('div', 'sr-foot', '↑ ↓ navegar · Enter abrir · Esc fechar');
+    box.appendChild(inp); box.appendChild(list); box.appendChild(foot); ov.appendChild(box);
+    document.body.appendChild(ov); srOv = ov;
+    var results = [], cur = 0;
+    function paint(){
+      list.innerHTML = '';
+      var q = inp.value.trim();
+      if(!q){ list.appendChild(text('div', 'sr-empty', 'Digite para buscar. A busca olha títulos, textos, notas, links e os ramos dos mapas mentais.')); return; }
+      var toks = fold(q).split(/\s+/).filter(Boolean);
+      results = searchRun(q);
+      if(!results.length){ list.appendChild(text('div', 'sr-empty', 'Nada encontrado para "'+q+'".')); return; }
+      if(cur >= results.length) cur = 0;
+      results.slice(0, 40).forEach(function(r, i){
+        var row = el('div', {class:'sr-row'+(i===cur?' on':'')});
+        var t = el('div', {class:'sr-title'}); t.appendChild(hl(r.title, toks));
+        if(r.link || (r.kind==='item' && lkList(r.item).length)) t.appendChild(text('span', 'sr-lk', ' 🔗'));
+        row.appendChild(t);
+        var sn = snippetEl(r, toks); if(sn){ var sd = el('div', {class:'sr-snip'}); sd.appendChild(sn); row.appendChild(sd); }
+        row.appendChild(text('div', 'sr-where', r.where));
+        row.addEventListener('mousemove', function(){ if(cur!==i){ cur = i; [].slice.call(list.children).forEach(function(c, j){ c.classList.toggle('on', j===i); }); } });
+        row.addEventListener('click', function(){ closeSearch(); goToEntry(r); });
+        list.appendChild(row);
+      });
+      if(results.length > 40) list.appendChild(text('div', 'sr-empty', '+ '+(results.length-40)+' resultados — refine a busca.'));
+    }
+    inp.addEventListener('input', function(){ cur = 0; paint(); });
+    inp.addEventListener('keydown', function(e){
+      var n = Math.min(results.length, 40);
+      if(e.key==='ArrowDown'){ e.preventDefault(); if(n){ cur = (cur+1)%n; paint(); var o = list.querySelector('.on'); if(o) o.scrollIntoView({block:'nearest'}); } }
+      else if(e.key==='ArrowUp'){ e.preventDefault(); if(n){ cur = (cur-1+n)%n; paint(); var o2 = list.querySelector('.on'); if(o2) o2.scrollIntoView({block:'nearest'}); } }
+      else if(e.key==='Enter'){ e.preventDefault(); if(results[cur]){ var r = results[cur]; closeSearch(); goToEntry(r); } }
+      else if(e.key==='Escape'){ e.preventDefault(); closeSearch(); }
+    });
+    ov.addEventListener('mousedown', function(e){ if(e.target===ov) closeSearch(); });
+    paint(); inp.focus();
+  }
+  document.addEventListener('keydown', function(e){
+    if((e.ctrlKey || e.metaKey) && !e.altKey && (e.key==='k' || e.key==='K')){ e.preventDefault(); srOv ? closeSearch() : openSearch(); }
+  });
+  document.getElementById('btnSearch').addEventListener('click', openSearch);
 
   /* ---------------------------------------------------------
      Início
