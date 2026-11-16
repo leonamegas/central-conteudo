@@ -523,6 +523,32 @@
   .sr-empty{padding:22px 18px;color:var(--muted);font-size:14.5px;}
   .sr-foot{padding:8px 18px;border-top:1px solid var(--border);font-size:12.5px;color:var(--muted);}
   .sr-box mark{background:#fde68a;color:inherit;border-radius:3px;padding:0 1px;}
+
+  /* ===== Cards em grade (tópicos de lista) ===== */
+  main{max-width:none !important;padding-left:30px;padding-right:30px;}
+  .panel-title{font-size:34px !important;}
+  .panel-header .btn-primary, .panel-header .btn-secondary{font-size:20px;padding:12px 22px;}
+  .subtabs{gap:10px;margin-bottom:20px;}
+  .subtabs .btn-secondary, .filter-pills .btn-secondary{font-size:21px;padding:11px 22px;}
+  .search-input{font-size:21px;padding:13px 18px;}
+  .card-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(400px,1fr));gap:20px;align-items:stretch;}
+  .card-list > .empty-state{grid-column:1/-1;}
+  .card{position:relative;padding:26px 26px 46px;min-height:160px;border-radius:14px;}
+  .card.lib-card{min-height:0;padding:22px 26px;}
+  .card-title{font-size:25px;line-height:1.35;}
+  .card-meta{font-size:19.5px;margin-top:5px;}
+  .card-body{font-size:21.5px;margin-top:12px;line-height:1.45;}
+  .card .badge{font-size:17px;padding:4px 13px;}
+  .cc-card{cursor:pointer;transition:border-color .12s;}
+  .cc-card:hover{border-color:var(--primary);}
+  .cc-grip{position:absolute;right:14px;bottom:10px;font-size:28px;line-height:1;color:var(--muted);opacity:.55;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none;}
+  .cc-card:hover .cc-grip{opacity:1;}
+  .cc-card.dragging{opacity:.35;}
+  .cc-before-x{box-shadow:-9px 0 0 0 var(--primary);} .cc-after-x{box-shadow:9px 0 0 0 var(--primary);}
+  .cc-before-y{box-shadow:0 -9px 0 0 var(--primary);} .cc-after-y{box-shadow:0 9px 0 0 var(--primary);}
+  .cc-ghost{position:fixed;z-index:400;pointer-events:none;opacity:.95;box-shadow:0 12px 28px rgba(0,0,0,.28);transform:rotate(1.5deg);margin:0;}
+  body.cc-dragging, body.cc-dragging *{cursor:grabbing !important;user-select:none !important;}
+  @media (max-width:700px){ .card-list{grid-template-columns:1fr;} main{padding-left:16px;padding-right:16px;} }
 </style>
 </head>
 <body>
@@ -2828,6 +2854,7 @@ window.MindMapApp = (function(){
           card.appendChild(extra);
         }
 
+        ccMakeCard(card, collection, it);
         list.appendChild(card);
       });
     }
@@ -2875,10 +2902,93 @@ window.MindMapApp = (function(){
         top.appendChild(right);
         card.appendChild(top);
         var lkc2 = lkChips(it); if(lkc2) card.appendChild(lkc2);
+        ccMakeCard(card, 'ganchos', it);
         list.appendChild(card);
       });
     }
     container.appendChild(list);
+  }
+
+  /* ---------- Cards em grade: clicar abre, arrastar muda a ordem ---------- */
+  var ccDrag = null, ccSuppress = false;
+  function ccMakeCard(card, collection, item){
+    card.dataset.id = item.id; card.classList.add('cc-card');
+    var grip = el('span', {class:'cc-grip', title:'Arraste para mudar de lugar'}, [document.createTextNode('⠿')]);
+    card.appendChild(grip);
+    card.addEventListener('click', function(e){
+      if(ccSuppress) return;
+      if(e.target.closest && e.target.closest('a,button,input,select,textarea')) return;
+      openEditModal(collection, item);
+    });
+    card.addEventListener('pointerdown', function(e){ ccPtrDown(e, card, collection, item.id); });
+  }
+  function ccPtrDown(e, card, collection, id){
+    if(ccDrag) return;
+    if(e.pointerType==='mouse' && e.button!==0) return;
+    if(e.target.closest && e.target.closest('a,button,input,select,textarea')) return;
+    if(e.pointerType!=='mouse' && !(e.target.closest && e.target.closest('.cc-grip'))) return; // no toque, só pela alça
+    ccDrag = {id:id, collection:collection, card:card, list:card.parentNode, sx:e.clientX, sy:e.clientY, started:false, ghost:null, target:null, pos:'after', axis:'x'};
+    document.addEventListener('pointermove', ccPtrMove);
+    document.addEventListener('pointerup', ccPtrUp);
+    document.addEventListener('pointercancel', ccPtrCancel);
+    document.addEventListener('keydown', ccPtrKey);
+  }
+  function ccPtrKey(e){ if(e.key==='Escape') ccPtrCancel(); }
+  function ccClearMarks(){
+    ['cc-before-x','cc-after-x','cc-before-y','cc-after-y'].forEach(function(c){
+      [].slice.call(document.querySelectorAll('.'+c)).forEach(function(n){ n.classList.remove(c); });
+    });
+  }
+  function ccPtrEnd(){
+    document.removeEventListener('pointermove', ccPtrMove); document.removeEventListener('pointerup', ccPtrUp);
+    document.removeEventListener('pointercancel', ccPtrCancel); document.removeEventListener('keydown', ccPtrKey);
+    if(ccDrag){ if(ccDrag.ghost) ccDrag.ghost.remove(); ccDrag.card.classList.remove('dragging'); }
+    document.body.classList.remove('cc-dragging'); ccClearMarks(); ccDrag = null;
+  }
+  function ccPtrCancel(){ if(ccDrag && ccDrag.started){ ccSuppress = true; setTimeout(function(){ ccSuppress = false; }, 0); } ccPtrEnd(); }
+  function ccPtrMove(e){
+    var d = ccDrag; if(!d) return;
+    if(!d.started){
+      if(Math.abs(e.clientX-d.sx)+Math.abs(e.clientY-d.sy) < 7) return;
+      d.started = true;
+      var r = d.card.getBoundingClientRect();
+      d.ox = d.sx - r.left; d.oy = d.sy - r.top;
+      var g = d.card.cloneNode(true); g.classList.add('cc-ghost'); g.classList.remove('dragging');
+      g.style.width = r.width + 'px'; document.body.appendChild(g); d.ghost = g;
+      d.card.classList.add('dragging'); document.body.classList.add('cc-dragging');
+      try{ window.getSelection().removeAllRanges(); }catch(x){}
+    }
+    e.preventDefault();
+    d.ghost.style.left = (e.clientX-d.ox)+'px'; d.ghost.style.top = (e.clientY-d.oy)+'px';
+    if(e.clientY > window.innerHeight-70) window.scrollBy(0,16); else if(e.clientY < 70) window.scrollBy(0,-16);
+    ccClearMarks();
+    var cards = [].slice.call(d.list.querySelectorAll('.cc-card')).filter(function(c){ return c!==d.card; });
+    d.target = null; if(!cards.length) return;
+    var lefts = {}; cards.forEach(function(c){ lefts[Math.round(c.getBoundingClientRect().left/10)] = 1; });
+    d.axis = Object.keys(lefts).length > 1 ? 'x' : 'y';
+    var best = null, bestD = 1e12;
+    cards.forEach(function(c){
+      var rr = c.getBoundingClientRect(), cx = rr.left+rr.width/2, cy = rr.top+rr.height/2;
+      var dx = e.clientX-cx, dy = e.clientY-cy, dist = dx*dx+dy*dy;
+      if(dist < bestD){ bestD = dist; best = {c:c, dx:dx, dy:dy}; }
+    });
+    d.target = best.c;
+    d.pos = (d.axis==='x' ? best.dx<0 : best.dy<0) ? 'before' : 'after';
+    best.c.classList.add('cc-'+d.pos+'-'+d.axis);
+  }
+  function ccPtrUp(){
+    var d = ccDrag; if(!d) return;
+    var moved = d.started, target = d.target, pos = d.pos, id = d.id, coll = d.collection;
+    ccPtrEnd();
+    if(!moved) return;
+    ccSuppress = true; setTimeout(function(){ ccSuppress = false; }, 0);
+    if(!target) return;
+    var arr = state.data[coll], tid = target.dataset.id; if(!arr || tid===id) return;
+    var from = arr.findIndex(function(x){ return x.id===id; }); if(from<0) return;
+    var item = arr.splice(from,1)[0];
+    var ti = arr.findIndex(function(x){ return x.id===tid; });
+    if(ti<0){ arr.push(item); } else { arr.splice(pos==='before' ? ti : ti+1, 0, item); }
+    saveState(); renderApp();
   }
 
   // Barra de subtópicos com opção de acrescentar/renomear/remover subtópicos personalizados.
