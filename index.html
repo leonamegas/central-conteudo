@@ -549,6 +549,42 @@
   .cc-ghost{position:fixed;z-index:400;pointer-events:none;opacity:.95;box-shadow:0 12px 28px rgba(0,0,0,.28);transform:rotate(1.5deg);margin:0;}
   body.cc-dragging, body.cc-dragging *{cursor:grabbing !important;user-select:none !important;}
   @media (max-width:700px){ .card-list{grid-template-columns:1fr;} main{padding-left:16px;padding-right:16px;} }
+
+  /* ===== Quadro (colunas/subtópicos) ===== */
+  .cc-board{display:flex;gap:14px;align-items:stretch;overflow-x:auto;padding-bottom:16px;}
+  .cc-col{position:relative;flex:1 1 0;min-width:250px;background:var(--border-soft,#eef0f4);border:1px solid var(--border);border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:10px;min-height:42vh;}
+  .cc-col.cc-colored{border-top:6px solid var(--cc);background:color-mix(in srgb, var(--cc) 11%, var(--border-soft,#eef0f4));}
+  .cc-col.cc-over{box-shadow:0 0 0 2px var(--primary);}
+  .cc-col-head{display:flex;align-items:center;gap:6px;}
+  .cc-col-title{flex:1;min-width:0;resize:none;overflow:hidden;line-height:1.25;border:1px solid transparent !important;background:transparent !important;font-weight:650;font-size:20px;padding:5px 7px !important;border-radius:7px;font-family:inherit;color:var(--text);}
+  .cc-col-head{align-items:flex-start;}
+  .cc-col-title:hover{border-color:var(--border) !important;background:var(--surface) !important;}
+  .cc-count{color:var(--muted);font-size:16px;padding:0 4px;}
+  .cc-tools{position:absolute;right:8px;top:8px;display:none;align-items:center;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1px 3px;box-shadow:0 2px 6px rgba(0,0,0,.12);z-index:2;}
+  .cc-col:hover .cc-tools,.cc-col:focus-within .cc-tools{display:inline-flex;}
+  .cc-ico{border:none;background:transparent;cursor:pointer;color:var(--muted);font-size:16px;padding:5px 6px;border-radius:6px;}
+  .cc-ico:hover{background:var(--border-soft);color:var(--text);}
+  .cc-cards{display:flex;flex-direction:column;gap:10px;min-height:14px;}
+  .cc-col .card{padding:14px 14px 38px;min-height:0;border-radius:12px;}
+  .cc-col .card-title{font-size:19px;line-height:1.35;}
+  .cc-col .card-meta{font-size:15.5px;}
+  .cc-col .card-body{font-size:17px;margin-top:8px;}
+  .cc-col .card .badge{font-size:14px;padding:3px 10px;}
+  .cc-col .card-top{flex-wrap:wrap;}
+  .cc-card.cc-colored{border-left:7px solid var(--cc);background:color-mix(in srgb, var(--cc) 9%, var(--surface));}
+  .cc-ctools{position:absolute;right:10px;bottom:8px;display:flex;align-items:center;gap:2px;}
+  .cc-cbtn{border:none;background:transparent;cursor:pointer;font-size:15px;opacity:0;padding:2px 4px;border-radius:6px;}
+  .cc-card:hover .cc-cbtn{opacity:.8;} .cc-cbtn:hover{opacity:1 !important;background:var(--border-soft);}
+  .cc-ctools .cc-grip{position:static;font-size:22px;}
+  .cc-add{width:100%;text-align:left;border:none;background:transparent;color:var(--muted);font:inherit;font-size:17px;padding:10px;border-radius:9px;cursor:pointer;margin-top:auto;}
+  .cc-add:hover{background:var(--surface);color:var(--text);}
+  .cc-newcol{flex:0 0 190px;align-self:flex-start;border:2px dashed var(--border);background:transparent;color:var(--muted);font:inherit;font-size:17px;padding:14px;border-radius:14px;cursor:pointer;}
+  .cc-newcol:hover{background:var(--border-soft);}
+  .cc-pal{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin:8px 0 4px;}
+  .cc-sw{border:3px solid transparent;color:#fff;font:inherit;font-size:18px;font-weight:600;padding:13px 10px;border-radius:10px;cursor:pointer;text-shadow:0 1px 2px rgba(0,0,0,.25);}
+  .cc-sw.on{border-color:var(--text);box-shadow:0 0 0 2px #fff inset;}
+  @media (hover:none){ .cc-tools{display:inline-flex;position:static;box-shadow:none;border:none;background:transparent;} .cc-cbtn{opacity:.7;} }
+  @media (max-width:700px){ .cc-col{flex:0 0 86vw;} }
 </style>
 </head>
 <body>
@@ -2470,7 +2506,7 @@ window.MindMapApp = (function(){
   function updateItem(collection, id, data){
     var arr = state.data[collection];
     var idx = arr.findIndex(function(i){ return i.id===id; });
-    if(idx>-1){ data.id = id; arr[idx] = data; saveState(); }
+    if(idx>-1){ var old = arr[idx]; data.id = id; if(old.col && !data.col) data.col = old.col; if(old.cor && !data.cor) data.cor = old.cor; arr[idx] = data; saveState(); }
   }
   function deleteItem(collection, id){
     var it = state.data[collection].filter(function(i){ return i.id===id; })[0];
@@ -2489,6 +2525,7 @@ window.MindMapApp = (function(){
       initial: prefill || {},
       onSave: function(data){
         addItem(collection, data);
+        if(prefill && prefill.col){ ccAssignCol(collection, data, prefill.col); saveState(); }
         toast(schema.label + ' adicionado.');
         renderApp();
       }
@@ -2804,11 +2841,10 @@ window.MindMapApp = (function(){
       items = items.filter(function(it){ return it[opts.filter.key]===fval || (fval==='Ambos' && it[opts.filter.key]==='Ambos'); });
     }
 
-    var list = el('div', {class:'card-list'});
-    if(!items.length){
-      list.appendChild(el('div', {class:'empty-state'}, [document.createTextNode('Nada por aqui ainda. Clique em "+ Novo '+schema.label+'" para começar.')]));
-    } else {
-      items.forEach(function(it){
+    renderBoard(container, collection, items, function(it){ return listCardEl(collection, it); });
+  }
+
+  function listCardEl(collection, it){
         var card = el('div', {class:'card'});
         var top = el('div', {class:'card-top'});
         var left = el('div', {});
@@ -2855,10 +2891,7 @@ window.MindMapApp = (function(){
         }
 
         ccMakeCard(card, collection, it);
-        list.appendChild(card);
-      });
-    }
-    container.appendChild(list);
+        return card;
   }
 
   // ganchos: texto funciona como título do card
@@ -2875,22 +2908,10 @@ window.MindMapApp = (function(){
       })()
     ]));
 
-    var pills = el('div', {class:'filter-pills', style:'margin-bottom:14px;'});
-    ['Todos','Mudo','Falado','Ambos'].forEach(function(o){
-      var b = el('button', {class:'btn-secondary'+(state.ganchoFilter===o?' active':'')}, [text('span',null,o)]);
-      b.addEventListener('click', function(){ state.ganchoFilter=o; renderApp(); });
-      pills.appendChild(b);
-    });
-    container.appendChild(pills);
+    renderBoard(container, 'ganchos', state.data.ganchos.slice(), ganchoCardEl);
+  }
 
-    var items = state.data.ganchos.slice();
-    if(state.ganchoFilter!=='Todos') items = items.filter(function(it){ return it.tipo===state.ganchoFilter; });
-
-    var list = el('div', {class:'card-list'});
-    if(!items.length){
-      list.appendChild(el('div', {class:'empty-state'}, [document.createTextNode('Nenhum gancho por aqui ainda.')]));
-    } else {
-      items.forEach(function(it){
+  function ganchoCardEl(it){
         var card = el('div', {class:'card'});
         var top = el('div', {class:'card-top'});
         top.appendChild(text('div','card-title', it.texto));
@@ -2903,18 +2924,106 @@ window.MindMapApp = (function(){
         card.appendChild(top);
         var lkc2 = lkChips(it); if(lkc2) card.appendChild(lkc2);
         ccMakeCard(card, 'ganchos', it);
-        list.appendChild(card);
-      });
-    }
-    container.appendChild(list);
+        return card;
   }
 
-  /* ---------- Cards em grade: clicar abre, arrastar muda a ordem ---------- */
+  /* ---------- Quadros de cartões: colunas (subtópicos) com cartões, cores e arrastar ---------- */
+  var CC_CORES = [
+    ['Vermelho','#d64545'],['Laranja','#e8821e'],['Amarelo','#d9a400'],['Verde','#2e9e5b'],['Turquesa','#14a3a3'],
+    ['Azul','#2f6fdb'],['Roxo','#7c4dcc'],['Rosa','#d6459a'],['Marrom','#8a5a3c'],['Cinza','#6b7280']
+  ];
+  // colunas padrão de cada coleção (as demais começam com uma coluna só, que você renomeia/cria outras)
+  var CC_DEFAULT_COLS = {
+    ganchos: [
+      {id:'g_falado', nome:'Ganchos para vídeos falados', match:function(it){ return it.tipo==='Falado'; }, apply:function(it){ it.tipo='Falado'; }},
+      {id:'g_mudo', nome:'Ganchos para vídeos mudos', match:function(it){ return it.tipo==='Mudo'; }, apply:function(it){ it.tipo='Mudo'; }},
+      {id:'g_ambos', nome:'Ambos', match:function(it){ return it.tipo==='Ambos'; }, apply:function(it){ it.tipo='Ambos'; }}
+    ],
+    reposts: [
+      {id:'r_pend', nome:'Pendentes', match:function(it){ return it.status!=='Repostado'; }, apply:function(it){ it.status='Pendente'; }},
+      {id:'r_done', nome:'Repostados', match:function(it){ return it.status==='Repostado'; }, apply:function(it){ it.status='Repostado'; }}
+    ]
+  };
+  function ccDefaultCol(collection, id){
+    return (CC_DEFAULT_COLS[collection]||[]).filter(function(c){ return c.id===id; })[0] || null;
+  }
+  function ccGetCols(collection){
+    var b = state.data.boards = state.data.boards || {};
+    if(!Array.isArray(b[collection]) || !b[collection].length){
+      var d = CC_DEFAULT_COLS[collection];
+      b[collection] = d ? d.map(function(c){ return {id:c.id, nome:c.nome}; }) : [{id:'c_main', nome:'Cards'}];
+    }
+    return b[collection];
+  }
+  // em que coluna um cartão está
+  function ccColOf(collection, it, cols){
+    var ids = cols.map(function(c){ return c.id; });
+    var defs = CC_DEFAULT_COLS[collection];
+    if(defs){
+      var hit = defs.filter(function(c){ return c.match(it); })[0];
+      if(!(it.col && ids.indexOf(it.col)>-1 && !ccDefaultCol(collection, it.col))){
+        if(hit && ids.indexOf(hit.id)>-1) return hit.id;
+        return ids[0];
+      }
+      return it.col;
+    }
+    return (it.col && ids.indexOf(it.col)>-1) ? it.col : ids[0];
+  }
+  // coloca o cartão numa coluna (ajusta tipo/status nas colunas padrão)
+  function ccAssignCol(collection, it, colId){
+    var d = ccDefaultCol(collection, colId);
+    if(d){ d.apply(it); delete it.col; } else { it.col = colId; }
+  }
+  function ccAsk(title, label, initial, okText, onOk){
+    modalBox.innerHTML = '';
+    modalBox.appendChild(text('h2', null, title));
+    var wrap = el('div', {class:'field'});
+    wrap.appendChild(text('label', null, label));
+    var inp = el('input', {type:'text'}); inp.value = initial || ''; wrap.appendChild(inp);
+    modalBox.appendChild(wrap);
+    var submit = function(){ var v = inp.value.trim(); if(!v){ inp.focus(); return; } closeModal(); onOk(v); };
+    inp.addEventListener('keydown', function(e){ if(e.key==='Enter'){ e.preventDefault(); submit(); } });
+    var actions = el('div', {class:'modal-actions'});
+    var right = el('div', {style:'display:flex;gap:8px;margin-left:auto;'});
+    var c = el('button', {type:'button', class:'btn-secondary'}, [text('span',null,'Cancelar')]); c.addEventListener('click', closeModal);
+    var ok = el('button', {type:'button', class:'btn-primary'}, [text('span',null,okText||'Salvar')]); ok.addEventListener('click', submit);
+    right.appendChild(c); right.appendChild(ok); actions.appendChild(right); modalBox.appendChild(actions);
+    modalOverlay.classList.add('open');
+    setTimeout(function(){ inp.focus(); inp.select(); }, 40);
+  }
+  function ccPickColor(title, atual, onPick){
+    modalBox.innerHTML = '';
+    modalBox.appendChild(text('h2', null, title));
+    var pal = el('div', {class:'cc-pal'});
+    CC_CORES.forEach(function(c){
+      var b = el('button', {type:'button', class:'cc-sw'+(atual===c[1]?' on':'')}, [document.createTextNode(c[0])]);
+      b.style.background = c[1];
+      b.addEventListener('click', function(){ closeModal(); onPick(c[1]); });
+      pal.appendChild(b);
+    });
+    modalBox.appendChild(pal);
+    var actions = el('div', {class:'modal-actions'});
+    var none = el('button', {type:'button', class:'btn-secondary'}, [text('span',null,'Sem cor')]);
+    none.addEventListener('click', function(){ closeModal(); onPick(''); });
+    var fechar = el('button', {type:'button', class:'btn-secondary'}, [text('span',null,'Cancelar')]);
+    fechar.addEventListener('click', closeModal);
+    actions.appendChild(none); actions.appendChild(fechar); modalBox.appendChild(actions);
+    modalOverlay.classList.add('open');
+  }
+  function ccApplyCor(node, cor){ if(cor){ node.style.setProperty('--cc', cor); node.classList.add('cc-colored'); } }
+
   var ccDrag = null, ccSuppress = false;
   function ccMakeCard(card, collection, item){
     card.dataset.id = item.id; card.classList.add('cc-card');
+    ccApplyCor(card, item.cor);
+    var tools = el('span', {class:'cc-ctools'});
+    var colorBtn = el('button', {type:'button', class:'cc-cbtn', title:'Mudar a cor do cartão'}, [document.createTextNode('🎨')]);
+    colorBtn.addEventListener('click', function(e){
+      e.stopPropagation();
+      ccPickColor('Cor do cartão', item.cor, function(v){ if(v) item.cor = v; else delete item.cor; saveState(); renderApp(); });
+    });
     var grip = el('span', {class:'cc-grip', title:'Arraste para mudar de lugar'}, [document.createTextNode('⠿')]);
-    card.appendChild(grip);
+    tools.appendChild(colorBtn); tools.appendChild(grip); card.appendChild(tools);
     card.addEventListener('click', function(e){
       if(ccSuppress) return;
       if(e.target.closest && e.target.closest('a,button,input,select,textarea')) return;
@@ -2926,8 +3035,8 @@ window.MindMapApp = (function(){
     if(ccDrag) return;
     if(e.pointerType==='mouse' && e.button!==0) return;
     if(e.target.closest && e.target.closest('a,button,input,select,textarea')) return;
-    if(e.pointerType!=='mouse' && !(e.target.closest && e.target.closest('.cc-grip'))) return; // no toque, só pela alça
-    ccDrag = {id:id, collection:collection, card:card, list:card.parentNode, sx:e.clientX, sy:e.clientY, started:false, ghost:null, target:null, pos:'after', axis:'x'};
+    if(e.pointerType!=='mouse' && !(e.target.closest && e.target.closest('.cc-grip'))) return;
+    ccDrag = {id:id, collection:collection, card:card, sx:e.clientX, sy:e.clientY, started:false, ghost:null, target:null, pos:'after', colId:null};
     document.addEventListener('pointermove', ccPtrMove);
     document.addEventListener('pointerup', ccPtrUp);
     document.addEventListener('pointercancel', ccPtrCancel);
@@ -2935,7 +3044,7 @@ window.MindMapApp = (function(){
   }
   function ccPtrKey(e){ if(e.key==='Escape') ccPtrCancel(); }
   function ccClearMarks(){
-    ['cc-before-x','cc-after-x','cc-before-y','cc-after-y'].forEach(function(c){
+    ['cc-before-y','cc-after-y','cc-over'].forEach(function(c){
       [].slice.call(document.querySelectorAll('.'+c)).forEach(function(n){ n.classList.remove(c); });
     });
   }
@@ -2960,35 +3069,86 @@ window.MindMapApp = (function(){
     }
     e.preventDefault();
     d.ghost.style.left = (e.clientX-d.ox)+'px'; d.ghost.style.top = (e.clientY-d.oy)+'px';
+    var board = document.querySelector('.cc-board');
+    if(board){
+      var br = board.getBoundingClientRect();
+      if(e.clientX > br.right-60) board.scrollLeft += 18; else if(e.clientX < br.left+60) board.scrollLeft -= 18;
+    }
     if(e.clientY > window.innerHeight-70) window.scrollBy(0,16); else if(e.clientY < 70) window.scrollBy(0,-16);
     ccClearMarks();
-    var cards = [].slice.call(d.list.querySelectorAll('.cc-card')).filter(function(c){ return c!==d.card; });
-    d.target = null; if(!cards.length) return;
-    var lefts = {}; cards.forEach(function(c){ lefts[Math.round(c.getBoundingClientRect().left/10)] = 1; });
-    d.axis = Object.keys(lefts).length > 1 ? 'x' : 'y';
-    var best = null, bestD = 1e12;
-    cards.forEach(function(c){
-      var rr = c.getBoundingClientRect(), cx = rr.left+rr.width/2, cy = rr.top+rr.height/2;
-      var dx = e.clientX-cx, dy = e.clientY-cy, dist = dx*dx+dy*dy;
-      if(dist < bestD){ bestD = dist; best = {c:c, dx:dx, dy:dy}; }
-    });
-    d.target = best.c;
-    d.pos = (d.axis==='x' ? best.dx<0 : best.dy<0) ? 'before' : 'after';
-    best.c.classList.add('cc-'+d.pos+'-'+d.axis);
+    var under = document.elementFromPoint(e.clientX, e.clientY);
+    var col = under && under.closest ? under.closest('.cc-col') : null;
+    d.target = null; d.colId = null;
+    if(!col) return;
+    d.colId = col.dataset.id; col.classList.add('cc-over');
+    var cards = [].slice.call(col.querySelectorAll('.cc-card')).filter(function(c){ return c!==d.card; });
+    for(var i=0;i<cards.length;i++){
+      var rr = cards[i].getBoundingClientRect();
+      if(e.clientY < rr.top + rr.height/2){ d.target = cards[i]; d.pos = 'before'; cards[i].classList.add('cc-before-y'); return; }
+    }
+    if(cards.length){ d.target = cards[cards.length-1]; d.pos = 'after'; d.target.classList.add('cc-after-y'); }
   }
   function ccPtrUp(){
     var d = ccDrag; if(!d) return;
-    var moved = d.started, target = d.target, pos = d.pos, id = d.id, coll = d.collection;
+    var moved = d.started, target = d.target, pos = d.pos, id = d.id, coll = d.collection, colId = d.colId;
     ccPtrEnd();
     if(!moved) return;
     ccSuppress = true; setTimeout(function(){ ccSuppress = false; }, 0);
-    if(!target) return;
-    var arr = state.data[coll], tid = target.dataset.id; if(!arr || tid===id) return;
+    if(!colId) return;
+    var arr = state.data[coll]; if(!arr) return;
     var from = arr.findIndex(function(x){ return x.id===id; }); if(from<0) return;
     var item = arr.splice(from,1)[0];
-    var ti = arr.findIndex(function(x){ return x.id===tid; });
-    if(ti<0){ arr.push(item); } else { arr.splice(pos==='before' ? ti : ti+1, 0, item); }
+    var tid = target ? target.dataset.id : null;
+    var ti = tid ? arr.findIndex(function(x){ return x.id===tid; }) : -1;
+    if(ti<0) arr.push(item); else arr.splice(pos==='before' ? ti : ti+1, 0, item);
+    ccAssignCol(coll, item, colId);
     saveState(); renderApp();
+  }
+
+  // monta o quadro: uma coluna por subtópico, cartões dentro
+  function renderBoard(container, collection, items, cardBuilder){
+    var cols = ccGetCols(collection);
+    var board = el('div', {class:'cc-board'});
+    cols.forEach(function(col, ci){
+      var c = el('div', {class:'cc-col'}); c.dataset.id = col.id; ccApplyCor(c, col.cor);
+      var mine = items.filter(function(it){ return ccColOf(collection, it, cols)===col.id; });
+      var head = el('div', {class:'cc-col-head'});
+      var title = el('textarea', {class:'cc-col-title', rows:'1', title:'Clique para renomear'});
+      title.value = col.nome;
+      var fit = function(){ title.style.height = 'auto'; title.style.height = title.scrollHeight + 'px'; };
+      title.addEventListener('input', fit); setTimeout(fit, 0);
+      title.addEventListener('change', function(){ var v = title.value.trim(); if(v){ col.nome = v; saveState(); } else title.value = col.nome; });
+      title.addEventListener('keydown', function(e){ if(e.key==='Enter'){ e.preventDefault(); title.blur(); } });
+      head.appendChild(title);
+      head.appendChild(text('span', 'cc-count', String(mine.length)));
+      var tools = el('span', {class:'cc-tools'});
+      var mk = function(t, tt, fn){ var b = el('button', {type:'button', class:'cc-ico', title:tt}, [document.createTextNode(t)]); b.addEventListener('click', fn); tools.appendChild(b); };
+      mk('🎨', 'Mudar a cor da coluna', function(){ ccPickColor('Cor da coluna “'+col.nome+'”', col.cor, function(v){ if(v) col.cor = v; else delete col.cor; saveState(); renderApp(); }); });
+      if(ci>0) mk('◀', 'Mover coluna para a esquerda', function(){ var t = cols[ci-1]; cols[ci-1] = cols[ci]; cols[ci] = t; saveState(); renderApp(); });
+      if(ci<cols.length-1) mk('▶', 'Mover coluna para a direita', function(){ var t = cols[ci+1]; cols[ci+1] = cols[ci]; cols[ci] = t; saveState(); renderApp(); });
+      if(cols.length>1) mk('🗑', 'Excluir coluna', function(){
+        var msg = 'Excluir a coluna "'+col.nome+'"?' + (mine.length ? ' Os '+mine.length+' cartão(ões) dela vão para a coluna "'+(cols[ci===0?1:0].nome)+'".' : '');
+        if(!confirm(msg)) return;
+        var dest = cols[ci===0?1:0];
+        mine.forEach(function(it){ ccAssignCol(collection, it, dest.id); });
+        cols.splice(ci,1); saveState(); renderApp(); toast('Coluna excluída.');
+      });
+      head.appendChild(tools);
+      c.appendChild(head);
+      var list = el('div', {class:'cc-cards'});
+      mine.forEach(function(it){ list.appendChild(cardBuilder(it)); });
+      c.appendChild(list);
+      var add = el('button', {type:'button', class:'cc-add'}, [document.createTextNode('+ Adicionar cartão')]);
+      add.addEventListener('click', function(){ openAddModal(collection, {col: col.id}); });
+      c.appendChild(add);
+      board.appendChild(c);
+    });
+    var nc = el('button', {type:'button', class:'cc-newcol'}, [document.createTextNode('+ Nova coluna')]);
+    nc.addEventListener('click', function(){
+      ccAsk('Nova coluna', 'Nome da coluna (ex: Ganchos para vídeos mudos)', '', 'Criar', function(v){ cols.push({id:'col_'+uid(), nome:v}); saveState(); renderApp(); });
+    });
+    board.appendChild(nc);
+    container.appendChild(board);
   }
 
   // Barra de subtópicos com opção de acrescentar/renomear/remover subtópicos personalizados.
